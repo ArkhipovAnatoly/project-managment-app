@@ -66,7 +66,7 @@ export default function SignIn() {
     if (Object.values(touchedFields).some((v) => v === true) && !isSubmitted) {
       setIsDisabled(false);
     }
-  }, [touchedFields.name, touchedFields.password, isSubmitted]);
+  }, [touchedFields.name, touchedFields.password, touchedFields, isSubmitted]);
 
   return (
     <Container component="main" maxWidth="xs">

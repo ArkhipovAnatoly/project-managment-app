@@ -69,7 +69,7 @@ export default function SignUp() {
     if (Object.values(touchedFields).some((v) => v === true) && !isSubmitted) {
       setIsDisabled(false);
     }
-  }, [touchedFields.name, touchedFields.email, touchedFields.password, isSubmitted]);
+  }, [touchedFields.name, touchedFields.email, touchedFields.password, touchedFields, isSubmitted]);
 
   return (
     <Container component="main" maxWidth="xs">
