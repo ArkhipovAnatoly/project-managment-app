@@ -23,6 +23,7 @@ const Item = styled('li')(() => ({
 }));
 
 const scrollThreshold = 40;
+
 export default function Header() {
   const [isScroll, setIsScroll] = useState<boolean>(false);
 
