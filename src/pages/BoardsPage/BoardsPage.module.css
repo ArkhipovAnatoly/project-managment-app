@@ -1,0 +1,124 @@
+.container {
+  height: 100%;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.inputSwap {
+  margin: 0 auto;
+  width: 30%;
+  color: #000;
+  cursor: pointer;
+  text-align: center;
+  outline: 0;
+  border: 0;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 32px;
+  padding: 0 12px;
+  overflow: hidden;
+}
+
+.inputSwapFalse {
+  width: 100%;
+  color: #000;
+  cursor: pointer;
+  text-align: center;
+  outline: 0;
+  border: 0;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 32px;
+  padding: 0 12px;
+}
+
+.inputSwap:hover {
+  background-color: rgb(214, 238, 238);
+}
+
+.content {
+  display: flex;
+  flex-grow: 1;
+}
+
+.columns {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-height: 100%;
+  padding: 0;
+}
+.column {
+  min-width: 263px;
+  max-height: 100%;
+  background-clip: content-box;
+  padding: 10px;
+  list-style: none;
+}
+
+.columnOptions {
+  background-color: #ebecf0;
+  border-radius: 3px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  max-height: 60vh;
+  position: relative;
+  white-space: normal;
+  width: 100% !important;
+  border-radius: 3px;
+}
+
+.columnTitle {
+  margin: 5px;
+  padding: 3px;
+  cursor: pointer;
+}
+
+.columnTasks {
+  overflow-x: auto;
+  overflow-y: scroll;
+}
+
+.columnTasks::-webkit-scrollbar {
+  background-color: #dadada;
+  width: 7px;
+  border-radius: 5px;
+}
+
+.columnTasks::-webkit-scrollbar-track {
+  background-color: #e3e3e3;
+  width: 7px;
+  border-radius: 5px;
+}
+
+.columnTasks::-webkit-scrollbar-thumb {
+  background-color: #bbbbbb;
+  width: 7px;
+  border-radius: 5px;
+}
+
+.columnTask {
+  background-color: #fafafa;
+  border-radius: 3px;
+  cursor: pointer;
+  margin: 5px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.columnAdd {
+  margin: 5px;
+  padding: 3px;
+  display: flex;
+  align-items: center;
+}
+
+.columnAdd:hover {
+  background-color: rgba(194, 194, 194, 0.562);
+  border-radius: 3px;
+  cursor: pointer;
+}
