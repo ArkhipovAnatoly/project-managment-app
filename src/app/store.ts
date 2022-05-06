@@ -1,6 +1,7 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import boardsPage from './reducers/useSliceBoardsPage';
 
-const rootReducer = combineReducers({});
+const rootReducer = combineReducers({ boardsPage });
 
 const storeConfig = () => {
   return configureStore({
