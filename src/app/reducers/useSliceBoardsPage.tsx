@@ -4,6 +4,7 @@ interface States {
   dataBoardsPage: Array<BoardsPageState> | never;
   openModalWindow: boolean;
   nameModalWindow: string;
+  idxOfColumnForNewTask: string;
 }
 
 interface Task {
@@ -14,6 +15,12 @@ interface Task {
 export interface BoardsPageState {
   tittle?: string;
   tasks?: Array<Task> | never;
+}
+
+interface AddNewTask {
+  index: string;
+  taskTittle?: string;
+  taskOption?: string;
 }
 
 const dataBoards = [
@@ -77,6 +84,7 @@ const initialState: States = {
   dataBoardsPage: dataBoards,
   openModalWindow: false,
   nameModalWindow: '',
+  idxOfColumnForNewTask: '',
 };
 
 export const useSliceBoardsPage = createSlice({
@@ -90,12 +98,25 @@ export const useSliceBoardsPage = createSlice({
       };
       state.dataBoardsPage.push(emptyColumn);
     },
+    addNewTask: (state, action: PayloadAction<AddNewTask>) => {
+      const task = {
+        taskTittle: action.payload.taskTittle,
+        taskOption: action.payload.taskOption,
+      };
+      state.dataBoardsPage[Number(action.payload.index)].tasks?.push(task);
+    },
+    changeIdxOfColumnForNewTask: (state, action: PayloadAction<string>) => {
+      state.idxOfColumnForNewTask = action.payload;
+    },
     deleteColumn: (state, action: PayloadAction<number>) => {
       const deleteOneElement = 1;
       state.dataBoardsPage.splice(action.payload, deleteOneElement);
     },
     openModalWindow: (state, action: PayloadAction<boolean>) => {
       state.openModalWindow = action.payload;
+    },
+    addNameForModalWindow: (state, action: PayloadAction<string>) => {
+      state.nameModalWindow = action.payload;
     },
   },
 });

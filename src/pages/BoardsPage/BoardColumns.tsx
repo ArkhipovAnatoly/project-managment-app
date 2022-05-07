@@ -2,12 +2,11 @@ import AddIcon from '@mui/icons-material/Add';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useSliceBoardsPage } from '../../app/reducers/useSliceBoardsPage';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Button, Fade, IconButton, Modal, TextField, Tooltip, Typography } from '@mui/material';
+import { IconButton, Tooltip, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { CardActionArea } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
-import { useState } from 'react';
 import ModalWindow from './ModalWindow';
 
 const useStyles = makeStyles({
@@ -164,7 +163,20 @@ function BoardColumns() {
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
 
-  const handleModalWindow = () => dispatch(reducers.openModalWindow(true));
+  const handleModalWindow = (event: React.MouseEvent) => {
+    const target = event.target as HTMLElement;
+    const nameForModalWindow = String(
+      (target.closest('#buttonModal') as HTMLElement)?.dataset.modalname
+    );
+    dispatch(reducers.openModalWindow(true));
+    dispatch(reducers.addNameForModalWindow(nameForModalWindow));
+    if (nameForModalWindow === 'task') {
+      const idxOfColumnForNewTask = String(
+        (target.closest('#buttonModal') as HTMLElement)?.dataset.columnindex
+      );
+      dispatch(reducers.changeIdxOfColumnForNewTask(idxOfColumnForNewTask));
+    }
+  };
 
   const deleteThisColumn = (event: React.MouseEvent) => {
     const target = event.target as HTMLElement;
@@ -174,9 +186,9 @@ function BoardColumns() {
 
   return (
     <Box className={classes.columns}>
-      {dataBoardsPage.map((column, index) => {
+      {dataBoardsPage.map((column, indexColumn) => {
         return (
-          <Box className={classes.column} key={`${column.tittle} ${index}`}>
+          <Box className={classes.column} key={`${column.tittle} ${indexColumn}`}>
             <Box className={classes.columnOptions}>
               <Box className={classes.columnTitle}>
                 <Typography>{column.tittle}</Typography>
@@ -188,9 +200,9 @@ function BoardColumns() {
                 spacing={2}
                 className={classes.columnTasks}
               >
-                {column.tasks?.map((tasks, index) => {
+                {column.tasks?.map((tasks, indexTask) => {
                   return (
-                    <Box className={classes.columnTask} key={`${tasks.taskTittle} ${index}`}>
+                    <Box className={classes.columnTask} key={`${tasks.taskTittle} ${indexTask}`}>
                       <CardActionArea>
                         <Typography gutterBottom variant="h5">
                           {tasks.taskTittle}
@@ -204,10 +216,20 @@ function BoardColumns() {
                 })}
               </Stack>
               <Box className={classes.columnSettings}>
-                <Box className={classes.columnAdd}>
+                <Box
+                  className={classes.columnAdd}
+                  data-modalname="task"
+                  data-columnindex={indexColumn}
+                  onClick={handleModalWindow}
+                  id="buttonModal"
+                >
                   <AddIcon /> <Typography>Add task</Typography>
                 </Box>
-                <Tooltip title="Delete Column" data-deletecol={index} onClick={deleteThisColumn}>
+                <Tooltip
+                  title="Delete Column"
+                  data-deletecol={indexColumn}
+                  onClick={deleteThisColumn}
+                >
                   <IconButton>
                     <DeleteIcon />
                   </IconButton>
@@ -218,7 +240,12 @@ function BoardColumns() {
         );
       })}
       <Box className={classes.column}>
-        <Box className={classes.columnAddOptions} onClick={handleModalWindow}>
+        <Box
+          className={classes.columnAddOptions}
+          data-modalname="column"
+          id="buttonModal"
+          onClick={handleModalWindow}
+        >
           <Box className={classes.columnAddOptionsText}>
             <AddIcon /> <Typography>Add new column</Typography>
           </Box>
