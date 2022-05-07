@@ -12,12 +12,17 @@ import Container from '@mui/material/Container';
 import { NavLink } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import { Typography, FormHelperText } from '@mui/material';
+import { Typography, FormHelperText, CircularProgress } from '@mui/material';
 import Copyright from './share/Copyright';
-import { FormSignUpValues } from '../../types';
+import { UserSignUpData } from '../../types';
+import { userAPI } from '../../services/UserService';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 
 export default function SignUp() {
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
+  const [message, setMessage] = useState<string>('');
+  const [success, setSuccess] = useState<boolean>(false);
+  const [signUpUser, { isLoading }] = userAPI.useUserSignUpMutation();
   const {
     register,
     handleSubmit,
@@ -32,8 +37,17 @@ export default function SignUp() {
     },
   });
 
-  const onSubmit: SubmitHandler<FormSignUpValues> = (formData) => {
-    console.log(formData);
+  const onSubmit: SubmitHandler<UserSignUpData> = async (formData) => {
+    setMessage('');
+    setSuccess(false);
+    const response = (await signUpUser(formData)) as FetchBaseQueryError;
+    const data = await JSON.parse(JSON.stringify(response));
+    if (data?.error?.status) {
+      data.error.status !== 200 && setMessage(data.error.data.message);
+      return;
+    }
+    setSuccess(true);
+    setMessage('Success');
   };
 
   useEffect(() => {
@@ -55,7 +69,7 @@ export default function SignUp() {
   }, [touchedFields.name, touchedFields.login, touchedFields.password, touchedFields, isSubmitted]);
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="section" maxWidth="xs">
       <CssBaseline />
       <Box
         sx={{
@@ -137,6 +151,29 @@ export default function SignUp() {
               )}
             </Grid>
           </Grid>
+
+          <Box
+            sx={{
+              mt: 2,
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            {isLoading && <CircularProgress size={26} color="info" />}
+            {
+              <FormHelperText
+                error={!success}
+                component="span"
+                sx={{
+                  color: { success } && '#00FF00',
+                  fontSize: '18px',
+                }}
+              >
+                {message}
+              </FormHelperText>
+            }
+          </Box>
+
           <Button
             disabled={isDisabled}
             type="submit"

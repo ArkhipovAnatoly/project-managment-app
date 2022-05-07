@@ -10,12 +10,18 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Container from '@mui/material/Container';
 import { NavLink } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { Typography, FormHelperText } from '@mui/material';
+import { Typography, FormHelperText, CircularProgress } from '@mui/material';
 import Copyright from './share/Copyright';
-import { FormSignInValues } from '../../types';
+import { UserSignInData } from '../../types';
+import { userAPI } from '../../services/UserService';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 
 export default function SignIn() {
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
+  const [message, setMessage] = useState<string>('');
+  const [success, setSuccess] = useState<boolean>(false);
+
+  const [signInUser, { isLoading }] = userAPI.useUserSignInMutation();
   const {
     register,
     handleSubmit,
@@ -29,8 +35,17 @@ export default function SignIn() {
     },
   });
 
-  const onSubmit: SubmitHandler<FormSignInValues> = (formData) => {
-    console.log(formData);
+  const onSubmit: SubmitHandler<UserSignInData> = async (formData) => {
+    setMessage('');
+    setSuccess(false);
+    const response = (await signInUser(formData)) as FetchBaseQueryError;
+    const data = await JSON.parse(JSON.stringify(response));
+    if (data?.error?.status) {
+      data.error.status !== 200 && setMessage(data.error.data.message);
+      return;
+    }
+    setSuccess(true);
+    setMessage('Success');
   };
 
   useEffect(() => {
@@ -52,7 +67,7 @@ export default function SignIn() {
   }, [touchedFields.login, touchedFields.password, touchedFields, isSubmitted]);
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="section" maxWidth="xs">
       <CssBaseline />
       <Box
         sx={{
@@ -107,6 +122,28 @@ export default function SignIn() {
               Password length should be more than 8 characters
             </FormHelperText>
           )}
+          <Box
+            sx={{
+              mt: 2,
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            {isLoading && <CircularProgress size={26} color="info" />}
+            {
+              <FormHelperText
+                error={!success}
+                component="span"
+                sx={{
+                  color: { success } && '#00FF00',
+                  fontSize: '18px',
+                }}
+              >
+                {message}
+              </FormHelperText>
+            }
+          </Box>
+
           <Button
             disabled={isDisabled}
             type="submit"
@@ -116,6 +153,7 @@ export default function SignIn() {
           >
             Sign In
           </Button>
+
           <Grid container>
             <Grid item>
               <Link component={NavLink} to="/signup" variant="body2">
