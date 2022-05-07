@@ -6,17 +6,13 @@ import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Container from '@mui/material/Container';
 import { NavLink } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Typography, FormHelperText } from '@mui/material';
 import Copyright from './share/Copyright';
-
-type FormSignInValues = {
-  name: string;
-  password: string;
-};
+import { FormSignInValues } from '../../types';
 
 export default function SignIn() {
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
@@ -28,7 +24,7 @@ export default function SignIn() {
   } = useForm({
     mode: 'onSubmit',
     defaultValues: {
-      name: '',
+      login: '',
       password: '',
     },
   });
@@ -53,7 +49,7 @@ export default function SignIn() {
     if (Object.values(touchedFields).some((v) => v === true) && !isSubmitted) {
       setIsDisabled(false);
     }
-  }, [touchedFields.name, touchedFields.password, touchedFields, isSubmitted]);
+  }, [touchedFields.login, touchedFields.password, touchedFields, isSubmitted]);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -67,33 +63,29 @@ export default function SignIn() {
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-          <AccountCircleIcon />
+          <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
           <TextField
-            error={errors.name && true}
+            error={errors.login && true}
             margin="normal"
             required
-            id="Name"
-            label="Name"
+            id="Login"
+            label="Login"
             fullWidth
-            autoComplete="given-name"
+            autoComplete="given-login"
             autoFocus
-            {...register('name', { required: true, pattern: /^[A-Za-zА-Яа-я]+$/i })}
+            {...register('login', { required: true })}
           />
-          {errors.name?.type === 'required' && (
+          {errors.login?.type === 'required' && (
             <FormHelperText component="span" error>
-              Name is required
+              Login is required
             </FormHelperText>
           )}
-          {errors.name?.type === 'pattern' && (
-            <FormHelperText component="span" error>
-              Name should include letters only
-            </FormHelperText>
-          )}
+
           <TextField
             error={errors.password && true}
             margin="normal"
