@@ -7,31 +7,18 @@ import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { NavLink } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import { FormHelperText } from '@mui/material';
+import { Typography, FormHelperText } from '@mui/material';
+import Copyright from './share/Copyright';
 
 type FormSignUpValues = {
   name: string;
   email: string;
   password: string;
 };
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 5 }}>
-      {'Copyright © '}
-      <Link color="inherit" href="#">
-        TEMPER
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 export default function SignUp() {
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
