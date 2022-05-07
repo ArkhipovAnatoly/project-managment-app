@@ -2,12 +2,12 @@ import AddIcon from '@mui/icons-material/Add';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useSliceBoardsPage } from '../../app/reducers/useSliceBoardsPage';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { IconButton, Tooltip, Typography } from '@mui/material';
+import { Button, Fade, IconButton, Modal, TextField, Tooltip, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { CardActionArea } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
-import { ReducerAction } from 'react';
+import { useState } from 'react';
 
 const useStyles = makeStyles({
   columns: {
@@ -143,17 +143,41 @@ const useStyles = makeStyles({
       backgroundColor: '#c2c2c28f',
     },
   },
+  modalWindow: {
+    width: '70%',
+    height: '50%',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    backgroundColor: '#ffff',
+    borderRadius: 3,
+    outline: 'none',
+  },
 });
 
 function BoardColumns() {
   const classes = useStyles();
 
+  const [openWindow, setOpenWindow] = useState(false);
+  const [titleColumn, setTitleColumn] = useState('');
   const { dataBoardsPage } = useAppSelector((state) => state.boardsPage);
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
 
+  const closeModalWindow = () => setOpenWindow(false);
+  const openModalWindow = () => setOpenWindow(true);
+
+  const handleTitle = (event: React.ChangeEvent) => {
+    const target = event.target as HTMLInputElement;
+    setTitleColumn(target.value as string);
+  };
+
   const addNewColumn = () => {
-    dispatch(reducers.addNewColumn(true));
+    if (titleColumn) {
+      dispatch(reducers.addNewColumn(titleColumn));
+      closeModalWindow();
+    }
   };
 
   const deleteThisColumn = (event: React.MouseEvent) => {
@@ -208,12 +232,40 @@ function BoardColumns() {
         );
       })}
       <Box className={classes.column}>
-        <Box className={classes.columnAddOptions} onClick={addNewColumn}>
+        <Box className={classes.columnAddOptions} onClick={openModalWindow}>
           <Box className={classes.columnAddOptionsText}>
             <AddIcon /> <Typography>Add new column</Typography>
           </Box>
         </Box>
       </Box>
+      <Modal open={openWindow} onClose={closeModalWindow}>
+        <Box className={classes.modalWindow}>
+          <Box className={classes.modalWindow}>
+            <Stack direction="column" spacing={5}>
+              <Typography gutterBottom variant="h5">
+                Add new column
+              </Typography>
+              <Stack direction="column" spacing={2}>
+                <TextField
+                  id="filled-basic"
+                  label="Tittle"
+                  variant="filled"
+                  defaultValue={titleColumn}
+                  onChange={handleTitle}
+                />
+              </Stack>
+              <Stack direction="row" spacing={2}>
+                <Button variant="contained" onClick={addNewColumn}>
+                  Apply
+                </Button>
+                <Button variant="outlined" onClick={closeModalWindow}>
+                  Cancel
+                </Button>
+              </Stack>
+            </Stack>
+          </Box>
+        </Box>
+      </Modal>
     </Box>
   );
 }

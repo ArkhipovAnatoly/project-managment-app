@@ -79,9 +79,9 @@ export const useSliceBoardsPage = createSlice({
   name: 'BoardsPage',
   initialState,
   reducers: {
-    addNewColumn: (state, action: PayloadAction<boolean>) => {
+    addNewColumn: (state, action: PayloadAction<string>) => {
       const emptyColumn = {
-        tittle: 'Some Text',
+        tittle: action.payload,
         tasks: [],
       };
       state.dataBoardsPage.push(emptyColumn);
