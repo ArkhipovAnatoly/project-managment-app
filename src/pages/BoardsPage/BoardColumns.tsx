@@ -101,13 +101,15 @@ const useStyles = makeStyles({
     },
   },
   columnTask: {
-    width: '95%',
+    minWidth: '95%',
+    maxWidth: '200px',
     backgroundColor: '#ffffff',
     borderRadius: 3,
     cursor: 'pointer',
     margin: 5,
     display: 'flex',
     flexDirection: 'column',
+    flexWrap: 'wrap',
   },
   columnSettings: {
     margin: 5,
@@ -170,11 +172,21 @@ function BoardColumns() {
     );
     dispatch(reducers.openModalWindow(true));
     dispatch(reducers.addNameForModalWindow(nameForModalWindow));
-    if (nameForModalWindow === 'task') {
+    if (nameForModalWindow === 'addtask') {
       const idxOfColumnForNewTask = String(
         (target.closest('#buttonModal') as HTMLElement)?.dataset.columnindex
       );
       dispatch(reducers.changeIdxOfColumnForNewTask(idxOfColumnForNewTask));
+    }
+    if (nameForModalWindow === 'task') {
+      const idxOfColumnForNewTask = String(
+        (target.closest('#buttonModal') as HTMLElement)?.dataset.columnindex
+      );
+      const idxOfTaskForNewTask = String(
+        (target.closest('#buttonModal') as HTMLElement)?.dataset.taskindex
+      );
+      dispatch(reducers.changeIdxOfColumnForNewTask(idxOfColumnForNewTask));
+      dispatch(reducers.changeIdxOfTaskForNewTask(idxOfTaskForNewTask));
     }
   };
 
@@ -202,7 +214,15 @@ function BoardColumns() {
               >
                 {column.tasks?.map((tasks, indexTask) => {
                   return (
-                    <Box className={classes.columnTask} key={`${tasks.taskTittle} ${indexTask}`}>
+                    <Box
+                      className={classes.columnTask}
+                      key={`${tasks.taskTittle} ${indexTask}`}
+                      data-modalname="task"
+                      data-columnindex={indexColumn}
+                      data-taskindex={indexTask}
+                      id="buttonModal"
+                      onClick={handleModalWindow}
+                    >
                       <CardActionArea>
                         <Typography gutterBottom variant="h5">
                           {tasks.taskTittle}
@@ -218,7 +238,7 @@ function BoardColumns() {
               <Box className={classes.columnSettings}>
                 <Box
                   className={classes.columnAdd}
-                  data-modalname="task"
+                  data-modalname="addtask"
                   data-columnindex={indexColumn}
                   onClick={handleModalWindow}
                   id="buttonModal"

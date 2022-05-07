@@ -5,6 +5,7 @@ interface States {
   openModalWindow: boolean;
   nameModalWindow: string;
   idxOfColumnForNewTask: string;
+  idxOfTaskForNewTask: string;
 }
 
 interface Task {
@@ -19,6 +20,13 @@ export interface BoardsPageState {
 
 interface AddNewTask {
   index: string;
+  taskTittle?: string;
+  taskOption?: string;
+}
+
+interface changeTask {
+  indexColumn: string;
+  indexTask: string;
   taskTittle?: string;
   taskOption?: string;
 }
@@ -85,6 +93,7 @@ const initialState: States = {
   openModalWindow: false,
   nameModalWindow: '',
   idxOfColumnForNewTask: '',
+  idxOfTaskForNewTask: '',
 };
 
 export const useSliceBoardsPage = createSlice({
@@ -98,6 +107,7 @@ export const useSliceBoardsPage = createSlice({
       };
       state.dataBoardsPage.push(emptyColumn);
     },
+
     addNewTask: (state, action: PayloadAction<AddNewTask>) => {
       const task = {
         taskTittle: action.payload.taskTittle,
@@ -105,16 +115,39 @@ export const useSliceBoardsPage = createSlice({
       };
       state.dataBoardsPage[Number(action.payload.index)].tasks?.push(task);
     },
+
+    changeTask: (state, action: PayloadAction<changeTask>) => {
+      const changedTask = {
+        taskTittle: action.payload.taskTittle,
+        taskOption: action.payload.taskOption,
+      };
+      const deleteOneElement = 1;
+      const indexForColumn = Number(action.payload.indexColumn);
+      const indexForTask = Number(action.payload.indexTask);
+      state.dataBoardsPage[indexForColumn].tasks?.splice(
+        indexForTask,
+        deleteOneElement,
+        changedTask
+      );
+    },
+
     changeIdxOfColumnForNewTask: (state, action: PayloadAction<string>) => {
       state.idxOfColumnForNewTask = action.payload;
     },
+
+    changeIdxOfTaskForNewTask: (state, action: PayloadAction<string>) => {
+      state.idxOfTaskForNewTask = action.payload;
+    },
+
     deleteColumn: (state, action: PayloadAction<number>) => {
       const deleteOneElement = 1;
       state.dataBoardsPage.splice(action.payload, deleteOneElement);
     },
+
     openModalWindow: (state, action: PayloadAction<boolean>) => {
       state.openModalWindow = action.payload;
     },
+
     addNameForModalWindow: (state, action: PayloadAction<string>) => {
       state.nameModalWindow = action.payload;
     },

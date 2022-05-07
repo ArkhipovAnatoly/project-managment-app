@@ -9,7 +9,7 @@ import { useSliceBoardsPage } from '../../app/reducers/useSliceBoardsPage';
 const useStyles = makeStyles({
   modalWindow: {
     width: '70%',
-    height: '50%',
+    height: '75%',
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -28,6 +28,7 @@ function ModalWindow() {
   const { openModalWindow } = useAppSelector((state) => state.boardsPage);
   const { nameModalWindow } = useAppSelector((state) => state.boardsPage);
   const { idxOfColumnForNewTask } = useAppSelector((state) => state.boardsPage);
+  const { idxOfTaskForNewTask } = useAppSelector((state) => state.boardsPage);
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
 
@@ -73,6 +74,23 @@ function ModalWindow() {
     }
   };
 
+  const changeCurrentTask = () => {
+    if (title && description) {
+      console.log(idxOfTaskForNewTask);
+
+      dispatch(
+        reducers.changeTask({
+          indexColumn: idxOfColumnForNewTask,
+          indexTask: idxOfTaskForNewTask,
+          taskTittle: title,
+          taskOption: description,
+        })
+      );
+      closeModalWindow();
+      clearTextModal();
+    }
+  };
+
   return (
     <Modal open={openModalWindow} onClose={closeModalWindow}>
       <Box className={classes.modalWindow}>
@@ -100,7 +118,7 @@ function ModalWindow() {
               </Stack>
             </Stack>
           )}
-          {nameModalWindow === 'task' && (
+          {nameModalWindow === 'addtask' && (
             <Stack direction="column" spacing={3}>
               <Typography gutterBottom variant="h5">
                 Add new task
@@ -123,6 +141,37 @@ function ModalWindow() {
               </Stack>
               <Stack direction="row" spacing={2}>
                 <Button variant="contained" onClick={addNewTask}>
+                  Add task
+                </Button>
+                <Button variant="outlined" onClick={closeModalWindow}>
+                  Cancel
+                </Button>
+              </Stack>
+            </Stack>
+          )}
+          {nameModalWindow === 'task' && (
+            <Stack direction="column" spacing={3}>
+              <Typography gutterBottom variant="h5">
+                Current Task
+              </Typography>
+              <Stack direction="column" spacing={2}>
+                <TextField
+                  id="filled-basic"
+                  label="Change tittle of this task"
+                  variant="filled"
+                  onChange={handleTitle}
+                />
+                <TextField
+                  id="filled-basic"
+                  label="Change description of this task"
+                  variant="filled"
+                  multiline
+                  rows={4}
+                  onChange={handleDescription}
+                />
+              </Stack>
+              <Stack direction="row" spacing={2}>
+                <Button variant="contained" onClick={changeCurrentTask}>
                   Add task
                 </Button>
                 <Button variant="outlined" onClick={closeModalWindow}>

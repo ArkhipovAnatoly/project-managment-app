@@ -24,6 +24,7 @@ const useStyles = makeStyles({
     overflow: 'hidden',
     '&:hover': {
       backgroundColor: '#d6eeee',
+      transition: 'all 0.2s',
     },
   },
 
