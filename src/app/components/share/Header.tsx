@@ -84,11 +84,6 @@ export default function Header() {
             </Toolbar>
           </Container>
         </AppBar>
-        <p style={{ marginTop: '200px' }}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. In vero, autem voluptatem quod
-          laborum dicta accusantium sequi nobis neque? Distinctio, blanditiis! Blanditiis similique
-          natus nisi, labore facere illo velit commodi.
-        </p>
       </ThemeProvider>
     </>
   );
