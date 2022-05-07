@@ -8,6 +8,7 @@ import Stack from '@mui/material/Stack';
 import { CardActionArea } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
 import { useState } from 'react';
+import ModalWindow from './ModalWindow';
 
 const useStyles = makeStyles({
   columns: {
@@ -159,26 +160,11 @@ const useStyles = makeStyles({
 function BoardColumns() {
   const classes = useStyles();
 
-  const [openWindow, setOpenWindow] = useState(false);
-  const [titleColumn, setTitleColumn] = useState('');
   const { dataBoardsPage } = useAppSelector((state) => state.boardsPage);
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
 
-  const closeModalWindow = () => setOpenWindow(false);
-  const openModalWindow = () => setOpenWindow(true);
-
-  const handleTitle = (event: React.ChangeEvent) => {
-    const target = event.target as HTMLInputElement;
-    setTitleColumn(target.value as string);
-  };
-
-  const addNewColumn = () => {
-    if (titleColumn) {
-      dispatch(reducers.addNewColumn(titleColumn));
-      closeModalWindow();
-    }
-  };
+  const handleModalWindow = () => dispatch(reducers.openModalWindow(true));
 
   const deleteThisColumn = (event: React.MouseEvent) => {
     const target = event.target as HTMLElement;
@@ -232,79 +218,14 @@ function BoardColumns() {
         );
       })}
       <Box className={classes.column}>
-        <Box className={classes.columnAddOptions} onClick={openModalWindow}>
+        <Box className={classes.columnAddOptions} onClick={handleModalWindow}>
           <Box className={classes.columnAddOptionsText}>
             <AddIcon /> <Typography>Add new column</Typography>
           </Box>
         </Box>
       </Box>
-      <Modal open={openWindow} onClose={closeModalWindow}>
-        <Box className={classes.modalWindow}>
-          <Box className={classes.modalWindow}>
-            <Stack direction="column" spacing={5}>
-              <Typography gutterBottom variant="h5">
-                Add new column
-              </Typography>
-              <Stack direction="column" spacing={2}>
-                <TextField
-                  id="filled-basic"
-                  label="Tittle"
-                  variant="filled"
-                  defaultValue={titleColumn}
-                  onChange={handleTitle}
-                />
-              </Stack>
-              <Stack direction="row" spacing={2}>
-                <Button variant="contained" onClick={addNewColumn}>
-                  Apply
-                </Button>
-                <Button variant="outlined" onClick={closeModalWindow}>
-                  Cancel
-                </Button>
-              </Stack>
-            </Stack>
-          </Box>
-        </Box>
-      </Modal>
+      <ModalWindow />
     </Box>
   );
 }
 export default BoardColumns;
-
-{
-  /* <ul className={Boards.columns}>
-<li className={Boards.column}>
-  <div className={Boards.columnOptions}>
-    <div className={Boards.columnTitle}>Нужно сделать</div>
-    <div className={Boards.columnTasks}>
-      <div className={Boards.columnTask}>
-        <div>Some Task</div>
-        <div>Some Options</div>
-      </div>
-      <div className={Boards.columnTask}>
-        <div>Some Task</div>
-        <div>Some Options</div>
-      </div>
-      <div className={Boards.columnTask}>
-        <div>Some Task</div>
-        <div>Some Options</div>
-      </div>
-      <div className={Boards.columnTask}>
-        <div>Some Task</div>
-        <div>Some Options</div>
-      </div>
-    </div>
-    <div className={Boards.columnSettings}>
-      <div className={Boards.columnAdd}>
-        <AddIcon /> Добавить карточку
-      </div>
-      <div className={Boards.columnDelete}>
-        <DeleteIcon />
-      </div>
-    </div>
-  </div>
-</li>
-<li className={Boards.column}></li>
-<li className={Boards.column}></li>
-</ul> */
-}

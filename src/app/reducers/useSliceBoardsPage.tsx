@@ -2,6 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface States {
   dataBoardsPage: Array<BoardsPageState> | never;
+  openModalWindow: boolean;
+  nameModalWindow: string;
 }
 
 interface Task {
@@ -73,6 +75,8 @@ const dataBoards = [
 
 const initialState: States = {
   dataBoardsPage: dataBoards,
+  openModalWindow: false,
+  nameModalWindow: '',
 };
 
 export const useSliceBoardsPage = createSlice({
@@ -89,6 +93,9 @@ export const useSliceBoardsPage = createSlice({
     deleteColumn: (state, action: PayloadAction<number>) => {
       const deleteOneElement = 1;
       state.dataBoardsPage.splice(action.payload, deleteOneElement);
+    },
+    openModalWindow: (state, action: PayloadAction<boolean>) => {
+      state.openModalWindow = action.payload;
     },
   },
 });
