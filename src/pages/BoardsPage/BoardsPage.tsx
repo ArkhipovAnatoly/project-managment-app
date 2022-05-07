@@ -1,9 +1,52 @@
 import { TextField } from '@mui/material';
+import { Typography } from '@mui/material';
 import { createRef, useEffect, useState } from 'react';
-import Boards from './BoardsPage.module.css';
 import BoardColumns from './BoardColumns';
+import { makeStyles } from '@material-ui/core';
+import Box from '@mui/material/Box';
+
+const useStyles = makeStyles({
+  container: {
+    height: '100%',
+    margin: 20,
+    display: 'flex',
+    flexDirection: 'column',
+  },
+
+  inputSwap: {
+    margin: '0 auto',
+    width: '30%',
+    color: '#000',
+    cursor: 'pointer',
+    textAlign: 'center',
+    outline: 0,
+    border: 0,
+    padding: '0 12px',
+    overflow: 'hidden',
+    '&:hover': {
+      backgroundColor: '#d6eeee',
+    },
+  },
+
+  inputSwapFalse: {
+    width: '100%',
+    color: '#000',
+    cursor: 'pointer',
+    textAlign: 'center',
+    outline: 0,
+    border: 0,
+    padding: '0 12px',
+  },
+
+  content: {
+    display: 'flex',
+    flexGrow: 1,
+  },
+});
 
 function BoardsPage() {
+  const classes = useStyles();
+
   const [count, setCount] = useState(true);
   const [text, setText] = useState('My Project');
   const [prevText, setPrevText] = useState('My Project');
@@ -34,27 +77,27 @@ function BoardsPage() {
   }
 
   return (
-    <main className={Boards.container}>
-      <div>
+    <Box className={classes.container}>
+      <Box>
         {count ? (
-          <div className={Boards.inputSwap} onClick={handle}>
-            {text}
-          </div>
+          <Box className={classes.inputSwap} onClick={handle}>
+            <Typography>{text}</Typography>
+          </Box>
         ) : (
           <input
             type="text"
-            className={Boards.inputSwapFalse}
+            className={classes.inputSwapFalse}
             onBlur={onInputBlur}
             onChange={setNewText}
             ref={inputSearch}
             defaultValue={text}
           />
         )}
-      </div>
-      <div className={Boards.content}>
+      </Box>
+      <Box className={classes.content}>
         <BoardColumns></BoardColumns>
-      </div>
-    </main>
+      </Box>
+    </Box>
   );
 }
 export default BoardsPage;
