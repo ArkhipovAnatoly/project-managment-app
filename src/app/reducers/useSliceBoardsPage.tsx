@@ -88,9 +88,7 @@ export const useSliceBoardsPage = createSlice({
     },
     deleteColumn: (state, action: PayloadAction<number>) => {
       const deleteOneElement = 1;
-      action.payload === 0
-        ? state.dataBoardsPage.shift()
-        : state.dataBoardsPage.splice(action.payload, deleteOneElement);
+      state.dataBoardsPage.splice(action.payload, deleteOneElement);
     },
   },
 });
