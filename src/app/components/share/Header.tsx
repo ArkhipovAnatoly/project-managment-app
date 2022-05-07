@@ -30,6 +30,7 @@ export default function Header() {
   const scrollHandle = useCallback(() => {
     window.scrollY > scrollThreshold ? setIsScroll(true) : setIsScroll(false);
   }, []);
+
   useEffect(() => {
     document.addEventListener('scroll', scrollHandle);
 
