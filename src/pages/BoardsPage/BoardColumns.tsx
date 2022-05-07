@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { CardActionArea } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
+import { ReducerAction } from 'react';
 
 const useStyles = makeStyles({
   columns: {
@@ -33,7 +34,7 @@ const useStyles = makeStyles({
     },
   },
   column: {
-    minWidth: 263,
+    minWidth: 265,
     maxHeight: '100%',
     backgroundClip: 'content-box',
     margin: '10px',
@@ -48,6 +49,32 @@ const useStyles = makeStyles({
     position: 'relative',
     whiteSpace: 'normal',
     width: '100%',
+  },
+  columnAddOptions: {
+    backgroundColor: '#ebecf0b8',
+    borderRadius: 3,
+    display: 'flex',
+    flexDirection: 'column',
+    maxHeight: '50vh',
+    minHeight: '50px',
+    position: 'relative',
+    whiteSpace: 'normal',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transition: 'all 0.2s',
+    '&:hover': {
+      backgroundColor: '#c2c2c28f',
+      borderRadius: 3,
+      cursor: 'pointer',
+    },
+  },
+  columnAddOptionsText: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    color: '#5e6c84',
   },
   columnTitle: {
     margin: 5,
@@ -125,6 +152,16 @@ function BoardColumns() {
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
 
+  const addNewColumn = () => {
+    dispatch(reducers.addNewColumn(true));
+  };
+
+  const deleteThisColumn = (event: React.MouseEvent) => {
+    const target = event.target as HTMLElement;
+    const currentButtonIndex = Number(target.closest('button')?.dataset.deletecol);
+    dispatch(reducers.deleteColumn(currentButtonIndex));
+  };
+
   return (
     <Box className={classes.columns}>
       {dataBoardsPage.map((column, index) => {
@@ -160,7 +197,7 @@ function BoardColumns() {
                 <Box className={classes.columnAdd}>
                   <AddIcon /> <Typography>Add task</Typography>
                 </Box>
-                <Tooltip title="Delete Column">
+                <Tooltip title="Delete Column" data-deletecol={index} onClick={deleteThisColumn}>
                   <IconButton>
                     <DeleteIcon />
                   </IconButton>
@@ -170,6 +207,13 @@ function BoardColumns() {
           </Box>
         );
       })}
+      <Box className={classes.column}>
+        <Box className={classes.columnAddOptions} onClick={addNewColumn}>
+          <Box className={classes.columnAddOptionsText}>
+            <AddIcon /> <Typography>Add new column</Typography>
+          </Box>
+        </Box>
+      </Box>
     </Box>
   );
 }

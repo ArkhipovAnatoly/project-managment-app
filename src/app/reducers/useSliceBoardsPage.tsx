@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface States {
-  dataBoardsPage: Array<BoardsPageState> | never[];
+  dataBoardsPage: Array<BoardsPageState> | never;
 }
 
 interface Task {
@@ -11,7 +11,7 @@ interface Task {
 
 export interface BoardsPageState {
   tittle?: string;
-  tasks?: Array<Task> | never[];
+  tasks?: Array<Task> | never;
 }
 
 const dataBoards = [
@@ -66,31 +66,8 @@ const dataBoards = [
     ],
   },
   {
-    tittle: 'Ready',
-    tasks: [
-      {
-        taskTittle: 'Task tittle1',
-        taskOption: 'Task tittle1',
-      },
-    ],
-  },
-  {
-    tittle: 'Ready',
-    tasks: [
-      {
-        taskTittle: 'Task tittle1',
-        taskOption: 'Task tittle1',
-      },
-    ],
-  },
-  {
-    tittle: 'Ready',
-    tasks: [
-      {
-        taskTittle: 'Task tittle1',
-        taskOption: 'Task tittle1',
-      },
-    ],
+    tittle: 'Completed',
+    tasks: [],
   },
 ];
 
@@ -102,9 +79,19 @@ export const useSliceBoardsPage = createSlice({
   name: 'BoardsPage',
   initialState,
   reducers: {
-    // useExample: (state, action: PayloadAction<boolean>) => {
-    //   state.dataBoardsPage.isLoaded = action.payload;
-    // },
+    addNewColumn: (state, action: PayloadAction<boolean>) => {
+      const emptyColumn = {
+        tittle: 'Some Text',
+        tasks: [],
+      };
+      state.dataBoardsPage.push(emptyColumn);
+    },
+    deleteColumn: (state, action: PayloadAction<number>) => {
+      const deleteOneElement = 1;
+      action.payload === 0
+        ? state.dataBoardsPage.shift()
+        : state.dataBoardsPage.splice(action.payload, deleteOneElement);
+    },
   },
 });
 
