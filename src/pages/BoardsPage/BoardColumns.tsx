@@ -170,6 +170,7 @@ function BoardColumns() {
     const nameForModalWindow = String(
       (target.closest('#buttonModal') as HTMLElement)?.dataset.modalname
     );
+    console.log(target.closest('#buttonModal') as HTMLElement);
     dispatch(reducers.openModalWindow(true));
     dispatch(reducers.addNameForModalWindow(nameForModalWindow));
 
@@ -192,12 +193,13 @@ function BoardColumns() {
       dispatch(reducers.changeIndexOfCurrentTask(currentIndexTask));
       dispatch(reducers.changeTitleOfCurrentTask());
     }
-  };
 
-  const deleteThisColumn = (event: React.MouseEvent) => {
-    const target = event.target as HTMLElement;
-    const currentButtonIndex = Number(target.closest('button')?.dataset.deletecol);
-    dispatch(reducers.deleteColumn(currentButtonIndex));
+    if (nameForModalWindow === 'deleteColumn') {
+      const currentIndexColumn = String(
+        (target.closest('#buttonModal') as HTMLElement)?.dataset.columnindex
+      );
+      dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
+    }
   };
 
   return (
@@ -218,16 +220,14 @@ function BoardColumns() {
               >
                 {column.tasks?.map((tasks, indexTask) => {
                   return (
-                    <Box
-                      className={classes.columnTask}
-                      key={`${tasks.taskTittle} ${indexTask}`}
-                      data-modalname="editTask"
-                      data-columnindex={indexColumn}
-                      data-taskindex={indexTask}
-                      id="buttonModal"
-                      onClick={handleModalWindow}
-                    >
-                      <CardActionArea>
+                    <Box className={classes.columnTask} key={`${tasks.taskTittle} ${indexTask}`}>
+                      <CardActionArea
+                        data-modalname="editTask"
+                        data-columnindex={indexColumn}
+                        data-taskindex={indexTask}
+                        id="buttonModal"
+                        onClick={handleModalWindow}
+                      >
                         <Typography gutterBottom variant="h5">
                           {tasks.taskTittle}
                         </Typography>
@@ -249,15 +249,13 @@ function BoardColumns() {
                 >
                   <AddIcon /> <Typography>Add task</Typography>
                 </Box>
-                <Tooltip
-                  title="Delete Column"
-                  data-deletecol={indexColumn}
-                  onClick={deleteThisColumn}
-                >
-                  <IconButton>
-                    <DeleteIcon />
-                  </IconButton>
-                </Tooltip>
+                <Box id="buttonModal" data-modalname="deleteColumn" data-columnindex={indexColumn}>
+                  <Tooltip title="Delete Column" onClick={handleModalWindow}>
+                    <IconButton>
+                      <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
               </Box>
             </Box>
           </Box>
@@ -266,7 +264,7 @@ function BoardColumns() {
       <Box className={classes.column}>
         <Box
           className={classes.columnAddOptions}
-          data-modalname="column"
+          data-modalname="addColumn"
           id="buttonModal"
           onClick={handleModalWindow}
         >
