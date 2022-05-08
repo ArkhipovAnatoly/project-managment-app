@@ -2,14 +2,14 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Button, { ButtonProps } from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-import { blue } from '@mui/material/colors';
+import { indigo } from '@mui/material/colors';
 import { NavLink } from 'react-router-dom';
 
 const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
-  color: theme.palette.getContrastText(blue[500]),
-  backgroundColor: blue[500],
+  color: theme.palette.getContrastText(indigo[500]),
+  backgroundColor: indigo[500],
   '&:hover': {
-    backgroundColor: blue[700],
+    backgroundColor: indigo[700],
   },
 }));
 

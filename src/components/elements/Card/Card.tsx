@@ -13,8 +13,9 @@ export default function ActionAreaCard(props: CardProps) {
         maxWidth: 280,
         padding: '20px',
         objectFit: 'contain',
-        backgroundColor: '#353434',
-        color: '#eceded',
+        color: '#9ca9b3',
+        backgroundColor: '#25282c',
+        boxShadow: 'rgb(21 23 25 / 64%) 0px 2px 34px;',
       }}
     >
       <CardActionArea>

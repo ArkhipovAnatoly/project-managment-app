@@ -2,6 +2,10 @@ body {
   margin: 0 auto;
   color: #9ca9b3;
   font-size: 18px;
+  background-image: url(../../assets/img/illustration.svg);
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-color: #151719;
 }
 
 .wrapper {
@@ -14,6 +18,7 @@ body {
   background-color: #fff;
   text-align: center;
   padding-bottom: 40px;
+  background-color: #151719;
 }
 
 .autorizationBtns {
@@ -23,14 +28,18 @@ body {
   padding: 1em 0;
 }
 
-h1,
-h2 {
+h1 {
   color: #b6b6b6;
   font-size: 60px;
 }
 
+h2 {
+  color: #b6b6b6;
+  font-size: 50px;
+}
+
 .titleProject {
-  color: #2196f3;
+  color: #5658dd;
 }
 
 .title {

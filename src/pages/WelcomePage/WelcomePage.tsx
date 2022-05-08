@@ -2,21 +2,22 @@ import Card from '../../components/elements/Card/Card';
 import './WelcomePage.css';
 import data from '../../services/data';
 import CustomizedButtons from '../../components/elements/Button/CustomizedButtons';
-// import { useState } from 'react';
-// import Modal from '@mui/material/Modal/Modal';
+import { useState } from 'react';
+import Modal from '@mui/material/Modal/Modal';
+import { Box, Typography } from '@mui/material';
 
 const WelcomePage = () => {
-  // const [videoModalActive, setVideomodalactive] = useState(false);
+  const [videoModalActive, setVideomodalactive] = useState(false);
 
-  // const openModal = (e: React.MouseEvent) => {
-  //   e.preventDefault();
-  //   setVideomodalactive(true);
-  // };
+  const openModal = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setVideomodalactive(true);
+  };
 
-  // const closeModal = (e: React.MouseEvent) => {
-  //   e.preventDefault();
-  //   setVideomodalactive(false);
-  // };
+  const closeModal = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setVideomodalactive(false);
+  };
 
   return (
     <div className="wrapper">
@@ -35,13 +36,12 @@ const WelcomePage = () => {
           <p className="title">проекте</p>
         </div>
       </div>
-
       <div className="videoPlaceholder">
         <a
           data-video="https://player.vimeo.com/video/174002812"
           href="#video"
-          aria-controls="video-modal"
-          // onClick={openModal}
+          aria-controls="videoModal"
+          onClick={openModal}
         >
           <img
             className="hasShadow"
@@ -52,18 +52,21 @@ const WelcomePage = () => {
           />
         </a>
       </div>
-      {/* <Modal
-        id="video-modal"
-        show={videoModalActive}
-        handleClose={closeModal}
-        video="https://player.vimeo.com/video/174002812"
-        videoTag="iframe"
-      /> */}
+      <Modal id="videoModal" open={videoModalActive} onClose={closeModal}>
+        <Box>
+          <Typography id="modal-modal-title" variant="h6" component="h2"></Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            <iframe src="https://player.vimeo.com/video/174002812%22%3E"></iframe>
+          </Typography>
+        </Box>
+      </Modal>
+
       <div className="aboutTheComand">
-        <h1>Команда разработчиков</h1>
-        <p className="title">Здесь нужно</p>
-        <p className="title">будет добавить</p>
-        <p className="title">инфу о команде</p>
+        <h2>О команде</h2>
+        <p className="title">
+          &#8222; В командной работе хорошо то, что с вами всегда есть кто-то ещё &#8220;
+        </p>
+
         <div className="cards">
           {data.map((item, index) => (
             <Card

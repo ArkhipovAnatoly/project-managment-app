@@ -2,7 +2,7 @@ export default [
   {
     imgSrc:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX_wcJCi47Ae3RnLPfAcXfMTWD5DiCIuF9Qw&usqp=CAU',
-    name: 'Анатолий',
+    name: 'Анатолий - Team Lead',
     description: '- Вставим фото, - Описание,- О проделанной работе',
   },
   {
