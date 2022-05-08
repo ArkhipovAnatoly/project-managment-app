@@ -12,16 +12,14 @@ import { NavLink } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Typography, FormHelperText, CircularProgress } from '@mui/material';
 import Copyright from './share/Copyright';
-import { UserSignInData } from '../../types';
+import { SignInResponse, UserSignInData } from '../../types';
 import { userAPI } from '../../services/UserService';
-import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 
 export default function SignIn() {
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [message, setMessage] = useState<string>('');
-  const [success, setSuccess] = useState<boolean>(false);
 
-  const [signInUser, { isLoading }] = userAPI.useUserSignInMutation();
+  const [signInUser, { isLoading, isError, isSuccess }] = userAPI.useUserSignInMutation();
   const {
     register,
     handleSubmit,
@@ -37,15 +35,12 @@ export default function SignIn() {
 
   const onSubmit: SubmitHandler<UserSignInData> = async (formData) => {
     setMessage('');
-    setSuccess(false);
-    const response = (await signInUser(formData)) as FetchBaseQueryError;
-    const data = await JSON.parse(JSON.stringify(response));
-    if (data?.error?.status) {
-      data.error.status !== 200 && setMessage(data.error.data.message);
-      return;
+    const response = (await signInUser(formData)) as SignInResponse;
+    if (response.error?.status) {
+      setMessage(response.error.data.message);
+    } else {
+      setMessage('Successful sign in');
     }
-    setSuccess(true);
-    setMessage('Success');
   };
 
   useEffect(() => {
@@ -132,10 +127,10 @@ export default function SignIn() {
             {isLoading && <CircularProgress size={26} color="info" />}
             {
               <FormHelperText
-                error={!success}
+                error={isError}
                 component="span"
                 sx={{
-                  color: { success } && '#00FF00',
+                  color: { isSuccess } && '#00FF00',
                   fontSize: '18px',
                 }}
               >
