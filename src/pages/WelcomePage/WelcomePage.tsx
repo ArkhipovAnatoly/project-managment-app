@@ -20,17 +20,15 @@ const WelcomePage = () => {
 
   return (
     <div className="wrapper">
-      <div className="intro">
-        <div className="aboutTheProject">
-          <h1>
-            Название <span className="titleProject">проекта</span>
-          </h1>
-          <p className="title">О проекте:</p>
-          <p className="title">Здесь нужно</p>
-          <p className="title">будет добавить</p>
-          <p className="title">инфу о нашем</p>
-          <p className="title">проекте</p>
-        </div>
+      <div className="aboutTheProject">
+        <h1>
+          Название <span className="titleProject">TEMPER</span>
+        </h1>
+        <p className="title">О проекте:</p>
+        <p className="title">Здесь нужно</p>
+        <p className="title">будет добавить</p>
+        <p className="title">инфу о нашем</p>
+        <p className="title">проекте</p>
       </div>
       <div className="videoPlaceholder">
         <a

@@ -21,7 +21,7 @@ footer {
 }
 
 .rss {
-  background-image: url(../../assets/img/rss.svg);
+  background-image: url(../../../../assets/img/rss.svg);
   background-position: 0;
   background-repeat: no-repeat;
   background-size: contain;
@@ -47,7 +47,7 @@ footer {
 
 .githab a {
   padding: 10px 60px;
-  background-image: url(../../assets/img/git.png);
+  background-image: url(../../../../assets/img/git.png);
   width: 1em;
   height: 1em;
   background-size: contain;
