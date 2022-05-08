@@ -1,10 +1,9 @@
-import Card from '../../components/elements/Card/Card';
 import './WelcomePage.css';
 import data from '../../services/data';
-import CustomizedButtons from '../../components/elements/Button/CustomizedButtons';
 import { useState } from 'react';
 import Modal from '@mui/material/Modal/Modal';
 import { Box, Typography } from '@mui/material';
+import Card from '../../app/components/Card/Card';
 
 const WelcomePage = () => {
   const [videoModalActive, setVideomodalactive] = useState(false);
@@ -21,9 +20,6 @@ const WelcomePage = () => {
 
   return (
     <div className="wrapper">
-      <div className="autorizationBtns">
-        <CustomizedButtons />
-      </div>
       <div className="intro">
         <div className="aboutTheProject">
           <h1>
