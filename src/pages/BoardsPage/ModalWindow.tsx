@@ -23,10 +23,13 @@ const useStyles = makeStyles({
 function ModalWindow() {
   const classes = useStyles();
 
+  const { titleOfCurrentTask, DescriptionOfCurrentTask } = useAppSelector(
+    (state) => state.boardsPage
+  );
+  const { nameModalWindow } = useAppSelector((state) => state.boardsPage);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const { openModalWindow } = useAppSelector((state) => state.boardsPage);
-  const { nameModalWindow } = useAppSelector((state) => state.boardsPage);
   const { indexOfCurrentColumn } = useAppSelector((state) => state.boardsPage);
   const { indexOfCurrentTask } = useAppSelector((state) => state.boardsPage);
   const reducers = useSliceBoardsPage.actions;
@@ -75,13 +78,15 @@ function ModalWindow() {
   };
 
   const changeCurrentTask = () => {
-    if (title && description) {
+    const newTitle = title === '' ? titleOfCurrentTask : title;
+    const newDescription = description === '' ? DescriptionOfCurrentTask : description;
+    if (newTitle || newDescription) {
       dispatch(
         reducers.changeTask({
           indexColumn: indexOfCurrentColumn,
           indexTask: indexOfCurrentTask,
-          taskTittle: title,
-          taskOption: description,
+          taskTittle: newTitle,
+          taskOption: newDescription,
         })
       );
       closeModalWindow();
@@ -150,7 +155,7 @@ function ModalWindow() {
           {nameModalWindow === 'editTask' && (
             <Stack direction="column" spacing={3}>
               <Typography gutterBottom variant="h5">
-                Edit task
+                Edit your task
               </Typography>
               <Stack direction="column" spacing={2}>
                 <TextField
@@ -158,6 +163,7 @@ function ModalWindow() {
                   label="Change tittle of this task"
                   variant="filled"
                   onChange={handleTitle}
+                  defaultValue={titleOfCurrentTask}
                 />
                 <TextField
                   id="filled-basic"
@@ -166,11 +172,12 @@ function ModalWindow() {
                   multiline
                   rows={4}
                   onChange={handleDescription}
+                  defaultValue={DescriptionOfCurrentTask}
                 />
               </Stack>
               <Stack direction="row" spacing={2}>
                 <Button variant="contained" onClick={changeCurrentTask}>
-                  Add task
+                  Edit task
                 </Button>
                 <Button variant="outlined" onClick={closeModalWindow}>
                   Cancel

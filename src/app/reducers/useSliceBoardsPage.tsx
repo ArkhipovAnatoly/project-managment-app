@@ -6,6 +6,8 @@ interface States {
   nameModalWindow: string;
   indexOfCurrentColumn: string;
   indexOfCurrentTask: string;
+  titleOfCurrentTask?: string;
+  DescriptionOfCurrentTask?: string;
 }
 
 interface Task {
@@ -94,6 +96,8 @@ const initialState: States = {
   nameModalWindow: '',
   indexOfCurrentColumn: '',
   indexOfCurrentTask: '',
+  titleOfCurrentTask: '',
+  DescriptionOfCurrentTask: '',
 };
 
 export const useSliceBoardsPage = createSlice({
@@ -137,6 +141,16 @@ export const useSliceBoardsPage = createSlice({
 
     changeIndexOfCurrentTask: (state, action: PayloadAction<string>) => {
       state.indexOfCurrentTask = action.payload;
+    },
+
+    changeTitleOfCurrentTask: (state) => {
+      const column = Number(state.indexOfCurrentColumn);
+      const task = Number(state.indexOfCurrentTask);
+      const allTasksOfThisColumn = state.dataBoardsPage[column].tasks;
+      state.titleOfCurrentTask =
+        allTasksOfThisColumn !== undefined ? allTasksOfThisColumn[task].taskTittle : '';
+      state.DescriptionOfCurrentTask =
+        allTasksOfThisColumn !== undefined ? allTasksOfThisColumn[task].taskOption : '';
     },
 
     deleteColumn: (state, action: PayloadAction<number>) => {

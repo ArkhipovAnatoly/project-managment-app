@@ -187,8 +187,10 @@ function BoardColumns() {
       const currentIndexTask = String(
         (target.closest('#buttonModal') as HTMLElement)?.dataset.taskindex
       );
+
       dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
       dispatch(reducers.changeIndexOfCurrentTask(currentIndexTask));
+      dispatch(reducers.changeTitleOfCurrentTask());
     }
   };
 
