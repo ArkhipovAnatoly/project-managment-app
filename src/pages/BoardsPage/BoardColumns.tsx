@@ -8,6 +8,8 @@ import Stack from '@mui/material/Stack';
 import { CardActionArea } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
 import ModalWindow from './ModalWindow';
+import ClearIcon from '@mui/icons-material/Clear';
+import CreateIcon from '@mui/icons-material/Create';
 
 const useStyles = makeStyles({
   columns: {
@@ -101,6 +103,7 @@ const useStyles = makeStyles({
     },
   },
   columnTask: {
+    position: 'relative',
     minWidth: '95%',
     maxWidth: '200px',
     backgroundColor: '#ffffff',
@@ -108,8 +111,18 @@ const useStyles = makeStyles({
     cursor: 'pointer',
     margin: 5,
     display: 'flex',
-    flexDirection: 'column',
     flexWrap: 'wrap',
+  },
+  deleteTask: {
+    position: 'absolute',
+    left: '90%',
+    zIndex: 1000,
+  },
+  editTask: {
+    position: 'absolute',
+    top: '55%',
+    left: '90%',
+    zIndex: 1000,
   },
   columnSettings: {
     margin: 5,
@@ -131,30 +144,6 @@ const useStyles = makeStyles({
       borderRadius: 3,
       cursor: 'pointer',
     },
-  },
-  columnDelete: {
-    borderRadius: '50%',
-    padding: 5,
-    width: 'auto',
-    display: 'flex',
-    alignItems: 'center',
-    cursor: 'pointer',
-    margin: '0 auto',
-    transition: 'all 0.2s',
-    '&:hover': {
-      backgroundColor: '#c2c2c28f',
-    },
-  },
-  modalWindow: {
-    width: '70%',
-    height: '50%',
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    backgroundColor: '#ffff',
-    borderRadius: 3,
-    outline: 'none',
   },
 });
 
@@ -221,13 +210,20 @@ function BoardColumns() {
                 {column.tasks?.map((tasks, indexTask) => {
                   return (
                     <Box className={classes.columnTask} key={`${tasks.taskTittle} ${indexTask}`}>
-                      <CardActionArea
+                      <Box className={classes.deleteTask}>
+                        <ClearIcon fontSize="small" color="action" />
+                      </Box>
+                      <Box
+                        className={classes.editTask}
                         data-modalname="editTask"
                         data-columnindex={indexColumn}
                         data-taskindex={indexTask}
                         id="buttonModal"
                         onClick={handleModalWindow}
                       >
+                        <CreateIcon fontSize="small" color="action" />
+                      </Box>
+                      <CardActionArea>
                         <Typography gutterBottom variant="h5">
                           {tasks.taskTittle}
                         </Typography>
