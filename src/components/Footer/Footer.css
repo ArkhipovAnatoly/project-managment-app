@@ -1,0 +1,61 @@
+footer {
+  /* background-image: url(../../assets/img/features.jpg);
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  background-position: top center;
+  background-repeat: no-repeat; */
+  background-color: #151719;
+  color: #fff;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 0 4em;
+}
+
+.aboutTheCourse {
+  height: 100%;
+  color: #fff;
+  text-align: center;
+  padding: 1em;
+}
+
+.rss {
+  background-image: url(../../assets/img/rss.svg);
+  background-position: 0;
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: block;
+  height: 32px;
+  position: relative;
+  width: 111px;
+}
+
+.rssYear {
+  color: #fff;
+  bottom: 0;
+  position: absolute;
+  right: 0;
+}
+
+.githab {
+  padding: 1em;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.githab a {
+  padding: 10px 60px;
+  background-image: url(../../assets/img/git.png);
+  width: 1em;
+  height: 1em;
+  background-size: contain;
+  background-repeat: no-repeat;
+  text-decoration: none;
+  color: #fff;
+}
+
+.githab a:hover {
+  color: gold;
+}

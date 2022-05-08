@@ -1,0 +1,10 @@
+header {
+  color: #fff;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  /* Добавить при скроле */
+  background-color: rgb(0 147 255 / 30%);
+  backdrop-filter: blur(2px);
+}
