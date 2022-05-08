@@ -14,13 +14,7 @@ import {
 } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import headerTheme from '../../theme/Theme';
-
-const Item = styled('li')(() => ({
-  listStyle: 'none',
-  cursor: 'pointer',
-  '&>a': { padding: '5px 15px', color: '#fff' },
-  '&>a:hover': { color: alpha(headerTheme.palette.common.white, 0.7), transition: 'color 0.6s' },
-}));
+import CustomizedButtons from '../Button/CustomizedButtons';
 
 const scrollThreshold = 40;
 
@@ -41,7 +35,6 @@ export default function Header() {
 
   return (
     <>
-      <CssBaseline />
       <ThemeProvider theme={headerTheme}>
         <AppBar
           position="fixed"
@@ -49,6 +42,9 @@ export default function Header() {
           sx={{
             backdropFilter: 'blur(5px)',
             transition: 'background-color 1s',
+            boxShadow: isScroll
+              ? '0px 2px 4px -1px rgb(0, 0, 0 / 20%) ,0px 4px 5px 0px rgb(0, 0 ,0 / 14%), 0px 1px 10px 0px rgb(0, 0 ,0 / 12%)'
+              : 'none',
           }}
         >
           <Container maxWidth="xl">
@@ -73,16 +69,7 @@ export default function Header() {
                 direction="row"
                 divider={<Divider sx={{ borderColor: '#fff' }} orientation="vertical" flexItem />}
               >
-                <Item>
-                  <Link component={NavLink} to="/signin" underline="hover">
-                    SIGN IN
-                  </Link>
-                </Item>
-                <Item>
-                  <Link component={NavLink} to="/signup" underline="hover">
-                    SIGN UP
-                  </Link>
-                </Item>
+                <CustomizedButtons />
               </Stack>
             </Toolbar>
           </Container>
