@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Button, { ButtonProps } from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
@@ -16,12 +15,12 @@ const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
 export default function CustomizedButtons() {
   return (
     <Stack spacing={2} direction="row">
-      <NavLink to="/logIn" className="nav">
+      <NavLink to="/signin" className="nav">
         <ColorButton variant="contained" className="logInBtn">
-          Log in
+          Sing in
         </ColorButton>
       </NavLink>
-      <NavLink to="/singUp" className="nav">
+      <NavLink to="/signup" className="nav">
         <ColorButton variant="contained" className="singUpBtn">
           Sing up
         </ColorButton>
