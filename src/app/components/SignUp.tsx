@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,15 +13,13 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { Typography, FormHelperText, CircularProgress } from '@mui/material';
 import Copyright from './share/Copyright';
-import { UserSignUpData } from '../../types';
+import { SignUpResponse, UserSignUpData } from '../../types';
 import { userAPI } from '../../services/UserService';
-import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 
 export default function SignUp() {
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [message, setMessage] = useState<string>('');
-  const [success, setSuccess] = useState<boolean>(false);
-  const [signUpUser, { isLoading }] = userAPI.useUserSignUpMutation();
+  const [signUpUser, { isLoading, isError, isSuccess }] = userAPI.useUserSignUpMutation();
   const {
     register,
     handleSubmit,
@@ -39,15 +36,12 @@ export default function SignUp() {
 
   const onSubmit: SubmitHandler<UserSignUpData> = async (formData) => {
     setMessage('');
-    setSuccess(false);
-    const response = (await signUpUser(formData)) as FetchBaseQueryError;
-    const data = await JSON.parse(JSON.stringify(response));
-    if (data?.error?.status) {
-      data.error.status !== 200 && setMessage(data.error.data.message);
-      return;
+    const response = (await signUpUser(formData)) as SignUpResponse;
+    if (response.error?.status) {
+      setMessage(response.error.data.message);
+    } else {
+      setMessage('Successful sign up');
     }
-    setSuccess(true);
-    setMessage('Success');
   };
 
   useEffect(() => {
@@ -162,10 +156,10 @@ export default function SignUp() {
             {isLoading && <CircularProgress size={26} color="info" />}
             {
               <FormHelperText
-                error={!success}
+                error={isError}
                 component="span"
                 sx={{
-                  color: { success } && '#00FF00',
+                  color: { isSuccess } && '#00FF00',
                   fontSize: '18px',
                 }}
               >
