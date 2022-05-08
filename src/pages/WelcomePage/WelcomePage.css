@@ -8,6 +8,10 @@ body {
   background-color: #151719;
 }
 
+main {
+  min-height: calc(100vh - 116px);
+}
+
 .wrapper {
   padding: 0 250px;
   margin-top: 100px;

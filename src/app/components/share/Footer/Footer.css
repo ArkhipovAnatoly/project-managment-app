@@ -7,17 +7,20 @@ footer {
   background-repeat: no-repeat; */
   background-color: #151719;
   color: #fff;
+  padding: 0 4em;
+  height: 50px;
+}
+
+.footerContent {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  padding: 0 4em;
+  padding: 10px 0;
 }
 
 .aboutTheCourse {
-  height: 100%;
   color: #fff;
   text-align: center;
-  padding: 1em;
 }
 
 .rss {
@@ -39,17 +42,15 @@ footer {
 }
 
 .githab {
-  padding: 1em;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  height: 20px;
 }
 
 .githab a {
-  padding: 10px 60px;
+  padding: 10px 0px 0px 40px;
   background-image: url(../../../../assets/img/git.png);
-  width: 1em;
-  height: 1em;
   background-size: contain;
   background-repeat: no-repeat;
   text-decoration: none;
@@ -58,4 +59,32 @@ footer {
 
 .githab a:hover {
   color: gold;
+}
+
+/* @media screen and (min-width: 623px) and (max-width: 100px) {
+  .githab {
+    padding: 0;
+  }
+} */
+
+@media screen and (min-width: 180px) and (max-width: 600px) {
+  footer {
+    padding: 0;
+  }
+}
+
+@media screen and (min-width: 180px) and (max-width: 460px) {
+  footer {
+    height: 100px;
+  }
+}
+
+@media screen and (min-width: 180px) and (max-width: 329px) {
+  footer {
+    height: 140px;
+  }
+
+  .githab {
+    padding: 10px;
+  }
 }
