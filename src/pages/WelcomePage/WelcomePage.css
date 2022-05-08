@@ -13,13 +13,9 @@ body {
   margin-top: 100px;
 }
 
-.intro {
-  width: 100%;
-  height: 100%;
-  background-color: #fff;
+.aboutTheProject {
   text-align: center;
   padding-bottom: 40px;
-  background-color: #151719;
 }
 
 .autorizationBtns {
