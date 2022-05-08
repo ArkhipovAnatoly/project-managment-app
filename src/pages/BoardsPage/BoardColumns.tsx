@@ -172,21 +172,23 @@ function BoardColumns() {
     );
     dispatch(reducers.openModalWindow(true));
     dispatch(reducers.addNameForModalWindow(nameForModalWindow));
-    if (nameForModalWindow === 'addtask') {
-      const idxOfColumnForNewTask = String(
+
+    if (nameForModalWindow === 'addTask') {
+      const currentIndexColumn = String(
         (target.closest('#buttonModal') as HTMLElement)?.dataset.columnindex
       );
-      dispatch(reducers.changeIdxOfColumnForNewTask(idxOfColumnForNewTask));
+      dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
     }
-    if (nameForModalWindow === 'task') {
-      const idxOfColumnForNewTask = String(
+
+    if (nameForModalWindow === 'editTask') {
+      const currentIndexColumn = String(
         (target.closest('#buttonModal') as HTMLElement)?.dataset.columnindex
       );
-      const idxOfTaskForNewTask = String(
+      const currentIndexTask = String(
         (target.closest('#buttonModal') as HTMLElement)?.dataset.taskindex
       );
-      dispatch(reducers.changeIdxOfColumnForNewTask(idxOfColumnForNewTask));
-      dispatch(reducers.changeIdxOfTaskForNewTask(idxOfTaskForNewTask));
+      dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
+      dispatch(reducers.changeIndexOfCurrentTask(currentIndexTask));
     }
   };
 
@@ -217,7 +219,7 @@ function BoardColumns() {
                     <Box
                       className={classes.columnTask}
                       key={`${tasks.taskTittle} ${indexTask}`}
-                      data-modalname="task"
+                      data-modalname="editTask"
                       data-columnindex={indexColumn}
                       data-taskindex={indexTask}
                       id="buttonModal"
@@ -238,7 +240,7 @@ function BoardColumns() {
               <Box className={classes.columnSettings}>
                 <Box
                   className={classes.columnAdd}
-                  data-modalname="addtask"
+                  data-modalname="addTask"
                   data-columnindex={indexColumn}
                   onClick={handleModalWindow}
                   id="buttonModal"

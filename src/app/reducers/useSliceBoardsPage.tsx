@@ -4,8 +4,8 @@ interface States {
   dataBoardsPage: Array<BoardsPageState> | never;
   openModalWindow: boolean;
   nameModalWindow: string;
-  idxOfColumnForNewTask: string;
-  idxOfTaskForNewTask: string;
+  indexOfCurrentColumn: string;
+  indexOfCurrentTask: string;
 }
 
 interface Task {
@@ -92,8 +92,8 @@ const initialState: States = {
   dataBoardsPage: dataBoards,
   openModalWindow: false,
   nameModalWindow: '',
-  idxOfColumnForNewTask: '',
-  idxOfTaskForNewTask: '',
+  indexOfCurrentColumn: '',
+  indexOfCurrentTask: '',
 };
 
 export const useSliceBoardsPage = createSlice({
@@ -131,12 +131,12 @@ export const useSliceBoardsPage = createSlice({
       );
     },
 
-    changeIdxOfColumnForNewTask: (state, action: PayloadAction<string>) => {
-      state.idxOfColumnForNewTask = action.payload;
+    changeIndexOfCurrentColumn: (state, action: PayloadAction<string>) => {
+      state.indexOfCurrentColumn = action.payload;
     },
 
-    changeIdxOfTaskForNewTask: (state, action: PayloadAction<string>) => {
-      state.idxOfTaskForNewTask = action.payload;
+    changeIndexOfCurrentTask: (state, action: PayloadAction<string>) => {
+      state.indexOfCurrentTask = action.payload;
     },
 
     deleteColumn: (state, action: PayloadAction<number>) => {

@@ -27,8 +27,8 @@ function ModalWindow() {
   const [description, setDescription] = useState('');
   const { openModalWindow } = useAppSelector((state) => state.boardsPage);
   const { nameModalWindow } = useAppSelector((state) => state.boardsPage);
-  const { idxOfColumnForNewTask } = useAppSelector((state) => state.boardsPage);
-  const { idxOfTaskForNewTask } = useAppSelector((state) => state.boardsPage);
+  const { indexOfCurrentColumn } = useAppSelector((state) => state.boardsPage);
+  const { indexOfCurrentTask } = useAppSelector((state) => state.boardsPage);
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
 
@@ -64,7 +64,7 @@ function ModalWindow() {
     if (title && description) {
       dispatch(
         reducers.addNewTask({
-          index: idxOfColumnForNewTask,
+          index: indexOfCurrentColumn,
           taskTittle: title,
           taskOption: description,
         })
@@ -76,12 +76,10 @@ function ModalWindow() {
 
   const changeCurrentTask = () => {
     if (title && description) {
-      console.log(idxOfTaskForNewTask);
-
       dispatch(
         reducers.changeTask({
-          indexColumn: idxOfColumnForNewTask,
-          indexTask: idxOfTaskForNewTask,
+          indexColumn: indexOfCurrentColumn,
+          indexTask: indexOfCurrentTask,
           taskTittle: title,
           taskOption: description,
         })
@@ -118,7 +116,7 @@ function ModalWindow() {
               </Stack>
             </Stack>
           )}
-          {nameModalWindow === 'addtask' && (
+          {nameModalWindow === 'addTask' && (
             <Stack direction="column" spacing={3}>
               <Typography gutterBottom variant="h5">
                 Add new task
@@ -149,10 +147,10 @@ function ModalWindow() {
               </Stack>
             </Stack>
           )}
-          {nameModalWindow === 'task' && (
+          {nameModalWindow === 'editTask' && (
             <Stack direction="column" spacing={3}>
               <Typography gutterBottom variant="h5">
-                Current Task
+                Edit task
               </Typography>
               <Stack direction="column" spacing={2}>
                 <TextField
