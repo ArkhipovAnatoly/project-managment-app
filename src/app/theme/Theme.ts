@@ -1,5 +1,5 @@
 import { createTheme, alpha } from '@mui/material';
-import { indigo } from '@mui/material/colors';
+import {} from '@mui/material/colors';
 
 const headerTheme = createTheme({
   palette: {
@@ -7,11 +7,11 @@ const headerTheme = createTheme({
       main: '#fff',
     },
     appBarColor: {
-      main: alpha(indigo[400], 1),
+      main: alpha('#151719', 1),
       contrastText: '#fff',
     },
     appBarColorScroll: {
-      main: alpha(indigo[400], 0.5),
+      main: alpha('#151719', 0.5),
       contrastText: '#fff',
     },
   },
