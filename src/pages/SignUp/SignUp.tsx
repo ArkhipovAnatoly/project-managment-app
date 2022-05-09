@@ -1,17 +1,21 @@
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-
-import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
-import Container from '@mui/material/Container';
+import { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useEffect, useState } from 'react';
-import { Typography, FormHelperText, CircularProgress } from '@mui/material';
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
+import {
+  Container,
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  Link,
+  Grid,
+  Box,
+  Typography,
+  FormHelperText,
+  CircularProgress,
+} from '@mui/material';
+
 import Copyright from '../../app/components/share/Copyright';
 import { SignUpResponse, UserSignUpData } from '../../types';
 import { userAPI } from '../../services/UserService';
