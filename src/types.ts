@@ -9,6 +9,17 @@ export type UserSignUpData = {
   password: string;
 };
 
+export type EditUserProfileData = {
+  userId?: string;
+  name: string;
+  login: string;
+  password: string;
+};
+
+export type DeleteUserData = {
+  userId: string | undefined;
+};
+
 export type SignInResponse = {
   error?: {
     data: {
@@ -36,6 +47,9 @@ export type SignUpResponse = {
     name: string;
   };
 };
+
+export type EditUserProfileResponse = SignUpResponse;
+export type DeleteUserResponse = SignUpResponse;
 
 export type CardProps = {
   imgSrc: string;
