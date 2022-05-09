@@ -42,3 +42,9 @@ export type CardProps = {
   name: string;
   description: string;
 };
+
+export type UserAuthData = {
+  userId?: string;
+  token?: string;
+  isAuth?: boolean;
+};
