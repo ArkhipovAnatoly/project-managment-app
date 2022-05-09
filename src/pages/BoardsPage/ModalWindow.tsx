@@ -93,6 +93,16 @@ function ModalWindow() {
     }
   };
 
+  const deleteTask = () => {
+    const deleteTaskIndex = {
+      indexColumn: indexOfCurrentColumn,
+      indexTask: indexOfCurrentTask,
+    };
+    dispatch(reducers.deleteTask(deleteTaskIndex));
+    closeModalWindow();
+    clearTextModal();
+  };
+
   const changeCurrentTask = () => {
     const newTitle = title === '' ? titleOfCurrentTask : title;
     const newDescription = description === '' ? DescriptionOfCurrentTask : description;
@@ -154,9 +164,9 @@ function ModalWindow() {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={deleteColumn}>Agree</Button>
+            <Button onClick={deleteColumn}>Delete Column</Button>
             <Button variant="contained" onClick={closeModalWindow}>
-              Disagree
+              Cancel
             </Button>
           </DialogActions>
         </Dialog>
@@ -197,6 +207,26 @@ function ModalWindow() {
             </Box>
           </Box>
         </Modal>
+      )}
+      {nameModalWindow === 'deleteTask' && (
+        <Dialog
+          open={openModalWindow}
+          onClose={closeModalWindow}
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle>{'Are you sure want to delete this task?'}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              The description that was inside this task will be permanently deleted along with it.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={deleteTask}>Delete Task</Button>
+            <Button variant="contained" onClick={closeModalWindow}>
+              Cancel
+            </Button>
+          </DialogActions>
+        </Dialog>
       )}
       {nameModalWindow === 'editTask' && (
         <Modal open={openModalWindow} onClose={closeModalWindow}>

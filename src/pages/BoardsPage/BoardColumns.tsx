@@ -159,7 +159,6 @@ function BoardColumns() {
     const nameForModalWindow = String(
       (target.closest('#buttonModal') as HTMLElement)?.dataset.modalname
     );
-    console.log(target.closest('#buttonModal') as HTMLElement);
     dispatch(reducers.openModalWindow(true));
     dispatch(reducers.addNameForModalWindow(nameForModalWindow));
 
@@ -168,6 +167,18 @@ function BoardColumns() {
         (target.closest('#buttonModal') as HTMLElement)?.dataset.columnindex
       );
       dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
+    }
+
+    if (nameForModalWindow === 'deleteTask') {
+      const currentIndexColumn = String(
+        (target.closest('#buttonModal') as HTMLElement)?.dataset.columnindex
+      );
+      const currentIndexTask = String(
+        (target.closest('#buttonModal') as HTMLElement)?.dataset.taskindex
+      );
+
+      dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
+      dispatch(reducers.changeIndexOfCurrentTask(currentIndexTask));
     }
 
     if (nameForModalWindow === 'editTask') {
@@ -210,7 +221,14 @@ function BoardColumns() {
                 {column.tasks?.map((tasks, indexTask) => {
                   return (
                     <Box className={classes.columnTask} key={`${tasks.taskTittle} ${indexTask}`}>
-                      <Box className={classes.deleteTask}>
+                      <Box
+                        className={classes.deleteTask}
+                        data-modalname="deleteTask"
+                        data-columnindex={indexColumn}
+                        data-taskindex={indexTask}
+                        id="buttonModal"
+                        onClick={handleModalWindow}
+                      >
                         <ClearIcon fontSize="small" color="action" />
                       </Box>
                       <Box

@@ -26,7 +26,7 @@ interface AddNewTask {
   taskOption?: string;
 }
 
-interface changeTask {
+interface ChangeTask {
   indexColumn: string;
   indexTask: string;
   taskTittle?: string;
@@ -104,12 +104,25 @@ export const useSliceBoardsPage = createSlice({
   name: 'BoardsPage',
   initialState,
   reducers: {
+    changeIndexOfCurrentColumn: (state, action: PayloadAction<string>) => {
+      state.indexOfCurrentColumn = action.payload;
+    },
+
+    changeIndexOfCurrentTask: (state, action: PayloadAction<string>) => {
+      state.indexOfCurrentTask = action.payload;
+    },
+
     addNewColumn: (state, action: PayloadAction<string>) => {
       const emptyColumn = {
         tittle: action.payload,
         tasks: [],
       };
       state.dataBoardsPage.push(emptyColumn);
+    },
+
+    deleteColumn: (state, action: PayloadAction<number>) => {
+      const deleteOneElement = 1;
+      state.dataBoardsPage.splice(action.payload, deleteOneElement);
     },
 
     addNewTask: (state, action: PayloadAction<AddNewTask>) => {
@@ -120,7 +133,14 @@ export const useSliceBoardsPage = createSlice({
       state.dataBoardsPage[Number(action.payload.index)].tasks?.push(task);
     },
 
-    changeTask: (state, action: PayloadAction<changeTask>) => {
+    deleteTask: (state, action: PayloadAction<ChangeTask>) => {
+      const deleteOneElement = 1;
+      const indexForColumn = Number(action.payload.indexColumn);
+      const indexForTask = Number(action.payload.indexTask);
+      state.dataBoardsPage[indexForColumn].tasks?.splice(indexForTask, deleteOneElement);
+    },
+
+    changeTask: (state, action: PayloadAction<ChangeTask>) => {
       const changedTask = {
         taskTittle: action.payload.taskTittle,
         taskOption: action.payload.taskOption,
@@ -135,14 +155,6 @@ export const useSliceBoardsPage = createSlice({
       );
     },
 
-    changeIndexOfCurrentColumn: (state, action: PayloadAction<string>) => {
-      state.indexOfCurrentColumn = action.payload;
-    },
-
-    changeIndexOfCurrentTask: (state, action: PayloadAction<string>) => {
-      state.indexOfCurrentTask = action.payload;
-    },
-
     changeTitleOfCurrentTask: (state) => {
       const column = Number(state.indexOfCurrentColumn);
       const task = Number(state.indexOfCurrentTask);
@@ -151,11 +163,6 @@ export const useSliceBoardsPage = createSlice({
         allTasksOfThisColumn !== undefined ? allTasksOfThisColumn[task].taskTittle : '';
       state.DescriptionOfCurrentTask =
         allTasksOfThisColumn !== undefined ? allTasksOfThisColumn[task].taskOption : '';
-    },
-
-    deleteColumn: (state, action: PayloadAction<number>) => {
-      const deleteOneElement = 1;
-      state.dataBoardsPage.splice(action.payload, deleteOneElement);
     },
 
     openModalWindow: (state, action: PayloadAction<boolean>) => {
