@@ -102,9 +102,9 @@ const useStyles = makeStyles({
     },
   },
   columnTask: {
-    position: 'relative',
     minWidth: '95%',
     maxWidth: '200px',
+    height: 'auto',
     backgroundColor: '#ffffff',
     borderRadius: 3,
     cursor: 'pointer',
@@ -112,16 +112,13 @@ const useStyles = makeStyles({
     display: 'flex',
     flexWrap: 'wrap',
   },
-  deleteTask: {
-    position: 'absolute',
-    left: '74.5%',
-    zIndex: 1000,
+  columnTaskTitle: {
+    flex: 1,
   },
-  editTask: {
-    position: 'absolute',
-    top: '48%',
-    left: '74.5%',
-    zIndex: 1000,
+  task: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    flexDirection: 'column',
   },
   columnSettings: {
     margin: 5,
@@ -147,73 +144,57 @@ const useStyles = makeStyles({
 
 function BoardColumns() {
   const classes = useStyles();
-
   const { dataBoardsPage } = useAppSelector((state) => state.boardsPage);
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
 
-  const openModalWindowAddTask = (target: HTMLElement) => {
-    const currentIndexColumn = String(
-      (target.closest('#buttonModal') as HTMLElement)?.dataset.columnindex
-    );
+  const openModalWindowAddTask = (targetButtonModal: HTMLElement) => {
+    const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
     dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
   };
 
-  const openModalWindowDeleteTask = (target: HTMLElement) => {
-    const currentIndexColumn = String(
-      (target.closest('#buttonModal') as HTMLElement)?.dataset.columnindex
-    );
-    const currentIndexTask = String(
-      (target.closest('#buttonModal') as HTMLElement)?.dataset.taskindex
-    );
-
+  const openModalWindowDeleteTask = (targetButtonModal: HTMLElement) => {
+    const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
+    const currentIndexTask = String(targetButtonModal?.dataset.taskindex);
     dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
     dispatch(reducers.changeIndexOfCurrentTask(currentIndexTask));
   };
 
-  const openModalWindowEditTask = (target: HTMLElement) => {
-    const currentIndexColumn = String(
-      (target.closest('#buttonModal') as HTMLElement)?.dataset.columnindex
-    );
-    const currentIndexTask = String(
-      (target.closest('#buttonModal') as HTMLElement)?.dataset.taskindex
-    );
-
+  const openModalWindowEditTask = (targetButtonModal: HTMLElement) => {
+    const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
+    const currentIndexTask = String(targetButtonModal?.dataset.taskindex);
     dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
     dispatch(reducers.changeIndexOfCurrentTask(currentIndexTask));
     dispatch(reducers.changeTitleOfCurrentTask());
   };
 
-  const openModalWindowDeleteColumn = (target: HTMLElement) => {
-    const currentIndexColumn = String(
-      (target.closest('#buttonModal') as HTMLElement)?.dataset.columnindex
-    );
+  const openModalWindowDeleteColumn = (targetButtonModal: HTMLElement) => {
+    const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
     dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
   };
 
   const handleModalWindow = (event: React.MouseEvent) => {
     const target = event.target as HTMLElement;
-    const nameForModalWindow = String(
-      (target.closest('#buttonModal') as HTMLElement)?.dataset.modalname
-    );
+    const targetButtonModal = target.closest('.buttonModal') as HTMLElement;
+    const nameForModalWindow = String(targetButtonModal?.dataset.modalname);
     dispatch(reducers.openModalWindow(true));
     dispatch(reducers.addNameForModalWindow(nameForModalWindow));
 
     switch (nameForModalWindow) {
       case 'addTask':
-        openModalWindowAddTask(target);
+        openModalWindowAddTask(targetButtonModal);
         break;
 
       case 'deleteTask':
-        openModalWindowDeleteTask(target);
+        openModalWindowDeleteTask(targetButtonModal);
         break;
 
       case 'editTask':
-        openModalWindowEditTask(target);
+        openModalWindowEditTask(targetButtonModal);
         break;
 
       case 'deleteColumn':
-        openModalWindowDeleteColumn(target);
+        openModalWindowDeleteColumn(targetButtonModal);
         break;
     }
   };
@@ -237,54 +218,57 @@ function BoardColumns() {
                 {column.tasks?.map((tasks, indexTask) => {
                   return (
                     <Box className={classes.columnTask} key={`${tasks.taskTittle} ${indexTask}`}>
-                      <Box
-                        className={classes.deleteTask}
-                        data-modalname="deleteTask"
-                        data-columnindex={indexColumn}
-                        data-taskindex={indexTask}
-                        id="buttonModal"
-                        onClick={handleModalWindow}
-                      >
-                        <Button>
-                          <ClearIcon fontSize="small" color="action" />
-                        </Button>
-                      </Box>
-                      <Box
-                        className={classes.editTask}
-                        data-modalname="editTask"
-                        data-columnindex={indexColumn}
-                        data-taskindex={indexTask}
-                        id="buttonModal"
-                        onClick={handleModalWindow}
-                      >
-                        <Button>
-                          <CreateIcon fontSize="small" color="action" />
-                        </Button>
-                      </Box>
-                      <CardActionArea>
-                        <Typography gutterBottom variant="h5">
+                      <Box className={classes.columnTaskTitle}>
+                        <Typography variant="subtitle1" gutterBottom pl={2}>
                           {tasks.taskTittle}
                         </Typography>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography variant="body2" color="text.secondary" pl={2}>
                           {tasks.taskOption}
                         </Typography>
-                      </CardActionArea>
+                      </Box>
+                      <Box className={classes.task}>
+                        <Box
+                          className="buttonModal"
+                          data-modalname="deleteTask"
+                          data-columnindex={indexColumn}
+                          data-taskindex={indexTask}
+                          onClick={handleModalWindow}
+                        >
+                          <Button color="secondary">
+                            <ClearIcon fontSize="small" color="action" />
+                          </Button>
+                        </Box>
+                        <Box
+                          className="buttonModal"
+                          data-modalname="editTask"
+                          data-columnindex={indexColumn}
+                          data-taskindex={indexTask}
+                          onClick={handleModalWindow}
+                        >
+                          <Button color="secondary">
+                            <CreateIcon fontSize="small" color="action" />
+                          </Button>
+                        </Box>
+                      </Box>
                     </Box>
                   );
                 })}
               </Stack>
               <Box className={classes.columnSettings}>
                 <Box
-                  className={classes.columnAdd}
                   data-modalname="addTask"
                   data-columnindex={indexColumn}
                   onClick={handleModalWindow}
-                  id="buttonModal"
+                  className={`${classes.columnAdd} buttonModal`}
                 >
                   <AddIcon color="action" />
                   <Typography color="text.secondary">Add task</Typography>
                 </Box>
-                <Box id="buttonModal" data-modalname="deleteColumn" data-columnindex={indexColumn}>
+                <Box
+                  className={`buttonModal`}
+                  data-modalname="deleteColumn"
+                  data-columnindex={indexColumn}
+                >
                   <Tooltip title="Delete Column" onClick={handleModalWindow}>
                     <IconButton>
                       <DeleteIcon color="action" />
@@ -298,9 +282,8 @@ function BoardColumns() {
       })}
       <Box className={classes.column}>
         <Box
-          className={classes.columnAddOptions}
           data-modalname="addColumn"
-          id="buttonModal"
+          className={`${classes.columnAddOptions} buttonModal`}
           onClick={handleModalWindow}
         >
           <Box className={classes.columnAddOptionsText}>
