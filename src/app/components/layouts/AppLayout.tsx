@@ -6,7 +6,6 @@ import Footer from '../share/Footer/Footer';
 const AppLayout = () => {
   return (
     <>
-      <Header />
       <main>
         <Outlet />
         {/* сюда подставится дочерний роут с path=”/” или “/about” */}
