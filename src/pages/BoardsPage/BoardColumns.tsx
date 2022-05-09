@@ -2,7 +2,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useSliceBoardsPage } from '../../app/reducers/useSliceBoardsPage';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { IconButton, Tooltip, Typography } from '@mui/material';
+import { Button, IconButton, Tooltip, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { CardActionArea } from '@material-ui/core';
@@ -115,13 +115,13 @@ const useStyles = makeStyles({
   },
   deleteTask: {
     position: 'absolute',
-    left: '90%',
+    left: '75%',
     zIndex: 1000,
   },
   editTask: {
     position: 'absolute',
-    top: '55%',
-    left: '90%',
+    top: '48%',
+    left: '75%',
     zIndex: 1000,
   },
   columnSettings: {
@@ -154,6 +154,45 @@ function BoardColumns() {
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
 
+  const openModalWindowAddTask = (target: HTMLElement) => {
+    const currentIndexColumn = String(
+      (target.closest('#buttonModal') as HTMLElement)?.dataset.columnindex
+    );
+    dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
+  };
+
+  const openModalWindowDeleteTask = (target: HTMLElement) => {
+    const currentIndexColumn = String(
+      (target.closest('#buttonModal') as HTMLElement)?.dataset.columnindex
+    );
+    const currentIndexTask = String(
+      (target.closest('#buttonModal') as HTMLElement)?.dataset.taskindex
+    );
+
+    dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
+    dispatch(reducers.changeIndexOfCurrentTask(currentIndexTask));
+  };
+
+  const openModalWindowEditTask = (target: HTMLElement) => {
+    const currentIndexColumn = String(
+      (target.closest('#buttonModal') as HTMLElement)?.dataset.columnindex
+    );
+    const currentIndexTask = String(
+      (target.closest('#buttonModal') as HTMLElement)?.dataset.taskindex
+    );
+
+    dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
+    dispatch(reducers.changeIndexOfCurrentTask(currentIndexTask));
+    dispatch(reducers.changeTitleOfCurrentTask());
+  };
+
+  const openModalWindowDeleteColumn = (target: HTMLElement) => {
+    const currentIndexColumn = String(
+      (target.closest('#buttonModal') as HTMLElement)?.dataset.columnindex
+    );
+    dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
+  };
+
   const handleModalWindow = (event: React.MouseEvent) => {
     const target = event.target as HTMLElement;
     const nameForModalWindow = String(
@@ -162,43 +201,22 @@ function BoardColumns() {
     dispatch(reducers.openModalWindow(true));
     dispatch(reducers.addNameForModalWindow(nameForModalWindow));
 
-    if (nameForModalWindow === 'addTask') {
-      const currentIndexColumn = String(
-        (target.closest('#buttonModal') as HTMLElement)?.dataset.columnindex
-      );
-      dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
-    }
+    switch (nameForModalWindow) {
+      case 'addTask':
+        openModalWindowAddTask(target);
+        break;
 
-    if (nameForModalWindow === 'deleteTask') {
-      const currentIndexColumn = String(
-        (target.closest('#buttonModal') as HTMLElement)?.dataset.columnindex
-      );
-      const currentIndexTask = String(
-        (target.closest('#buttonModal') as HTMLElement)?.dataset.taskindex
-      );
+      case 'deleteTask':
+        openModalWindowDeleteTask(target);
+        break;
 
-      dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
-      dispatch(reducers.changeIndexOfCurrentTask(currentIndexTask));
-    }
+      case 'editTask':
+        openModalWindowEditTask(target);
+        break;
 
-    if (nameForModalWindow === 'editTask') {
-      const currentIndexColumn = String(
-        (target.closest('#buttonModal') as HTMLElement)?.dataset.columnindex
-      );
-      const currentIndexTask = String(
-        (target.closest('#buttonModal') as HTMLElement)?.dataset.taskindex
-      );
-
-      dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
-      dispatch(reducers.changeIndexOfCurrentTask(currentIndexTask));
-      dispatch(reducers.changeTitleOfCurrentTask());
-    }
-
-    if (nameForModalWindow === 'deleteColumn') {
-      const currentIndexColumn = String(
-        (target.closest('#buttonModal') as HTMLElement)?.dataset.columnindex
-      );
-      dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
+      case 'deleteColumn':
+        openModalWindowDeleteColumn(target);
+        break;
     }
   };
 
@@ -229,7 +247,9 @@ function BoardColumns() {
                         id="buttonModal"
                         onClick={handleModalWindow}
                       >
-                        <ClearIcon fontSize="small" color="action" />
+                        <Button>
+                          <ClearIcon fontSize="small" color="action" />
+                        </Button>
                       </Box>
                       <Box
                         className={classes.editTask}
@@ -239,7 +259,9 @@ function BoardColumns() {
                         id="buttonModal"
                         onClick={handleModalWindow}
                       >
-                        <CreateIcon fontSize="small" color="action" />
+                        <Button>
+                          <CreateIcon fontSize="small" color="action" />
+                        </Button>
                       </Box>
                       <CardActionArea>
                         <Typography gutterBottom variant="h5">
