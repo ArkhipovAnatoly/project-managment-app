@@ -1,12 +1,18 @@
 import './WelcomePage.css';
 import data from '../../services/data';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Modal, Typography } from '@mui/material';
 import Card from '../../app/components/Card/Card';
-import CustomizedButtons from '../../app/components/Button/CustomizedButtons';
+import CustomizedButton from '../../app/components/share/Button/CustomizedButton';
 
 const WelcomePage = () => {
   const [videoModalActive, setVideomodalactive] = useState(false);
+  const [isAuth, setIsAuth] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    token && setIsAuth(true);
+  }, []);
 
   const openModal = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -20,9 +26,15 @@ const WelcomePage = () => {
 
   return (
     <div className="wrapper">
-      <div className="autorizationBtns">
-        <CustomizedButtons />
-      </div>
+      {isAuth ? (
+        <CustomizedButton innerText={'Go to Main Page'} link={'/main'} />
+      ) : (
+        <div className="autorizationBtns">
+          <CustomizedButton innerText={'Sign in'} link={'/signin'} />
+          <CustomizedButton innerText={'Sign up'} link={'/signup'} />
+        </div>
+      )}
+
       <div className="aboutTheProject">
         <h1>
           Название <span className="titleProject">TEMPER</span>
