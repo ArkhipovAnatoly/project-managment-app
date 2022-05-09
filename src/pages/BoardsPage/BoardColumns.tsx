@@ -76,7 +76,6 @@ const useStyles = makeStyles({
     height: '100%',
     display: 'flex',
     justifyContent: 'center',
-    color: '#5e6c84',
   },
   columnTitle: {
     margin: 5,
@@ -115,13 +114,13 @@ const useStyles = makeStyles({
   },
   deleteTask: {
     position: 'absolute',
-    left: '75%',
+    left: '74.5%',
     zIndex: 1000,
   },
   editTask: {
     position: 'absolute',
     top: '48%',
-    left: '75%',
+    left: '74.5%',
     zIndex: 1000,
   },
   columnSettings: {
@@ -137,7 +136,6 @@ const useStyles = makeStyles({
     display: 'flex',
     alignItems: 'center',
     transition: 'all 0.2s',
-    color: '#5e6c84',
     minWidth: '50%',
     '&:hover': {
       backgroundColor: '#c2c2c28f',
@@ -283,12 +281,13 @@ function BoardColumns() {
                   onClick={handleModalWindow}
                   id="buttonModal"
                 >
-                  <AddIcon /> <Typography>Add task</Typography>
+                  <AddIcon color="action" />
+                  <Typography color="text.secondary">Add task</Typography>
                 </Box>
                 <Box id="buttonModal" data-modalname="deleteColumn" data-columnindex={indexColumn}>
                   <Tooltip title="Delete Column" onClick={handleModalWindow}>
                     <IconButton>
-                      <DeleteIcon />
+                      <DeleteIcon color="action" />
                     </IconButton>
                   </Tooltip>
                 </Box>
@@ -305,7 +304,8 @@ function BoardColumns() {
           onClick={handleModalWindow}
         >
           <Box className={classes.columnAddOptionsText}>
-            <AddIcon /> <Typography>Add new column</Typography>
+            <AddIcon color={'action'} />
+            <Typography color="text.secondary">Add new column</Typography>
           </Box>
         </Box>
       </Box>

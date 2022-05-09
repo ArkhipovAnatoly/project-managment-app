@@ -1,8 +1,9 @@
-import { Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { createRef, useEffect, useState } from 'react';
 import BoardColumns from './BoardColumns';
 import { makeStyles } from '@material-ui/core';
 import Box from '@mui/material/Box';
+import { NavLink } from 'react-router-dom';
 
 const useStyles = makeStyles({
   container: {
@@ -13,8 +14,7 @@ const useStyles = makeStyles({
   },
 
   inputSwap: {
-    margin: '0 auto',
-    width: '30%',
+    margin: '0 40px',
     color: '#000',
     cursor: 'pointer',
     textAlign: 'center',
@@ -29,6 +29,7 @@ const useStyles = makeStyles({
   },
 
   inputSwapFalse: {
+    margin: '0 40px',
     width: '100%',
     color: '#000',
     cursor: 'pointer',
@@ -41,6 +42,10 @@ const useStyles = makeStyles({
   content: {
     display: 'flex',
     flexGrow: 1,
+  },
+  header: {
+    display: 'flex',
+    alignItems: 'center',
   },
 });
 
@@ -78,21 +83,26 @@ function BoardsPage() {
 
   return (
     <Box className={classes.container}>
-      <Box>
-        {count ? (
-          <Box className={classes.inputSwap} onClick={handle}>
-            <Typography>{text}</Typography>
-          </Box>
-        ) : (
-          <input
-            type="text"
-            className={classes.inputSwapFalse}
-            onBlur={onInputBlur}
-            onChange={setNewText}
-            ref={inputSearch}
-            defaultValue={text}
-          />
-        )}
+      <Box className={classes.header}>
+        <NavLink to="/main" style={{ textDecoration: 'none' }}>
+          <Button variant="contained">Main Page</Button>
+        </NavLink>
+        <Box>
+          {count ? (
+            <Box className={classes.inputSwap} onClick={handle}>
+              <Typography>{text}</Typography>
+            </Box>
+          ) : (
+            <input
+              type="text"
+              className={classes.inputSwapFalse}
+              onBlur={onInputBlur}
+              onChange={setNewText}
+              ref={inputSearch}
+              defaultValue={text}
+            />
+          )}
+        </Box>
       </Box>
       <Box className={classes.content}>
         <BoardColumns></BoardColumns>
