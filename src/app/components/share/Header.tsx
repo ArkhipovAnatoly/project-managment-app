@@ -1,25 +1,36 @@
-import { useState, useEffect, useCallback } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useState, useEffect, useCallback, ChangeEvent } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+
+import Typography from '@mui/material/Typography';
+import headerTheme from '../../theme/Theme';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { modalSlice } from '../../store/reducers/ModalSlice';
+import { useAppDispatch } from '../../hooks';
+import EditUser from '../modal/EditUser';
+import { userAuthSlice } from '../../store/reducers/UserAuthSlice';
 import {
   Container,
-  CssBaseline,
   Stack,
   ThemeProvider,
   Toolbar,
   AppBar,
-  styled,
   Link,
-  Divider,
-  alpha,
+  Button,
+  Switch,
+  FormControlLabel,
 } from '@mui/material';
-import Typography from '@mui/material/Typography';
-import headerTheme from '../../theme/Theme';
-import CustomizedButtons from '../Button/CustomizedButtons';
 
 const scrollThreshold = 40;
 
 export default function Header() {
   const [isScroll, setIsScroll] = useState<boolean>(false);
+  const [language, setLanguage] = useState<string>('En');
+  const { showModal } = modalSlice.actions;
+  const dispatch = useAppDispatch();
+  const { setUserAuthData } = userAuthSlice.actions;
+  const navigator = useNavigate();
 
   const scrollHandle = useCallback(() => {
     window.scrollY > scrollThreshold ? setIsScroll(true) : setIsScroll(false);
@@ -32,6 +43,24 @@ export default function Header() {
       document.removeEventListener('scroll', scrollHandle);
     };
   }, [scrollHandle]);
+
+  const changeHandle = (e: ChangeEvent) => {
+    const { checked } = e.target as HTMLInputElement;
+    checked ? setLanguage('Ru') : setLanguage('En');
+  };
+
+  const openModal = () => {
+    dispatch(showModal(true));
+  };
+
+  const signOutHandle = () => {
+    localStorage.removeItem('userId');
+    localStorage.removeItem('token');
+    dispatch(setUserAuthData({ userId: '', token: '', isAuth: false }));
+    setTimeout(() => {
+      navigator('/');
+    }, 1500);
+  };
 
   return (
     <>
@@ -63,18 +92,38 @@ export default function Header() {
                 </Link>
               </Typography>
 
-              <Stack
-                component="ul"
-                padding={0}
-                direction="row"
-                divider={<Divider sx={{ borderColor: '#fff' }} orientation="vertical" flexItem />}
-              >
-                <CustomizedButtons />
+              <Stack direction="row" spacing={3}>
+                <FormControlLabel
+                  control={<Switch onChange={changeHandle} color="primary" />}
+                  label={language}
+                  labelPlacement="end"
+                />
+                <Button variant="contained" color="warning" startIcon={<AddBoxIcon />}>
+                  Create new board
+                </Button>
+                <Button
+                  variant="contained"
+                  color="info"
+                  endIcon={<ModeEditIcon />}
+                  onClick={openModal}
+                >
+                  Edit profile
+                </Button>
+
+                <Button
+                  onClick={signOutHandle}
+                  variant="contained"
+                  color="info"
+                  endIcon={<LogoutIcon />}
+                >
+                  Sign Out
+                </Button>
               </Stack>
             </Toolbar>
           </Container>
         </AppBar>
       </ThemeProvider>
+      <EditUser />
     </>
   );
 }
