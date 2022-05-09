@@ -5,6 +5,7 @@ import WelcomePage from './pages/WelcomePage/WelcomePage';
 import Error from './pages/Error/Error';
 import SignIn from './pages/SingIn/SignIn';
 import SignUp from './pages/SignUp/SignUp';
+import MainPage from './pages/MainPage/MainPage';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<AppLayout />}>
           <Route index element={<WelcomePage />} />
+          <Route path="/main" element={<MainPage />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
         </Route>
