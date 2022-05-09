@@ -8,18 +8,23 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Container from '@mui/material/Container';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Typography, FormHelperText, CircularProgress } from '@mui/material';
 import Copyright from '../../app/components/share/Copyright';
 import { SignInResponse, UserSignInData } from '../../types';
 import { userAPI } from '../../services/UserService';
+import { userAuthSlice } from '../../app/store/reducers/UserAuthSlice';
+import { useAppDispatch } from '../../app/hooks';
 
 export default function SignIn() {
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [message, setMessage] = useState<string>('');
-
   const [signInUser, { isLoading, isError, isSuccess }] = userAPI.useUserSignInMutation();
+  const { setUserAuthData } = userAuthSlice.actions;
+  const dispatch = useAppDispatch();
+  const navigator = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -39,7 +44,13 @@ export default function SignIn() {
     if (response.error?.status) {
       setMessage(response.error.data.message);
     } else {
+      const token = response.data?.token as string;
+      localStorage.setItem('token', token);
+      dispatch(setUserAuthData({ token, isAuth: true }));
       setMessage('Successful sign in');
+      setTimeout(() => {
+        navigator('/main');
+      }, 1500);
     }
   };
 
