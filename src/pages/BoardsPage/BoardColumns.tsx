@@ -2,7 +2,16 @@ import AddIcon from '@mui/icons-material/Add';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useSliceBoardsPage } from '../../app/reducers/useSliceBoardsPage';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Button, IconButton, Tooltip, Typography } from '@mui/material';
+import {
+  AccordionDetails,
+  Accordion,
+  AccordionSummary,
+  Button,
+  IconButton,
+  Paper,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { CardActionArea } from '@material-ui/core';
@@ -83,6 +92,7 @@ const useStyles = makeStyles({
     cursor: 'pointer',
   },
   columnTasks: {
+    padding: 2,
     overflowX: 'auto',
     overflowY: 'auto',
     '&::-webkit-scrollbar': {
@@ -105,12 +115,12 @@ const useStyles = makeStyles({
     minWidth: '95%',
     maxWidth: '200px',
     height: 'auto',
-    backgroundColor: '#ffffff',
+    // backgroundColor: '#ffffff',
     borderRadius: 3,
     cursor: 'pointer',
-    margin: 5,
-    display: 'flex',
-    flexWrap: 'wrap',
+    // margin: 5,
+    // display: 'flex',
+    // flexWrap: 'wrap',
   },
   columnTaskTitle: {
     flex: 1,
@@ -139,6 +149,11 @@ const useStyles = makeStyles({
       borderRadius: 3,
       cursor: 'pointer',
     },
+  },
+  a1: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });
 
@@ -217,16 +232,12 @@ function BoardColumns() {
               >
                 {column.tasks?.map((tasks, indexTask) => {
                   return (
-                    <Box className={classes.columnTask} key={`${tasks.taskTittle} ${indexTask}`}>
-                      <Box className={classes.columnTaskTitle}>
-                        <Typography variant="subtitle1" gutterBottom pl={2}>
-                          {tasks.taskTittle}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" pl={2}>
-                          {tasks.taskOption}
-                        </Typography>
-                      </Box>
-                      <Box className={classes.task}>
+                    <Paper
+                      key={`${tasks.taskTittle} ${indexTask}`}
+                      className={classes.columnTask}
+                      elevation={3}
+                    >
+                      <Box className={classes.a1}>
                         <Box
                           className="buttonModal"
                           data-modalname="deleteTask"
@@ -250,7 +261,17 @@ function BoardColumns() {
                           </Button>
                         </Box>
                       </Box>
-                    </Box>
+                      <Accordion elevation={0}>
+                        <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
+                          <Typography>{tasks.taskTittle}</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          <Typography variant="body2" color="text.secondary">
+                            {tasks.taskOption}
+                          </Typography>
+                        </AccordionDetails>
+                      </Accordion>
+                    </Paper>
                   );
                 })}
               </Stack>
