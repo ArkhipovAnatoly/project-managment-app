@@ -1,4 +1,4 @@
-import { Button, Typography } from '@mui/material';
+import { Button, InputBase, Paper, TextField, Typography } from '@mui/material';
 import { createRef, useEffect, useState } from 'react';
 import BoardColumns from './BoardColumns';
 import { makeStyles } from '@material-ui/core';
@@ -52,57 +52,18 @@ const useStyles = makeStyles({
 function BoardsPage() {
   const classes = useStyles();
 
-  const [count, setCount] = useState(true);
-  const [text, setText] = useState('My Project');
-  const [prevText, setPrevText] = useState('My Project');
-
-  useEffect(() => {
-    inputSearch?.current?.focus();
-  }, [count]);
-
-  const inputSearch = createRef<HTMLInputElement>();
-
-  function handle(еvent: React.MouseEvent) {
-    const target = еvent.target as HTMLElement;
-    console.log(target);
-    setCount(false);
-  }
-
-  function onInputBlur(event: React.FocusEvent) {
-    setCount(true);
-  }
-
-  function setNewText(event: React.ChangeEvent) {
-    const target = event.target as HTMLInputElement;
-    if ((target as HTMLInputElement).value) {
-      setText((target as HTMLInputElement).value);
-    } else {
-      setText(prevText);
-    }
-  }
-
   return (
     <Box className={classes.container}>
-      <Box className={classes.header}>
+      <Paper
+        component="form"
+        sx={{ m: '10px', p: '2px 4px', display: 'flex', alignItems: 'center', maxWidth: '700vw' }}
+      >
+        <InputBase sx={{ ml: 6, flex: 1 }} defaultValue="My Project Name" />
+      </Paper>
+      <Box className={classes.header} sx={{ ml: '10px' }}>
         <NavLink to="/main" style={{ textDecoration: 'none' }}>
           <Button variant="contained">Main Page</Button>
         </NavLink>
-        <Box>
-          {count ? (
-            <Box className={classes.inputSwap} onClick={handle}>
-              <Typography>{text}</Typography>
-            </Box>
-          ) : (
-            <input
-              type="text"
-              className={classes.inputSwapFalse}
-              onBlur={onInputBlur}
-              onChange={setNewText}
-              ref={inputSearch}
-              defaultValue={text}
-            />
-          )}
-        </Box>
       </Box>
       <Box className={classes.content}>
         <BoardColumns></BoardColumns>

@@ -66,7 +66,7 @@ function ModalWindow() {
   };
 
   const addNewColumn = () => {
-    if (title) {
+    if (title.trim()) {
       dispatch(reducers.addNewColumn(title));
       closeModalWindow();
       clearTextModal();
@@ -80,7 +80,7 @@ function ModalWindow() {
   };
 
   const addNewTask = () => {
-    if (title && description) {
+    if (title.trim()) {
       dispatch(
         reducers.addNewTask({
           index: indexOfCurrentColumn,
@@ -106,7 +106,7 @@ function ModalWindow() {
   const changeCurrentTask = () => {
     const newTitle = title === '' ? titleOfCurrentTask : title;
     const newDescription = description === '' ? DescriptionOfCurrentTask : description;
-    if (newTitle || newDescription) {
+    if (newTitle?.trim() || newDescription?.trim()) {
       dispatch(
         reducers.changeTask({
           indexColumn: indexOfCurrentColumn,

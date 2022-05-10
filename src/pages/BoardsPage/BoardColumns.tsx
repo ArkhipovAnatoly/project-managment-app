@@ -11,14 +11,15 @@ import {
   Paper,
   Tooltip,
   Typography,
+  InputBase,
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import { CardActionArea } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
 import ModalWindow from './ModalWindow';
 import ClearIcon from '@mui/icons-material/Clear';
 import CreateIcon from '@mui/icons-material/Create';
+import SendIcon from '@mui/icons-material/Send';
 
 const useStyles = makeStyles({
   columns: {
@@ -47,6 +48,7 @@ const useStyles = makeStyles({
   column: {
     minWidth: 265,
     maxHeight: '100%',
+    maxWidth: 'fit-content',
     backgroundClip: 'content-box',
     margin: '10px',
     listStyle: 'none',
@@ -87,6 +89,8 @@ const useStyles = makeStyles({
     justifyContent: 'center',
   },
   columnTitle: {
+    display: 'flex',
+    flexDirection: 'column',
     margin: 5,
     padding: 3,
     cursor: 'pointer',
@@ -115,20 +119,8 @@ const useStyles = makeStyles({
     minWidth: '95%',
     maxWidth: '200px',
     height: 'auto',
-    // backgroundColor: '#ffffff',
     borderRadius: 3,
     cursor: 'pointer',
-    // margin: 5,
-    // display: 'flex',
-    // flexWrap: 'wrap',
-  },
-  columnTaskTitle: {
-    flex: 1,
-  },
-  task: {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    flexDirection: 'column',
   },
   columnSettings: {
     margin: 5,
@@ -150,7 +142,7 @@ const useStyles = makeStyles({
       cursor: 'pointer',
     },
   },
-  a1: {
+  buttonsSetting: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -214,14 +206,75 @@ function BoardColumns() {
     }
   };
 
+  const openButtonSettings = (event: React.MouseEvent) => {
+    const target = (event.target as HTMLInputElement).closest('.boxForTitle') as HTMLElement;
+    const target2 = target.querySelector('.buttonApply');
+    const target3 = target.querySelector('.buttonCancel');
+    (target2 as HTMLElement).style.display = 'block';
+    (target3 as HTMLElement).style.display = 'block';
+    target.dataset.onopen = (event.target as HTMLInputElement).value;
+  };
+
+  const closeButtonSettings = (event: React.FocusEvent) => {
+    const target = (event.target as HTMLInputElement).closest('.boxForTitle') as HTMLElement;
+    const target2 = target.querySelector('.buttonApply');
+    const target3 = target.querySelector('.buttonCancel');
+    (target2 as HTMLElement).style.display = 'none';
+    (target3 as HTMLElement).style.display = 'none';
+    (event.target as HTMLInputElement).value = `${target.dataset.onclose}`;
+    console.log(event.target);
+  };
+
+  const changeButtonSettings = (event: React.ChangeEvent) => {
+    const target = (event.target as HTMLInputElement).closest('.boxForTitle') as HTMLElement;
+    const target2 = target.querySelector('.buttonApply');
+    const target3 = target.querySelector('.buttonCancel');
+    target.dataset.onopen = `${(event.target as HTMLInputElement).value}`;
+    console.log(target.dataset.onopen);
+  };
+
+  const buttonSettingsApply = (event: React.MouseEvent) => {
+    const target = (event.target as HTMLElement).closest('.boxForTitle') as HTMLElement;
+    console.log(event);
+  };
+  const buttonSettingsClose = (event: React.MouseEvent) => {
+    const target = (event.target as HTMLElement).closest('.boxForTitle') as HTMLElement;
+    console.log(event);
+  };
+
   return (
     <Box className={classes.columns}>
       {dataBoardsPage.map((column, indexColumn) => {
         return (
           <Box className={classes.column} key={`${column.tittle} ${indexColumn}`}>
             <Box className={classes.columnOptions}>
-              <Box className={classes.columnTitle}>
-                <Typography>{column.tittle}</Typography>
+              <Box
+                className={`${classes.columnTitle} boxForTitle`}
+                data-onopen={column.tittle}
+                data-onclose={column.tittle}
+              >
+                <InputBase
+                  defaultValue={column.tittle}
+                  onClick={openButtonSettings}
+                  onBlur={closeButtonSettings}
+                  onChange={changeButtonSettings}
+                />
+                <Button
+                  onClick={buttonSettingsApply}
+                  className={'buttonApply'}
+                  variant="contained"
+                  size="small"
+                  startIcon={<SendIcon />}
+                  sx={{ mt: '2px', display: 'none' }}
+                ></Button>
+                <Button
+                  onClick={buttonSettingsClose}
+                  className={'buttonCancel'}
+                  variant="contained"
+                  size="small"
+                  startIcon={<DeleteIcon />}
+                  sx={{ mb: '2px', mt: '4px', display: 'none' }}
+                ></Button>
               </Box>
               <Stack
                 direction="column"
@@ -237,7 +290,7 @@ function BoardColumns() {
                       className={classes.columnTask}
                       elevation={3}
                     >
-                      <Box className={classes.a1}>
+                      <Box className={classes.buttonsSetting}>
                         <Box
                           className="buttonModal"
                           data-modalname="deleteTask"
