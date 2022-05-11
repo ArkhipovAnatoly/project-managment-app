@@ -1,17 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { NavLink } from 'react-router-dom';
-import {
-  Container,
-  CssBaseline,
-  Stack,
-  ThemeProvider,
-  Toolbar,
-  AppBar,
-  styled,
-  Link,
-  Divider,
-  alpha,
-} from '@mui/material';
+import { Container, Stack, ThemeProvider, Toolbar, AppBar, Link, Divider } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import headerTheme from '../../theme/Theme';
 import CustomizedButtons from '../Button/CustomizedButtons';
