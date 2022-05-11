@@ -22,13 +22,8 @@ const WelcomePage = () => {
     <div className="wrapper">
       <div className="aboutTheProject">
         <h1>
-          Название <span className="titleProject">TEMPER</span>
+          Система управления проектами <span className="titleProject">TEMPER</span>
         </h1>
-        <p className="title">О проекте:</p>
-        <p className="title">Здесь нужно</p>
-        <p className="title">будет добавить</p>
-        <p className="title">инфу о нашем</p>
-        <p className="title">проекте</p>
       </div>
       <div className="videoPlaceholder">
         <a
@@ -54,13 +49,24 @@ const WelcomePage = () => {
           </Typography>
         </Box>
       </Modal>
-
+      <div className="titleContainer">
+        <p className="title">
+          TEMPER позволяет эффективно организовывать работу по японской методологии канбан-досок.
+        </p>
+        <div className="imgTitle">
+          <img src={require(`../../assets/img/board1.png`)} alt="board" />
+        </div>
+      </div>
+      <div className="titleContainer2">
+        <div className="imgTitle">
+          <img src={require(`../../assets/img/board.png`)} alt="board" />
+        </div>
+        <p className="title">
+          Вы сами выбираете, по какому принципу организовывать карточки на досках.
+        </p>
+      </div>
       <div className="aboutTheComand">
         <h2>О команде</h2>
-        <p className="title">
-          &#8222; В командной работе хорошо то, что с вами всегда есть кто-то ещё &#8220;
-        </p>
-
         <div className="cards">
           {data.map((item, index) => (
             <Card
