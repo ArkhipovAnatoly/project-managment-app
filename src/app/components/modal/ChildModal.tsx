@@ -49,6 +49,7 @@ export default function ChildModal() {
       dispatch(setUserAuthData({ userId: '', token: '', isAuth: false }));
       setMessage('Successful deleted');
       setTimeout(() => {
+        setOpen(false);
         navigator('/');
       }, 2000);
     }
