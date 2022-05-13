@@ -4,11 +4,8 @@ import Footer from '../share/Footer/Footer';
 const AppLayout = () => {
   return (
     <>
-      <main>
-        <Outlet />
-        {/* сюда подставится дочерний роут с path=”/” или “/about” */}
-      </main>
-      <Footer />
+      <Outlet />
+      {/* сюда подставится дочерний роут с path=”/” или “/about” */}
     </>
   );
 };
