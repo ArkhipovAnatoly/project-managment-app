@@ -36,11 +36,12 @@ export default function ChildModal() {
     setOpen(true);
   };
   const handleClose = () => {
+    setMessage('');
     setOpen(false);
   };
   const handleConfirm = async () => {
     setMessage('');
-    const response = (await deleteUser({ userId: auth.userId })) as DeleteUserResponse;
+    const response = (await deleteUser(auth.userId as string)) as DeleteUserResponse;
     if (response.error?.status) {
       setMessage(response.error.data.message);
     } else {
