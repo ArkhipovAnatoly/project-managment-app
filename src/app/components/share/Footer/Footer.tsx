@@ -1,7 +1,7 @@
 import './Footer.css';
 const Footer = () => {
   return (
-    <footer>
+    <footer className="footer">
       <div className="footerContent">
         <div className="aboutTheCourse">
           <a
