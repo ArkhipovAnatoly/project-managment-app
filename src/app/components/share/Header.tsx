@@ -54,12 +54,11 @@ export default function Header() {
   };
 
   const signOutHandle = () => {
-    localStorage.removeItem('userId');
     localStorage.removeItem('token');
-    dispatch(setUserAuthData({ userId: '', token: '', isAuth: false }));
+    dispatch(setUserAuthData({ token: '', isAuth: false }));
     setTimeout(() => {
       navigator('/');
-    }, 1500);
+    }, 500);
   };
 
   return (
