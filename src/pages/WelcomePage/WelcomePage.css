@@ -8,7 +8,7 @@ body {
   background-color: #151719;
 }
 
-main {
+.main {
   min-height: calc(100vh - 116px);
 }
 
