@@ -22,41 +22,62 @@ const WelcomePage = () => {
 
   return (
     <div className="wrapper">
-      <main className="main">
-        {auth.isAuth ? (
-          <div className="autorizationBtns">
-            <CustomizedButton innerText={'Go to Main page'} link={'/main'} />
-          </div>
-        ) : (
-          <div className="autorizationBtns">
-            <CustomizedButton innerText={'Sign in'} link={'/signin'} />
-            <CustomizedButton innerText={'Sign up'} link={'/signup'} />
-          </div>
-        )}
 
-        <div className="aboutTheProject">
-          <h1>
-            Название <span className="titleProject">TEMPER</span>
-          </h1>
-          <p className="title">О проекте:</p>
-          <p className="title">Здесь нужно</p>
-          <p className="title">будет добавить</p>
-          <p className="title">инфу о нашем</p>
-          <p className="title">проекте</p>
+      <div className="aboutTheProject">
+        <h1>
+          Система управления проектами <span className="titleProject">TEMPER</span>
+        </h1>
+      </div>
+      <div className="videoPlaceholder">
+        <a
+          data-video="https://player.vimeo.com/video/174002812"
+          href="#video"
+          aria-controls="videoModal"
+          onClick={openModal}
+        >
+          <img
+            className="hasShadow"
+            src={require('../../assets/img/videoPlaceholder.jpg')}
+            alt="Hero"
+            width={896}
+            height={504}
+          />
+        </a>
+      </div>
+      <Modal id="videoModal" open={videoModalActive} onClose={closeModal}>
+        <Box>
+          <Typography id="modal-modal-title" variant="h6" component="h2"></Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            <iframe src="https://player.vimeo.com/video/174002812%22%3E"></iframe>
+          </Typography>
+        </Box>
+      </Modal>
+      <div className="titleContainer">
+        <p className="title">
+          TEMPER позволяет эффективно организовывать работу по японской методологии канбан-досок.
+        </p>
+        <div className="imgTitle">
+          <img src={require(`../../assets/img/board1.png`)} alt="board" />
         </div>
-        <div className="videoPlaceholder">
-          <a
-            data-video="https://player.vimeo.com/video/174002812"
-            href="#video"
-            aria-controls="videoModal"
-            onClick={openModal}
-          >
-            <img
-              className="hasShadow"
-              src={require('../../assets/img/videoPlaceholder.jpg')}
-              alt="Hero"
-              width={896}
-              height={504}
+      </div>
+      <div className="titleContainer2">
+        <div className="imgTitle">
+          <img src={require(`../../assets/img/board.png`)} alt="board" />
+        </div>
+        <p className="title">
+          Вы сами выбираете, по какому принципу организовывать карточки на досках.
+        </p>
+      </div>
+      <div className="aboutTheComand">
+        <h2>О команде</h2>
+        <div className="cards">
+          {data.map((item, index) => (
+            <Card
+              key={index}
+              imgSrc={item.imgSrc}
+              name={item.name}
+              description={item.description}
+
             />
           </a>
         </div>

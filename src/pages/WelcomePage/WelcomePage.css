@@ -18,7 +18,6 @@ body {
 
 .aboutTheProject {
   text-align: center;
-  padding-bottom: 40px;
 }
 
 .autorizationBtns {
@@ -47,6 +46,13 @@ h2 {
   margin: 0 auto;
 }
 
+.titleContainer,
+.titleContainer2 {
+  display: flex;
+  padding-top: 40px;
+  gap: 40px;
+}
+
 .videoPlaceholder {
   text-align: center;
 }
@@ -62,12 +68,11 @@ h2 {
   flex-wrap: wrap;
   justify-content: center;
   gap: 1em;
-  padding: 3em 0;
+  padding: 0 0 3em 0;
 }
 
 .aboutTheComand {
   text-align: center;
-  padding-top: 50px;
 }
 
 .nav {
