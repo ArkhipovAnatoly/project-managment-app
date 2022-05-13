@@ -5,7 +5,6 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import {
   Avatar,
   Button,
-  CssBaseline,
   TextField,
   Link,
   Grid,
@@ -101,7 +100,6 @@ export default function SignIn() {
   if (isChecking) {
     return (
       <Container component="section" maxWidth="xs">
-        <CssBaseline />
         <Box
           sx={{
             marginTop: 8,
@@ -117,8 +115,7 @@ export default function SignIn() {
   }
 
   return (
-    <Container component="section" maxWidth="xs">
-      <CssBaseline />
+    <Container sx={{ backgroundColor: 'white' }} component="section" maxWidth="xs">
       {isShowForm && (
         <>
           <Box

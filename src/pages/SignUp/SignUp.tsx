@@ -6,7 +6,6 @@ import {
   Container,
   Avatar,
   Button,
-  CssBaseline,
   TextField,
   Link,
   Grid,
@@ -98,7 +97,6 @@ export default function SignUp() {
   if (isChecking) {
     return (
       <Container component="section" maxWidth="xs">
-        <CssBaseline />
         <Box
           sx={{
             marginTop: 8,
@@ -114,8 +112,7 @@ export default function SignUp() {
   }
 
   return (
-    <Container component="section" maxWidth="xs">
-      <CssBaseline />
+    <Container sx={{ backgroundColor: 'white' }} component="section" maxWidth="xs">
       {isShowForm && (
         <>
           <Box
