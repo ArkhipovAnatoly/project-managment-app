@@ -1,6 +1,6 @@
 export default [
   {
-    imgSrc: '/public/images/Tolik.jpg',
+    imgSrc: '',
     name: 'Анатолий - Team Lead',
     description: '- Вставим фото, - Описание,- О проделанной работе',
   },
