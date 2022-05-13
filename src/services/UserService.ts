@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 import { RootState } from '../app/store/store';
 import {
-  DeleteUserData,
   DeleteUserResponse,
   EditUserProfileData,
   EditUserProfileResponse,
@@ -40,23 +39,24 @@ export const userAPI = createApi({
       }),
     }),
     userUpdate: build.mutation<EditUserProfileResponse, EditUserProfileData>({
-      query: (userData) => ({
-        url: `/users/${userData.userId}`,
-
-        method: 'PUT',
-        body: userData,
-      }),
+      query(userData) {
+        const { userId, ...body } = userData;
+        return {
+          url: `users/${userId}`,
+          method: 'PUT',
+          body,
+        };
+      },
     }),
-    userDelete: build.mutation<DeleteUserResponse, DeleteUserData>({
-      query: (userData) => ({
-        url: `/users/${userData.userId}`,
-
+    userDelete: build.mutation<DeleteUserResponse, string>({
+      query: (userId) => ({
+        url: `/users/${userId}`,
         method: 'DELETE',
       }),
     }),
     getUser: build.query<User, string>({
-      query: (id) => ({
-        url: `/users/${id}`,
+      query: (userId) => ({
+        url: `/users/${userId}`,
       }),
     }),
   }),

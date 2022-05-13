@@ -1,23 +1,21 @@
+import { CombinedState, Store } from '@reduxjs/toolkit';
+import { AppStore, RootState, store } from './app/store/store';
+
+export type CardProps = {
+  imgSrc: string;
+  name: string;
+  description: string;
+};
+
+export type UserAuthData = {
+  userId?: string;
+  token?: string;
+  isAuth?: boolean;
+};
+
 export type UserSignInData = {
   login: string;
   password: string;
-};
-
-export type UserSignUpData = {
-  name: string;
-  login: string;
-  password: string;
-};
-
-export type EditUserProfileData = {
-  userId?: string;
-  name: string;
-  login: string;
-  password: string;
-};
-
-export type DeleteUserData = {
-  userId: string | undefined;
 };
 
 export type SignInResponse = {
@@ -31,6 +29,12 @@ export type SignInResponse = {
   data?: {
     token: string;
   };
+};
+
+export type UserSignUpData = {
+  name: string;
+  login: string;
+  password: string;
 };
 
 export type SignUpResponse = {
@@ -48,17 +52,33 @@ export type SignUpResponse = {
   };
 };
 
-export type EditUserProfileResponse = SignUpResponse;
-export type DeleteUserResponse = SignUpResponse;
-
-export type CardProps = {
-  imgSrc: string;
-  name: string;
-  description: string;
-};
-
-export type UserAuthData = {
+export type EditUserProfileData = {
   userId?: string;
-  token?: string;
-  isAuth?: boolean;
+  name: string;
+  login: string;
+  password: string;
 };
+
+export type EditUserProfileResponse = SignUpResponse;
+
+export type DeleteUserResponse = {
+  error?: {
+    data: {
+      message: string;
+      statusCode: number;
+    };
+    status: number;
+  };
+};
+
+export type User = {
+  id: string;
+  login: string;
+  name: string;
+};
+
+export type GetUserByIdResponse = SignUpResponse;
+
+/* export type HeaderParams = {
+  getState: AppStore;
+}; */
