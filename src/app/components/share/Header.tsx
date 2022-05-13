@@ -1,7 +1,5 @@
-
 import { useState, useEffect, useCallback, ChangeEvent } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-
 import Typography from '@mui/material/Typography';
 import headerTheme from '../../theme/Theme';
 import AddBoxIcon from '@mui/icons-material/AddBox';
@@ -22,7 +20,6 @@ import {
   Switch,
   FormControlLabel,
 } from '@mui/material';
-
 
 const scrollThreshold = 40;
 
