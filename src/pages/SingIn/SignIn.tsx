@@ -88,12 +88,13 @@ export default function SignIn() {
   }, [touchedFields.login, touchedFields.password, touchedFields, isSubmitted]);
 
   useEffect(() => {
+    if (isErrorUser) {
+      setIsShowForm(true);
+      return;
+    }
     if (isSuccessUser) {
       dispatch(setUserAuthData({ isAuth: true }));
       navigator('/main');
-    }
-    if (isErrorUser) {
-      setIsShowForm(true);
     }
   }, [isSuccessUser, isErrorUser, dispatch, setUserAuthData, navigator]);
 
