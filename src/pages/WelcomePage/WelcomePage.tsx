@@ -1,19 +1,14 @@
 import './WelcomePage.css';
 import data from '../../services/data';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Box, Modal, Typography } from '@mui/material';
 import Card from '../../app/components/Card/Card';
 import CustomizedButton from '../../app/components/share/Button/CustomizedButton';
+import { useAppSelector } from '../../app/hooks';
 
 const WelcomePage = () => {
   const [videoModalActive, setVideomodalactive] = useState(false);
-  const [isAuth, setIsAuth] = useState(false);
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    token && setIsAuth(true);
-  }, []);
-
+  const { auth } = useAppSelector((state) => state.userAuthReducer);
   const openModal = (e: React.MouseEvent) => {
     e.preventDefault();
     setVideomodalactive(true);
@@ -26,8 +21,10 @@ const WelcomePage = () => {
 
   return (
     <div className="wrapper">
-      {isAuth ? (
-        <CustomizedButton innerText={'Go to Main Page'} link={'/main'} />
+      {auth.isAuth ? (
+        <div className="autorizationBtns">
+          <CustomizedButton innerText={'Go to Main Page'} link={'/main'} />
+        </div>
       ) : (
         <div className="autorizationBtns">
           <CustomizedButton innerText={'Sign in'} link={'/signin'} />
