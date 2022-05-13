@@ -1,6 +1,6 @@
 export default [
   {
-    imgSrc: '',
+    imgSrc: 'assets/img/avatars/Tolik.jpg',
     name: 'Анатолий - Team Lead',
     description: '- Вставим фото, - Описание,- О проделанной работе',
   },
