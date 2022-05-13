@@ -1,7 +1,7 @@
 import './WelcomePage.css';
 import data from '../../services/data';
 import { useState } from 'react';
-import Modal from '@mui/material/Modal/Modal';
+import Modal from '@mui/material/Modal';
 import { Box, Typography } from '@mui/material';
 import Card from '../../app/components/Card/Card';
 import { useAppSelector } from '../../app/hooks';
