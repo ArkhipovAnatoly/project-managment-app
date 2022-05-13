@@ -1,41 +1,53 @@
-import { useEffect, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import {
-  Container,
   Avatar,
-  Button,
-  CssBaseline,
-  TextField,
-  Link,
-  Grid,
   Box,
-  Typography,
-  FormHelperText,
+  Button,
   CircularProgress,
+  FormHelperText,
+  Grid,
+  Modal,
+  TextField,
+  Typography,
+  Backdrop,
+  Fade,
 } from '@mui/material';
+import { modalSlice } from '../../store/reducers/ModalSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { EditUserProfileData, EditUserProfileResponse } from '../../../types';
+import { useEffect, useState } from 'react';
+import { userAPI } from '../../../services/UserService';
+import { userAuthSlice } from '../../store/reducers/UserAuthSlice';
 
-import Copyright from '../../app/components/share/Copyright';
-import { SignUpResponse, UserSignUpData } from '../../types';
-import { userAPI } from '../../services/UserService';
-import { userAuthSlice } from '../../app/store/reducers/UserAuthSlice';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import ChildModal from './ChildModal';
 
-export default function SignUp() {
-  const [isDisabled, setIsDisabled] = useState<boolean>(true);
-  const [isShowForm, setIsShowForm] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>('');
-  const [signUpUser, { isLoading, isError, isSuccess }] = userAPI.useUserSignUpMutation();
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  width: 400,
+  transform: 'translate(-50%, -50%)',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
+export default function EditUser() {
+  const { showModal } = modalSlice.actions;
+  const { open } = useAppSelector((state) => state.modalReducer);
   const { auth } = useAppSelector((state) => state.userAuthReducer);
-  const {
-    isLoading: isChecking,
-    isError: isErrorUser,
-    isSuccess: isSuccessUser,
-  } = userAPI.useGetUserQuery(auth.userId as string);
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
+  const [message, setMessage] = useState<string>('');
+  const [updateProfile, { isLoading: isUpdating, isError, isSuccess }] =
+    userAPI.useUserUpdateMutation();
   const { setUserAuthData } = userAuthSlice.actions;
   const dispatch = useAppDispatch();
-  const navigator = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -49,23 +61,6 @@ export default function SignUp() {
       password: '',
     },
   });
-
-  const onSubmit: SubmitHandler<UserSignUpData> = async (formData) => {
-    setMessage('');
-    const response = (await signUpUser(formData)) as SignUpResponse;
-    if (response.error?.status) {
-      setMessage(response.error.data.message);
-    } else {
-      const userId = response.data?.id as string;
-      localStorage.setItem('userId', userId);
-      dispatch(setUserAuthData({ userId }));
-      setMessage('Successful sign up');
-      setTimeout(() => {
-        navigator('/signin');
-      }, 1500);
-    }
-  };
-
   useEffect(() => {
     reset();
   }, [reset, isSubmitSuccessful]);
@@ -84,55 +79,47 @@ export default function SignUp() {
     }
   }, [touchedFields.name, touchedFields.login, touchedFields.password, touchedFields, isSubmitted]);
 
-  useEffect(() => {
-    if (isErrorUser) {
-      setIsShowForm(true);
-      return;
+  const onSubmit: SubmitHandler<EditUserProfileData> = async (formData) => {
+    setMessage('');
+    const updateData = { ...formData, userId: auth.userId };
+    const response = (await updateProfile(updateData)) as EditUserProfileResponse;
+    if (response.error?.status) {
+      setMessage(response.error.data.message);
+    } else {
+      const userId = response.data?.id as string;
+      localStorage.setItem('userId', userId);
+      dispatch(setUserAuthData({ userId }));
+      setMessage('Successful update');
+      setTimeout(() => {
+        dispatch(showModal(false));
+      }, 1500);
     }
-    if (isSuccessUser) {
-      dispatch(setUserAuthData({ isAuth: true }));
-      navigator('/main');
-    }
-  }, [isSuccessUser, isErrorUser, dispatch, setUserAuthData, navigator]);
-
-  if (isChecking) {
-    return (
-      <Container component="section" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <CircularProgress size={30} color="warning" />
-        </Box>
-      </Container>
-    );
-  }
+  };
+  const handleClose = () => {
+    setMessage('');
+    dispatch(showModal(false));
+  };
 
   return (
-    <Container component="section" maxWidth="xs">
-      <CssBaseline />
-      {isShowForm && (
-        <>
-          <Box
-            sx={{
-              marginTop: 8,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-              <PersonAddAltIcon />
+    <>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <Box sx={style}>
+            <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+              <ManageAccountsIcon />
             </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign up
+            <Typography id="modal-modal-title" component="h2" variant="h5">
+              Edit Profile
             </Typography>
-
             <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
@@ -207,7 +194,7 @@ export default function SignUp() {
                   justifyContent: 'center',
                 }}
               >
-                {isLoading && <CircularProgress size={26} color="info" />}
+                {isUpdating && <CircularProgress size={26} color="info" />}
                 {
                   <FormHelperText
                     error={isError}
@@ -229,20 +216,16 @@ export default function SignUp() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign Up
+                Update
               </Button>
-              <Grid container justifyContent="flex-end">
-                <Grid item>
-                  <Link component={NavLink} to="/signin" variant="body2">
-                    Already have an account? Sign in
-                  </Link>
-                </Grid>
-              </Grid>
             </Box>
+            <Typography color="#ff0000" component="h2" variant="h5">
+              Delete Profile
+            </Typography>
+            <ChildModal />
           </Box>
-          <Copyright />
-        </>
-      )}
-    </Container>
+        </Fade>
+      </Modal>
+    </>
   );
 }

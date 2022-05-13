@@ -1,13 +1,15 @@
 import './WelcomePage.css';
 import data from '../../services/data';
 import { useState } from 'react';
-import Modal from '@mui/material/Modal/Modal';
-import { Box, Typography } from '@mui/material';
+import { Box, Modal, Typography } from '@mui/material';
 import Card from '../../app/components/Card/Card';
+import CustomizedButton from '../../app/components/share/Button/CustomizedButton';
+import { useAppSelector } from '../../app/hooks';
+import Footer from '../../app/components/share/Footer/Footer';
 
 const WelcomePage = () => {
   const [videoModalActive, setVideomodalactive] = useState(false);
-
+  const { auth } = useAppSelector((state) => state.userAuthReducer);
   const openModal = (e: React.MouseEvent) => {
     e.preventDefault();
     setVideomodalactive(true);
@@ -20,6 +22,7 @@ const WelcomePage = () => {
 
   return (
     <div className="wrapper">
+
       <div className="aboutTheProject">
         <h1>
           Система управления проектами <span className="titleProject">TEMPER</span>
@@ -74,10 +77,38 @@ const WelcomePage = () => {
               imgSrc={item.imgSrc}
               name={item.name}
               description={item.description}
+
             />
-          ))}
+          </a>
         </div>
-      </div>
+        <Modal id="videoModal" open={videoModalActive} onClose={closeModal}>
+          <Box>
+            <Typography id="modal-modal-title" variant="h6" component="h2"></Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              <iframe src="https://player.vimeo.com/video/174002812%22%3E"></iframe>
+            </Typography>
+          </Box>
+        </Modal>
+
+        <div className="aboutTheComand">
+          <h2>О команде</h2>
+          <p className="title">
+            &#8222; В командной работе хорошо то, что с вами всегда есть кто-то ещё &#8220;
+          </p>
+
+          <div className="cards">
+            {data.map((item, index) => (
+              <Card
+                key={index}
+                imgSrc={item.imgSrc}
+                name={item.name}
+                description={item.description}
+              />
+            ))}
+          </div>
+        </div>
+      </main>
+      <Footer />
     </div>
   );
 };
