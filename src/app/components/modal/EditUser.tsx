@@ -8,6 +8,8 @@ import {
   Modal,
   TextField,
   Typography,
+  Backdrop,
+  Fade,
 } from '@mui/material';
 import { modalSlice } from '../../store/reducers/ModalSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -79,7 +81,7 @@ export default function EditUser() {
 
   const onSubmit: SubmitHandler<EditUserProfileData> = async (formData) => {
     setMessage('');
-    const updateData = { ...formData, id: auth.userId };
+    const updateData = { ...formData, userId: auth.userId };
     const response = (await updateProfile(updateData)) as EditUserProfileResponse;
     if (response.error?.status) {
       setMessage(response.error.data.message);
@@ -88,9 +90,13 @@ export default function EditUser() {
       localStorage.setItem('userId', userId);
       dispatch(setUserAuthData({ userId }));
       setMessage('Successful update');
+      setTimeout(() => {
+        dispatch(showModal(false));
+      }, 1500);
     }
   };
   const handleClose = () => {
+    setMessage('');
     dispatch(showModal(false));
   };
 
@@ -100,119 +106,125 @@ export default function EditUser() {
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
       >
-        <Box sx={style}>
-          <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-            <ManageAccountsIcon />
-          </Avatar>
-          <Typography component="h2" variant="h5">
-            Edit Profile
-          </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  error={errors.name && true}
-                  autoComplete="given-name"
-                  required
-                  fullWidth
-                  id="Name"
-                  label="Name"
-                  autoFocus
-                  {...register('name', { required: true, pattern: /^[A-Za-zА-Яа-я]+$/i })}
-                />
-                {errors.name?.type === 'required' && (
-                  <FormHelperText component="span" error>
-                    Name is required
-                  </FormHelperText>
-                )}
-                {errors.name?.type === 'pattern' && (
-                  <FormHelperText component="span" error>
-                    Name should include letters only
-                  </FormHelperText>
-                )}
+        <Fade in={open}>
+          <Box sx={style}>
+            <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+              <ManageAccountsIcon />
+            </Avatar>
+            <Typography id="modal-modal-title" component="h2" variant="h5">
+              Edit Profile
+            </Typography>
+            <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    error={errors.name && true}
+                    autoComplete="given-name"
+                    required
+                    fullWidth
+                    id="Name"
+                    label="Name"
+                    autoFocus
+                    {...register('name', { required: true, pattern: /^[A-Za-zА-Яа-я]+$/i })}
+                  />
+                  {errors.name?.type === 'required' && (
+                    <FormHelperText component="span" error>
+                      Name is required
+                    </FormHelperText>
+                  )}
+                  {errors.name?.type === 'pattern' && (
+                    <FormHelperText component="span" error>
+                      Name should include letters only
+                    </FormHelperText>
+                  )}
+                </Grid>
+
+                <Grid item xs={12}>
+                  <TextField
+                    error={errors.login && true}
+                    required
+                    fullWidth
+                    id="login"
+                    label="Login"
+                    autoComplete="login"
+                    {...register('login', {
+                      required: true,
+                    })}
+                  />
+                  {errors.login?.type === 'required' && (
+                    <FormHelperText component="span" error>
+                      Login is required
+                    </FormHelperText>
+                  )}
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    error={errors.password && true}
+                    required
+                    fullWidth
+                    label="Password"
+                    type="password"
+                    id="password"
+                    autoComplete="new-password"
+                    {...register('password', { required: true, minLength: 8 })}
+                  />
+                  {errors.password?.type === 'required' && (
+                    <FormHelperText component="span" error>
+                      Password is required
+                    </FormHelperText>
+                  )}
+                  {errors.password?.type === 'minLength' && (
+                    <FormHelperText component="span" error>
+                      Password length should be more than 8 characters
+                    </FormHelperText>
+                  )}
+                </Grid>
               </Grid>
 
-              <Grid item xs={12}>
-                <TextField
-                  error={errors.login && true}
-                  required
-                  fullWidth
-                  id="login"
-                  label="Login"
-                  autoComplete="login"
-                  {...register('login', {
-                    required: true,
-                  })}
-                />
-                {errors.login?.type === 'required' && (
-                  <FormHelperText component="span" error>
-                    Login is required
+              <Box
+                sx={{
+                  mt: 2,
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                {isUpdating && <CircularProgress size={26} color="info" />}
+                {
+                  <FormHelperText
+                    error={isError}
+                    component="span"
+                    sx={{
+                      color: { isSuccess } && '#00FF00',
+                      fontSize: '18px',
+                    }}
+                  >
+                    {message}
                   </FormHelperText>
-                )}
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  error={errors.password && true}
-                  required
-                  fullWidth
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                  {...register('password', { required: true, minLength: 8 })}
-                />
-                {errors.password?.type === 'required' && (
-                  <FormHelperText component="span" error>
-                    Password is required
-                  </FormHelperText>
-                )}
-                {errors.password?.type === 'minLength' && (
-                  <FormHelperText component="span" error>
-                    Password length should be more than 8 characters
-                  </FormHelperText>
-                )}
-              </Grid>
-            </Grid>
+                }
+              </Box>
 
-            <Box
-              sx={{
-                mt: 2,
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              {isUpdating && <CircularProgress size={26} color="info" />}
-              {
-                <FormHelperText
-                  error={isError}
-                  component="span"
-                  sx={{
-                    color: { isSuccess } && '#00FF00',
-                    fontSize: '18px',
-                  }}
-                >
-                  {message}
-                </FormHelperText>
-              }
+              <Button
+                disabled={isDisabled}
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Update
+              </Button>
             </Box>
-
-            <Button
-              disabled={isDisabled}
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Update
-            </Button>
+            <Typography color="#ff0000" component="h2" variant="h5">
+              Delete Profile
+            </Typography>
+            <ChildModal />
           </Box>
-          <Typography color="#ff0000" component="h2" variant="h5">
-            Delete Profile
-          </Typography>
-          <ChildModal />
-        </Box>
+        </Fade>
       </Modal>
     </>
   );
