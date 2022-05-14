@@ -20,7 +20,6 @@ import ModalWindow from './ModalWindow';
 import ClearIcon from '@mui/icons-material/Clear';
 import CreateIcon from '@mui/icons-material/Create';
 import SendIcon from '@mui/icons-material/Send';
-import { useEffect, useState } from 'react';
 
 const useStyles = makeStyles({
   columns: {
