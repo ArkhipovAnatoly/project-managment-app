@@ -55,9 +55,7 @@ export default function Header() {
   const signOutHandle = () => {
     localStorage.removeItem('token');
     dispatch(setUserAuthData({ token: '', isAuth: false }));
-    setTimeout(() => {
-      navigator('/');
-    }, 500);
+    navigator('/');
   };
 
   return (
