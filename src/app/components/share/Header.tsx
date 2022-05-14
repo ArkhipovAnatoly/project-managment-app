@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, ChangeEvent } from 'react';
+import { useState, useEffect, useCallback, ChangeEvent, MouseEvent } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import headerTheme from '../../theme/Theme';
@@ -9,6 +9,7 @@ import { modalSlice } from '../../store/reducers/ModalSlice';
 import { useAppDispatch } from '../../hooks';
 import EditUser from '../modal/EditUser';
 import { userAuthSlice } from '../../store/reducers/UserAuthSlice';
+import MenuIcon from '@mui/icons-material/Menu';
 import {
   Container,
   Stack,
@@ -19,6 +20,10 @@ import {
   Button,
   Switch,
   FormControlLabel,
+  Box,
+  Menu,
+  MenuItem,
+  IconButton,
 } from '@mui/material';
 
 const scrollThreshold = 40;
@@ -26,6 +31,7 @@ const scrollThreshold = 40;
 export default function Header() {
   const [isScroll, setIsScroll] = useState<boolean>(false);
   const [language, setLanguage] = useState<string>('En');
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const { showModal } = modalSlice.actions;
   const dispatch = useAppDispatch();
   const { setUserAuthData } = userAuthSlice.actions;
@@ -44,19 +50,53 @@ export default function Header() {
   }, [scrollHandle]);
 
   const changeHandle = (e: ChangeEvent) => {
+    handleCloseNavMenu();
     const { checked } = e.target as HTMLInputElement;
     checked ? setLanguage('Ru') : setLanguage('En');
   };
 
   const openModal = () => {
+    handleCloseNavMenu();
     dispatch(showModal(true));
   };
 
   const signOutHandle = () => {
+    handleCloseNavMenu();
     localStorage.removeItem('token');
     dispatch(setUserAuthData({ token: '', isAuth: false }));
     navigator('/');
   };
+
+  const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
+    setAnchorElNav(event.currentTarget);
+  };
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
+  const changeLanguage = () => {
+    language === 'En' ? setLanguage('Ru') : setLanguage('En');
+  };
+  const createBoard = () => {};
+
+  const pages = [
+    {
+      title: 'Create New Board',
+      handler: createBoard,
+    },
+    {
+      title: 'Edit profile',
+      handler: openModal,
+    },
+    {
+      title: 'Log Out',
+      handler: signOutHandle,
+    },
+    {
+      title: `Language: ${language}`,
+      handler: changeLanguage,
+    },
+  ];
 
   return (
     <>
@@ -88,17 +128,54 @@ export default function Header() {
                 </Link>
               </Typography>
 
-              <Stack direction="row" spacing={3}>
+              <Box sx={{ display: { md: 'none', xs: 'flex' } }}>
+                <IconButton
+                  size="large"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  color="inherit"
+                  onClick={handleOpenNavMenu}
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorElNav}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  sx={{
+                    display: { md: 'none', xs: 'block' },
+                  }}
+                  open={Boolean(anchorElNav)}
+                  onClose={handleCloseNavMenu}
+                >
+                  {pages.map((page, i) => (
+                    <MenuItem key={i} onClick={page.handler}>
+                      <Typography textAlign="center">{page.title}</Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </Box>
+
+              <Stack direction="row" spacing={3} sx={{ display: { md: 'flex', xs: 'none' } }}>
                 <FormControlLabel
                   control={<Switch onChange={changeHandle} color="primary" />}
                   label={language}
                   labelPlacement="end"
                 />
                 <Button
+                  onClick={createBoard}
                   variant="contained"
                   color="warning"
                   startIcon={<AddBoxIcon />}
-                  // onClick={openModalWindow}
                 >
                   Create new board
                 </Button>
