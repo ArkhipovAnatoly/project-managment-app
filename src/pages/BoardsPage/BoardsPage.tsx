@@ -1,6 +1,6 @@
 import { Button, InputBase, Paper, TextField, Typography } from '@mui/material';
 import { createRef, useEffect, useState } from 'react';
-import BoardColumns from './BoardColumns';
+import BoardColumns from './BoardColumns/BoardColumns';
 import { makeStyles } from '@material-ui/core';
 import Box from '@mui/material/Box';
 import { NavLink } from 'react-router-dom';
