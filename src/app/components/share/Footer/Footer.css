@@ -1,0 +1,89 @@
+footer {
+  /* background-image: url(../../assets/img/features.jpg);
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  background-position: top center;
+  background-repeat: no-repeat; */
+  background-color: #151719;
+  color: #fff;
+  height: 50px;
+}
+
+.footerContent {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 10px 0;
+}
+
+.aboutTheCourse {
+  color: #fff;
+  text-align: center;
+}
+
+.rss {
+  background-image: url(../../../../assets/img/rss.svg);
+  background-position: 0;
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: block;
+  height: 32px;
+  position: relative;
+  width: 111px;
+}
+
+.rssYear {
+  color: #fff;
+  bottom: 0;
+  position: absolute;
+  right: 0;
+}
+
+.githab {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  height: 20px;
+}
+
+.githab a {
+  padding: 10px 0px 0px 40px;
+  background-image: url(../../../../assets/img/git.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  text-decoration: none;
+  color: #fff;
+}
+
+.githab a:hover {
+  color: gold;
+}
+
+/* @media screen and (min-width: 623px) and (max-width: 100px) {
+  .githab {
+    padding: 0;
+  }
+} */
+
+@media screen and (min-width: 180px) and (max-width: 600px) {
+  footer {
+    padding: 0;
+  }
+}
+
+@media screen and (min-width: 180px) and (max-width: 460px) {
+  footer {
+    height: 100px;
+  }
+}
+
+@media screen and (min-width: 180px) and (max-width: 329px) {
+  footer {
+    height: 140px;
+  }
+
+  .githab {
+    padding: 10px;
+  }
+}
