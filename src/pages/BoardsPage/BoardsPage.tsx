@@ -8,7 +8,6 @@ import { NavLink } from 'react-router-dom';
 const useStyles = makeStyles({
   container: {
     height: '100%',
-    margin: '64px 20px 20px 20px',
     display: 'flex',
     flexDirection: 'column',
   },
@@ -54,6 +53,11 @@ function BoardsPage() {
 
   return (
     <Box className={classes.container}>
+      <Box className={classes.header} sx={{ m: '20px 10px' }}>
+        <NavLink to="/" style={{ textDecoration: 'none' }}>
+          <Button variant="contained">Main Page</Button>
+        </NavLink>
+      </Box>
       <Paper
         component="form"
         sx={{
@@ -61,16 +65,11 @@ function BoardsPage() {
           p: '2px 4px',
           display: 'flex',
           alignItems: 'center',
-          maxWidth: '700vw',
+          width: '265px',
         }}
       >
-        <InputBase sx={{ ml: 6, flex: 1 }} defaultValue="My Project Name" />
+        <InputBase sx={{ ml: 1, flex: 1 }} defaultValue="My Project Name" />
       </Paper>
-      <Box className={classes.header} sx={{ ml: '10px' }}>
-        <NavLink to="/" style={{ textDecoration: 'none' }}>
-          <Button variant="contained">Main Page</Button>
-        </NavLink>
-      </Box>
       <Box className={classes.content}>
         <BoardColumns></BoardColumns>
       </Box>

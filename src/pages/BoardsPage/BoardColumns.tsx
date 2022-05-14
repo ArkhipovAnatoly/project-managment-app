@@ -1,6 +1,6 @@
 import AddIcon from '@mui/icons-material/Add';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { useSliceBoardsPage } from '../../app/reducers/useSliceBoardsPage';
+import { useSliceBoardsPage } from '../../app/store/reducers/useSliceBoardsPage';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
   AccordionDetails,

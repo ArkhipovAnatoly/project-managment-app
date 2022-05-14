@@ -2,19 +2,18 @@ body {
   margin: 0 auto;
   color: #9ca9b3;
   font-size: 18px;
-  background-image: url(../../assets/img/illustration.svg);
+  background-image: url(../../../public/assets/img/illustration.svg);
   background-position: top center;
   background-repeat: no-repeat;
   background-color: #151719;
 }
 
-main {
+.main {
   min-height: calc(100vh - 116px);
 }
 
 .wrapper {
   padding: 0 250px;
-  margin-top: 100px;
 }
 
 .aboutTheProject {

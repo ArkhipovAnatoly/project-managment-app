@@ -13,7 +13,7 @@ import Stack from '@mui/material/Stack';
 import { makeStyles } from '@material-ui/core';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { useSliceBoardsPage } from '../../app/reducers/useSliceBoardsPage';
+import { useSliceBoardsPage } from '../../app/store/reducers/useSliceBoardsPage';
 import DialogContent from '@mui/material/DialogContent';
 
 const useStyles = makeStyles({
