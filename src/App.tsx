@@ -9,6 +9,7 @@ import MainPage from './pages/MainPage/MainPage';
 import { userAuthSlice } from './app/store/reducers/UserAuthSlice';
 import { useEffect } from 'react';
 import { useAppDispatch } from './app/hooks';
+import BoardsPage from './pages/BoardsPage/BoardsPage';
 
 function App() {
   const { setUserAuthData } = userAuthSlice.actions;
@@ -29,6 +30,7 @@ function App() {
           <Route path="/main" element={<MainPage />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/board" element={<BoardsPage />} />
         </Route>
         <Route path="*" element={<Error />} />
       </Routes>

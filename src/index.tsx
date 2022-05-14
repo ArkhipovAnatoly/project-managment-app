@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 import { store } from './app/store/store';
+import { BrowserRouter } from 'react-router-dom';
 
 const container = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(container);
