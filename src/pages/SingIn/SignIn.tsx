@@ -116,8 +116,8 @@ export default function SignIn() {
   }
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', marginTop: 1 }}>
-      <Container component="section" sx={{ backgroundColor: 'white' }} maxWidth="xs">
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <Container component="section" sx={{ backgroundColor: 'white', marginTop: 8 }} maxWidth="xs">
         {isShowForm && (
           <>
             <Box
