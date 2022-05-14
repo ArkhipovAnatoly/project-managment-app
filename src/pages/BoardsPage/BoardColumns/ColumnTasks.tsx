@@ -1,27 +1,21 @@
 import AddIcon from '@mui/icons-material/Add';
-import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { useAppDispatch } from '../../../app/hooks';
 import {
   BoardsPageState,
   useSliceBoardsPage,
 } from '../../../app/store/reducers/useSliceBoardsPage';
-import DeleteIcon from '@mui/icons-material/Delete';
 import {
   AccordionDetails,
   Accordion,
   AccordionSummary,
   Button,
-  IconButton,
   Paper,
-  Tooltip,
   Typography,
 } from '@mui/material';
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
 import { makeStyles } from '@material-ui/core';
-import ModalWindow from '../ModalWindow';
 import ClearIcon from '@mui/icons-material/Clear';
 import CreateIcon from '@mui/icons-material/Create';
-import ColumnTitle from './ColumnTitle';
 
 const useStyles = makeStyles({
   columnTask: {
