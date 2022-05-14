@@ -94,7 +94,12 @@ export default function Header() {
                   label={language}
                   labelPlacement="end"
                 />
-                <Button variant="contained" color="warning" startIcon={<AddBoxIcon />}>
+                <Button
+                  variant="contained"
+                  color="warning"
+                  startIcon={<AddBoxIcon />}
+                  // onClick={openModalWindow}
+                >
                   Create new board
                 </Button>
                 <Button

@@ -1,4 +1,4 @@
-import { Box, Link, Typography } from '@mui/material';
+import { Container, Card, Box, Link, Typography, Button } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import Header from '../../app/components/share/Header';
 import { useAppSelector } from '../../app/hooks';
@@ -32,8 +32,37 @@ export default function MainPage() {
   return (
     <>
       <Header />
-
-      <div style={{ color: 'white', marginTop: '100px' }}>MainPage</div>
+      <Container
+        sx={{
+          paddingTop: '120px',
+          paddingBottom: '20px',
+          minHeight: 'calc(100vh - 50px)',
+        }}
+      >
+        <Card
+          sx={{
+            width: '275px',
+            height: '80px',
+            textAlign: 'center',
+            padding: '22px 0',
+            backgroundColor: '#ebecf0b8',
+          }}
+        >
+          <Box
+            component="span"
+            sx={{
+              p: 2,
+              border: '1px dashed grey',
+            }}
+          >
+            <Button
+            // onClick={handleModal}
+            >
+              Add board
+            </Button>
+          </Box>
+        </Card>
+      </Container>
     </>
   );
 }
