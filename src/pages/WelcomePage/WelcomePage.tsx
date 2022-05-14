@@ -6,7 +6,6 @@ import { Box, Typography } from '@mui/material';
 import Card from '../../app/components/Card/Card';
 import { useAppSelector } from '../../app/hooks';
 import CustomizedButton from '../../app/components/share/Button/CustomizedButton';
-import Footer from '../../app/components/share/Footer/Footer';
 
 const WelcomePage = () => {
   const [videoModalActive, setVideomodalactive] = useState(false);
@@ -24,8 +23,8 @@ const WelcomePage = () => {
 
   return (
     <>
-      <div className="wrapper">
-        <main className="main">
+      <main className="main">
+        <div className="wrapper">
           {auth.isAuth ? (
             <div className="autorizationBtns">
               <CustomizedButton innerText={'Go to Main page'} link={'/main'} />
@@ -72,12 +71,17 @@ const WelcomePage = () => {
               канбан-досок.
             </p>
             <div className="imgTitle">
-              <img src={'assets/img/board1.png'} alt="board" />
+              <img src={'assets/img/board.png'} alt="board" />
             </div>
           </div>
           <div className="titleContainer2">
+            <p className="title">
+              Вы сами выбираете, по какому принципу организовывать карточки на досках.
+            </p>
+          </div>
+          <div className="titleContainer3">
             <div className="imgTitle">
-              <img src={'assets/img/board.png'} alt="board" />
+              <img src={'assets/img/giphy.gif'} className="imgBoard" alt="boardGif" />
             </div>
             <p className="title">
               Вы сами выбираете, по какому принципу организовывать карточки на досках.
@@ -96,9 +100,8 @@ const WelcomePage = () => {
               ))}
             </div>
           </div>
-        </main>
-      </div>
-      <Footer />
+        </div>
+      </main>
     </>
   );
 };
