@@ -20,7 +20,6 @@ import ModalWindow from './ModalWindow';
 import ClearIcon from '@mui/icons-material/Clear';
 import CreateIcon from '@mui/icons-material/Create';
 import SendIcon from '@mui/icons-material/Send';
-import { useEffect, useState } from 'react';
 
 const useStyles = makeStyles({
   columns: {
@@ -206,65 +205,67 @@ function BoardColumns() {
         break;
     }
   };
+  const showAllSettingsColumnTitle = (event: React.MouseEvent) => {
+    const mainBox = (event.target as HTMLInputElement).closest('.boxForTitleColumn') as HTMLElement;
+    const buttonsForTitle = mainBox.querySelector('.buttonsForTitle') as HTMLElement;
+    const inputTitleChange = mainBox.querySelector('.inputTitleChange') as HTMLElement;
 
-  const openButtonSettings = (event: React.MouseEvent) => {
-    // const target = (event.target as HTMLInputElement).closest('.boxForTitle') as HTMLElement;
-    // const target2 = target.querySelector('.buttonApply');
-    // const target3 = target.querySelector('.buttonCancel');
-    // (target2 as HTMLElement).style.display = 'block';
-    // (target3 as HTMLElement).style.display = 'block';
-    // target.dataset.onopen = (event.target as HTMLInputElement).value;
-    // target.dataset.onclose = (event.target as HTMLInputElement).value;
+    const target = event.target as HTMLElement;
+    buttonsForTitle.style.display = 'block';
+    inputTitleChange.style.display = 'block';
+    target.style.display = 'none';
+    const inputForTitleColumn = inputTitleChange.querySelector('input') as HTMLInputElement;
+    inputForTitleColumn.focus();
   };
 
-  const closeButtonSettings = (event: React.FocusEvent) => {
-    // const mainBox = (event.target as HTMLInputElement).closest('.boxForTitle') as HTMLElement;
-    // const buttonApply = mainBox.querySelector('.buttonApply');
-    // const buttonCancel = mainBox.querySelector('.buttonCancel');
-    // // (target2 as HTMLElement).style.display = 'none';
-    // // (target3 as HTMLElement).style.display = 'none';
-    // // (event.target as HTMLInputElement).value = `${target.dataset.onclose}`;
+  const onFocusButtonColumnTitle = (event: React.FocusEvent) => {
+    const mainBox = (event.target as HTMLInputElement).closest('.boxForTitleColumn') as HTMLElement;
+    const someBoardTitleText = mainBox.querySelector('.someBoardTitleText');
+    mainBox.dataset.onopen = '';
+    mainBox.dataset.onclose = someBoardTitleText?.textContent as string;
   };
 
-  const changeButtonSettings = (event: React.ChangeEvent) => {
-    // const mainBox = (event.target as HTMLInputElement).closest('.boxForTitle') as HTMLElement;
-    // mainBox.dataset.onopen = `${(event.target as HTMLInputElement).value}`;
+  const onBlurButtonColumnTitle = (event: React.FocusEvent) => {
+    const target = event.target as HTMLInputElement;
+    target.value = ``;
   };
 
-  const buttonSettingsApply = (event: React.MouseEvent) => {
-    // const mainBox = (event.target as HTMLElement).closest('.boxForTitle') as HTMLElement;
-    // dispatch(
-    //   reducers.changeTitleOfCurrentColumn({
-    //     indexColumn: mainBox.dataset.columnindex as string,
-    //     columnTittle: mainBox.dataset.onopen as string,
-    //   })
-    // );
-    // const inputTitle = mainBox.querySelector('.inputTitleChange') as HTMLInputElement;
-    // const buttonApply = mainBox.querySelector('.buttonApply') as HTMLElement;
-    // const buttonCancel = mainBox.querySelector('.buttonCancel') as HTMLElement;
-    // setTitleOnApplyButton(mainBox.dataset.onopen as string);
-    // buttonApply.style.display = 'none';
-    // buttonCancel.style.display = 'none';
+  const onChangeButtonColumnTitle = (event: React.ChangeEvent) => {
+    const mainBox = (event.target as HTMLInputElement).closest('.boxForTitleColumn') as HTMLElement;
+    mainBox.dataset.onopen = (event.target as HTMLInputElement).value;
   };
-  const buttonSettingsClose = (event: React.MouseEvent) => {
-    // const mainBox = (event.target as HTMLElement).closest('.boxForTitle') as HTMLElement;
-    // dispatch(
-    //   reducers.changeTitleOfCurrentColumn({
-    //     indexColumn: mainBox.dataset.columnindex as string,
-    //     columnTittle: mainBox.dataset.onclose as string,
-    //   })
-    // );
-    // console.log(mainBox.dataset.onclose);
-    // console.log(dataBoardsPage);
-    // const mainBox = (event.target as HTMLElement).closest('.boxForTitle') as HTMLElement;
-    // const buttonApply = mainBox.querySelector('.buttonApply') as HTMLElement;
-    // const buttonCancel = mainBox.querySelector('.buttonCancel') as HTMLElement;
-    // const inputTitle = mainBox.querySelector('.inputTitleChange') as HTMLInputElement;
-    // setTitleOnCloseButton(mainBox.dataset.onclose as string);
-    // buttonApply.style.display = 'none';
-    // buttonCancel.style.display = 'none';
-    // console.log(mainBox.dataset.onclose);
-    // console.log(inputTitle.value);
+
+  const buttonApplyColumnTitle = (event: React.MouseEvent) => {
+    const mainBox = (event.target as HTMLElement).closest('.boxForTitleColumn') as HTMLElement;
+    const buttonsForTitle = mainBox.querySelector('.buttonsForTitle') as HTMLElement;
+    const inputTitleChange = mainBox.querySelector('.inputTitleChange') as HTMLElement;
+    const someBoardTitleText = mainBox.querySelector('.someBoardTitleText') as HTMLElement;
+    if ((mainBox.dataset.onopen as string) !== '') {
+      buttonsForTitle.style.display = 'none';
+      inputTitleChange.style.display = 'none';
+      someBoardTitleText.style.display = 'block';
+      dispatch(
+        reducers.changeTitleOfCurrentColumn({
+          indexColumn: mainBox.dataset.columnindex as string,
+          columnTittle: mainBox.dataset.onopen as string,
+        })
+      );
+    }
+  };
+  const buttonCloseColumnTitle = (event: React.MouseEvent) => {
+    const mainBox = (event.target as HTMLElement).closest('.boxForTitleColumn') as HTMLElement;
+    const buttonsForTitle = mainBox.querySelector('.buttonsForTitle') as HTMLElement;
+    const inputTitleChange = mainBox.querySelector('.inputTitleChange') as HTMLElement;
+    const someBoardTitleText = mainBox.querySelector('.someBoardTitleText') as HTMLElement;
+    buttonsForTitle.style.display = 'none';
+    inputTitleChange.style.display = 'none';
+    someBoardTitleText.style.display = 'block';
+    dispatch(
+      reducers.changeTitleOfCurrentColumn({
+        indexColumn: mainBox.dataset.columnindex as string,
+        columnTittle: mainBox.dataset.onclose as string,
+      })
+    );
   };
 
   return (
@@ -274,34 +275,47 @@ function BoardColumns() {
           <Box className={classes.column} key={`${column.tittle} ${indexColumn}`}>
             <Box className={classes.columnOptions}>
               <Box
-                className={`${classes.columnTitle} boxForTitle`}
+                className={`${classes.columnTitle} boxForTitleColumn`}
                 data-columnindex={indexColumn}
                 data-onopen={column.tittle}
                 data-onclose={column.tittle}
               >
-                <InputBase
+                <Typography className={'someBoardTitleText'} onClick={showAllSettingsColumnTitle}>
+                  {column.tittle}
+                </Typography>
+                <Paper
                   className={'inputTitleChange'}
-                  defaultValue={column.tittle}
-                  onClick={openButtonSettings}
-                  onBlur={closeButtonSettings}
-                  onChange={changeButtonSettings}
-                />
-                <Button
-                  onClick={buttonSettingsApply}
-                  className={'buttonApply'}
-                  variant="contained"
-                  size="small"
-                  startIcon={<SendIcon />}
-                  sx={{ mt: '2px', display: 'none' }}
-                ></Button>
-                <Button
-                  onClick={buttonSettingsClose}
-                  className={'buttonCancel'}
-                  variant="contained"
-                  size="small"
-                  startIcon={<DeleteIcon />}
                   sx={{ mb: '2px', mt: '4px', display: 'none' }}
-                ></Button>
+                >
+                  <InputBase
+                    onFocus={onFocusButtonColumnTitle}
+                    onBlur={onBlurButtonColumnTitle}
+                    onChange={onChangeButtonColumnTitle}
+                  />
+                </Paper>
+                <Stack
+                  className={'buttonsForTitle'}
+                  sx={{ mt: '4px', display: 'none' }}
+                  spacing={1}
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="center"
+                >
+                  <Button
+                    onClick={buttonApplyColumnTitle}
+                    className={'buttonApply'}
+                    variant="contained"
+                    size="small"
+                    startIcon={<SendIcon />}
+                  ></Button>
+                  <Button
+                    onClick={buttonCloseColumnTitle}
+                    className={'buttonCancel'}
+                    variant="contained"
+                    size="small"
+                    startIcon={<DeleteIcon />}
+                  ></Button>
+                </Stack>
               </Box>
               <Stack
                 direction="column"

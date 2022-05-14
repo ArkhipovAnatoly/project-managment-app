@@ -124,10 +124,9 @@ export const useSliceBoardsPage = createSlice({
       state.dataBoardsPage.push(emptyColumn);
     },
 
-    // changeTitleOfCurrentColumn: (state, action: PayloadAction<ChangeColumn>) => {
-    //   state.titleOfCurrentColumn = action.payload.columnTittle;
-    //   state.dataBoardsPage[Number(action.payload.indexColumn)].tittle = action.payload.columnTittle;
-    // },
+    changeTitleOfCurrentColumn: (state, action: PayloadAction<ChangeColumn>) => {
+      state.dataBoardsPage[Number(action.payload.indexColumn)].tittle = action.payload.columnTittle;
+    },
 
     deleteColumn: (state, action: PayloadAction<number>) => {
       const deleteOneElement = 1;
