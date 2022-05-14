@@ -110,10 +110,16 @@ function ColumnTasks(props: ColumnTasks) {
             </Box>
             <Accordion elevation={0}>
               <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
-                <Typography>{tasks.taskTittle}</Typography>
+                <Typography sx={{ mt: '4px', display: 'flex', flexWrap: 'wrap' }}>
+                  {tasks.taskTittle}
+                </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Typography variant="body2" color="text.secondary">
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mt: '4px', display: 'flex', flexWrap: 'wrap' }}
+                >
                   {tasks.taskOption}
                 </Typography>
               </AccordionDetails>
