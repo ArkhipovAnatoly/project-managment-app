@@ -77,7 +77,9 @@ export default function Header() {
   const changeLanguage = () => {
     language === 'En' ? setLanguage('Ru') : setLanguage('En');
   };
-  const createBoard = () => {};
+  const createBoard = () => {
+    handleCloseNavMenu();
+  };
 
   const pages = [
     {
