@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import CloseIcon from '@mui/icons-material/Close';
 import Container from '@mui/material/Container';
 
 import Copyright from '../../app/components/share/Copyright';
@@ -62,7 +63,7 @@ export default function SignIn() {
     } else {
       const token = response.data?.token as string;
       localStorage.setItem('token', token);
-      dispatch(setUserAuthData({ token, isAuth: true, isLogOut: false }));
+      dispatch(setUserAuthData({ token, isAuth: true }));
       setMessage('Successful sign in');
       setTimeout(() => {
         navigator('/main');
@@ -98,6 +99,10 @@ export default function SignIn() {
       navigator('/main');
     }
   }, [isSuccessUser, isErrorUser, dispatch, setUserAuthData, navigator]);
+
+  const clickHandler = () => {
+    navigator('/');
+  };
 
   if (isChecking) {
     return (
@@ -140,6 +145,12 @@ export default function SignIn() {
                   alignItems: 'center',
                 }}
               >
+                <CloseIcon
+                  sx={{ m: 1, marginLeft: 'auto', cursor: 'pointer' }}
+                  onClick={clickHandler}
+                  color="primary"
+                />
+
                 <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                   <LockOutlinedIcon />
                 </Avatar>

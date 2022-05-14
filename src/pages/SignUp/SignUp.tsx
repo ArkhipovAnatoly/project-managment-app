@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Container,
   Avatar,
@@ -116,6 +117,9 @@ export default function SignUp() {
     );
   }
 
+  const clickHandler = () => {
+    navigator('/');
+  };
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <Grow
@@ -137,6 +141,11 @@ export default function SignUp() {
                   alignItems: 'center',
                 }}
               >
+                <CloseIcon
+                  sx={{ m: 1, marginLeft: 'auto', cursor: 'pointer' }}
+                  onClick={clickHandler}
+                  color="primary"
+                />
                 <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                   <PersonAddAltIcon />
                 </Avatar>
