@@ -32,6 +32,7 @@ const WelcomePage = () => {
             </div>
           ) : (
             <div className="autorizationBtns">
+              <CustomizedButton innerText={'Board'} link={'/board'} />
               <CustomizedButton innerText={'Sign in'} link={'/signin'} />
               <CustomizedButton innerText={'Sign up'} link={'/signup'} />
             </div>
