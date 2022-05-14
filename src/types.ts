@@ -11,7 +11,6 @@ export type UserAuthData = {
   userId?: string;
   token?: string;
   isAuth?: boolean;
-  isLogOut?: boolean;
 };
 
 export type UserSignInData = {

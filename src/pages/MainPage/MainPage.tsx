@@ -6,7 +6,7 @@ import { useAppSelector } from '../../app/hooks';
 export default function MainPage() {
   const { auth } = useAppSelector((state) => state.userAuthReducer);
 
-  if (!auth.isLogOut && !auth.token) {
+  if (!auth.isAuth) {
     return (
       <Box
         sx={{
@@ -19,8 +19,11 @@ export default function MainPage() {
         <Typography component="h1" variant="h3">
           Access denied
         </Typography>
+        <Typography component="h2" variant="h4">
+          Sign in is required
+        </Typography>
         <Link component={NavLink} to="/" variant="body1">
-          {'Home page'}
+          Home page
         </Link>
       </Box>
     );
