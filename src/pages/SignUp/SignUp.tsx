@@ -97,18 +97,21 @@ export default function SignUp() {
 
   if (isChecking) {
     return (
-      <Container component="section" maxWidth="xs">
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <CircularProgress size={30} color="warning" />
-        </Box>
-      </Container>
+      <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <Container component="section" maxWidth="xs">
+          <Box
+            sx={{
+              marginTop: 8,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <CircularProgress size={30} color="warning" />
+          </Box>
+        </Container>
+        <Footer />
+      </Box>
     );
   }
 
