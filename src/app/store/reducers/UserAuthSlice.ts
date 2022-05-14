@@ -10,6 +10,7 @@ const initialState: UserAuth = {
     userId: '',
     token: '',
     isAuth: false,
+    isLogOut: false,
   },
 };
 

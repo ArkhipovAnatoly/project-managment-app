@@ -62,7 +62,7 @@ export default function SignIn() {
     } else {
       const token = response.data?.token as string;
       localStorage.setItem('token', token);
-      dispatch(setUserAuthData({ token, isAuth: true }));
+      dispatch(setUserAuthData({ token, isAuth: true, isLogOut: false }));
       setMessage('Successful sign in');
       setTimeout(() => {
         navigator('/main');

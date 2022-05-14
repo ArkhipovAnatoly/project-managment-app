@@ -6,7 +6,7 @@ import { useAppSelector } from '../../app/hooks';
 export default function MainPage() {
   const { auth } = useAppSelector((state) => state.userAuthReducer);
 
-  if (!auth.isAuth) {
+  if (!auth.isLogOut && !auth.token) {
     return (
       <Box
         sx={{
