@@ -19,6 +19,7 @@ import ModalWindow from '../ModalWindow';
 import ClearIcon from '@mui/icons-material/Clear';
 import CreateIcon from '@mui/icons-material/Create';
 import ColumnTitle from './ColumnTitle';
+import ColumnTasks from './ColumnTasks';
 
 const useStyles = makeStyles({
   columns: {
@@ -107,13 +108,6 @@ const useStyles = makeStyles({
       borderRadius: 5,
     },
   },
-  columnTask: {
-    minWidth: '95%',
-    maxWidth: '200px',
-    height: 'auto',
-    borderRadius: 3,
-    cursor: 'pointer',
-  },
   columnSettings: {
     margin: 5,
     padding: 3,
@@ -133,11 +127,6 @@ const useStyles = makeStyles({
       borderRadius: 3,
       cursor: 'pointer',
     },
-  },
-  buttonsSetting: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
   },
 });
 
@@ -212,50 +201,7 @@ function BoardColumns() {
                 spacing={2}
                 className={classes.columnTasks}
               >
-                {column.tasks?.map((tasks, indexTask) => {
-                  return (
-                    <Paper
-                      key={`${tasks.taskTittle} ${indexTask}`}
-                      className={classes.columnTask}
-                      elevation={3}
-                    >
-                      <Box className={classes.buttonsSetting}>
-                        <Box
-                          className="buttonModal"
-                          data-modalname="deleteTask"
-                          data-columnindex={indexColumn}
-                          data-taskindex={indexTask}
-                          onClick={handleModalWindow}
-                        >
-                          <Button color="secondary">
-                            <ClearIcon fontSize="small" color="action" />
-                          </Button>
-                        </Box>
-                        <Box
-                          className="buttonModal"
-                          data-modalname="editTask"
-                          data-columnindex={indexColumn}
-                          data-taskindex={indexTask}
-                          onClick={handleModalWindow}
-                        >
-                          <Button color="secondary">
-                            <CreateIcon fontSize="small" color="action" />
-                          </Button>
-                        </Box>
-                      </Box>
-                      <Accordion elevation={0}>
-                        <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
-                          <Typography>{tasks.taskTittle}</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <Typography variant="body2" color="text.secondary">
-                            {tasks.taskOption}
-                          </Typography>
-                        </AccordionDetails>
-                      </Accordion>
-                    </Paper>
-                  );
-                })}
+                <ColumnTasks indexColumn={indexColumn} column={column} />
               </Stack>
               <Box className={classes.columnSettings}>
                 <Box
