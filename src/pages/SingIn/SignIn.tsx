@@ -12,6 +12,7 @@ import {
   Typography,
   FormHelperText,
   CircularProgress,
+  Grow,
 } from '@mui/material';
 
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -120,107 +121,117 @@ export default function SignIn() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <Container component="section" sx={{ backgroundColor: 'white', marginTop: 8 }} maxWidth="xs">
-        {isShowForm && (
-          <>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-              }}
-            >
-              <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                <LockOutlinedIcon />
-              </Avatar>
-              <Typography component="h1" variant="h5">
-                Sign in
-              </Typography>
+      <Grow
+        style={{ transformOrigin: '0 0 0' }}
+        in={isShowForm}
+        {...(isShowForm ? { timeout: 1000 } : {})}
+      >
+        <Container
+          component="section"
+          sx={{ backgroundColor: 'white', marginTop: 8 }}
+          maxWidth="xs"
+        >
+          {isShowForm && (
+            <>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                  <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                  Sign in
+                </Typography>
 
-              <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
-                <TextField
-                  error={errors.login && true}
-                  margin="normal"
-                  required
-                  id="Login"
-                  label="Login"
-                  fullWidth
-                  autoComplete="given-login"
-                  autoFocus
-                  {...register('login', { required: true })}
-                />
-                {errors.login?.type === 'required' && (
-                  <FormHelperText component="span" error>
-                    Login is required
-                  </FormHelperText>
-                )}
-
-                <TextField
-                  error={errors.password && true}
-                  margin="normal"
-                  required
-                  fullWidth
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  {...register('password', { required: true, minLength: 8 })}
-                />
-                {errors.password?.type === 'required' && (
-                  <FormHelperText component="span" error>
-                    Password is required
-                  </FormHelperText>
-                )}
-                {errors.password?.type === 'minLength' && (
-                  <FormHelperText component="span" error>
-                    Password length should be more than 8 characters
-                  </FormHelperText>
-                )}
-                <Box
-                  sx={{
-                    mt: 2,
-                    display: 'flex',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {isLoading && <CircularProgress size={26} color="info" />}
-                  {
-                    <FormHelperText
-                      error={isError}
-                      component="span"
-                      sx={{
-                        color: { isSuccess } && '#00FF00',
-                        fontSize: '18px',
-                      }}
-                    >
-                      {message}
+                <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
+                  <TextField
+                    error={errors.login && true}
+                    margin="normal"
+                    required
+                    id="Login"
+                    label="Login"
+                    fullWidth
+                    autoComplete="given-login"
+                    autoFocus
+                    {...register('login', { required: true })}
+                  />
+                  {errors.login?.type === 'required' && (
+                    <FormHelperText component="span" error>
+                      Login is required
                     </FormHelperText>
-                  }
-                </Box>
+                  )}
 
-                <Button
-                  disabled={isDisabled}
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  Sign In
-                </Button>
+                  <TextField
+                    error={errors.password && true}
+                    margin="normal"
+                    required
+                    fullWidth
+                    label="Password"
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
+                    {...register('password', { required: true, minLength: 8 })}
+                  />
+                  {errors.password?.type === 'required' && (
+                    <FormHelperText component="span" error>
+                      Password is required
+                    </FormHelperText>
+                  )}
+                  {errors.password?.type === 'minLength' && (
+                    <FormHelperText component="span" error>
+                      Password length should be more than 8 characters
+                    </FormHelperText>
+                  )}
+                  <Box
+                    sx={{
+                      mt: 2,
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {isLoading && <CircularProgress size={26} color="info" />}
+                    {
+                      <FormHelperText
+                        error={isError}
+                        component="span"
+                        sx={{
+                          color: { isSuccess } && '#00FF00',
+                          fontSize: '18px',
+                        }}
+                      >
+                        {message}
+                      </FormHelperText>
+                    }
+                  </Box>
 
-                <Grid container>
-                  <Grid item>
-                    <Link component={NavLink} to="/signup" variant="body2">
-                      {"Don't have an account? Sign Up"}
-                    </Link>
+                  <Button
+                    disabled={isDisabled}
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                  >
+                    Sign In
+                  </Button>
+
+                  <Grid container>
+                    <Grid item>
+                      <Link component={NavLink} to="/signup" variant="body2">
+                        {"Don't have an account? Sign Up"}
+                      </Link>
+                    </Grid>
                   </Grid>
-                </Grid>
+                </Box>
               </Box>
-            </Box>
-            <Copyright />
-          </>
-        )}
-      </Container>
+              <Copyright />
+            </>
+          )}
+        </Container>
+      </Grow>
       <Footer />
     </Box>
   );
