@@ -16,6 +16,7 @@ interface Task {
 }
 
 export interface BoardsPageState {
+  id: string;
   tittle?: string;
   tasks?: Array<Task> | never;
 }
@@ -32,13 +33,20 @@ interface ChangeTask {
   taskTittle?: string;
   taskOption?: string;
 }
+
 interface ChangeColumn {
   indexColumn: string;
   columnTittle?: string;
 }
 
+interface DnDColumn {
+  indexColumn: number;
+  indexCurrentColumn: number;
+}
+
 const dataBoards = [
   {
+    id: 'asdq23rawdjfn23uhruwnerji',
     tittle: 'Need to do',
     tasks: [
       {
@@ -57,29 +65,10 @@ const dataBoards = [
         taskTittle: 'Task tittle1',
         taskOption: 'Task tittle1',
       },
-      {
-        taskTittle: 'Task tittle1',
-        taskOption: 'Task tittle1',
-      },
-      {
-        taskTittle: 'Task tittle1',
-        taskOption: 'Task tittle1',
-      },
-      {
-        taskTittle: 'Task tittle1',
-        taskOption: 'Task tittle1',
-      },
-      {
-        taskTittle: 'Task tittle1',
-        taskOption: 'Task tittle1',
-      },
-      {
-        taskTittle: 'Task tittle1',
-        taskOption: 'Task tittle1',
-      },
     ],
   },
   {
+    id: 'asfaw3rxcnvxcnv67867ikjhk67',
     tittle: 'During',
     tasks: [
       {
@@ -89,6 +78,7 @@ const dataBoards = [
     ],
   },
   {
+    id: 'xzcw45345y56he5n6456hnwe45b',
     tittle: 'Completed',
     tasks: [],
   },
@@ -118,6 +108,7 @@ export const useSliceBoardsPage = createSlice({
 
     addNewColumn: (state, action: PayloadAction<string>) => {
       const emptyColumn = {
+        id: Date.now().toString(),
         tittle: action.payload,
         tasks: [],
       };
@@ -179,6 +170,13 @@ export const useSliceBoardsPage = createSlice({
 
     addNameForModalWindow: (state, action: PayloadAction<string>) => {
       state.nameModalWindow = action.payload;
+    },
+
+    dragAndDropColumn: (state, action: PayloadAction<DnDColumn>) => {
+      const currentColumn = state.dataBoardsPage[action.payload.indexCurrentColumn];
+      const column = state.dataBoardsPage[action.payload.indexColumn];
+      state.dataBoardsPage.splice(action.payload.indexColumn, 1, currentColumn);
+      state.dataBoardsPage.splice(action.payload.indexCurrentColumn, 1, column);
     },
   },
 });
