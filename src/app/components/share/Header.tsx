@@ -132,14 +132,13 @@ export default function Header() {
 
               <Box sx={{ display: { md: 'none', xs: 'flex' } }}>
                 <IconButton
-                  size="large"
                   aria-label="account of current user"
                   aria-controls="menu-appbar"
                   aria-haspopup="true"
                   color="inherit"
                   onClick={handleOpenNavMenu}
                 >
-                  <MenuIcon />
+                  <MenuIcon fontSize="large" />
                 </IconButton>
                 <Menu
                   id="menu-appbar"
