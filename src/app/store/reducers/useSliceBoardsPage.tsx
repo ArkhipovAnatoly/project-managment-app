@@ -173,10 +173,15 @@ export const useSliceBoardsPage = createSlice({
     },
 
     dragAndDropColumn: (state, action: PayloadAction<DnDColumn>) => {
-      const currentColumn = state.dataBoardsPage[action.payload.indexCurrentColumn];
-      const column = state.dataBoardsPage[action.payload.indexColumn];
-      state.dataBoardsPage.splice(action.payload.indexColumn, 1, currentColumn);
-      state.dataBoardsPage.splice(action.payload.indexCurrentColumn, 1, column);
+      const allArrayItem = state.dataBoardsPage;
+      const [reorderedItem] = allArrayItem.splice(action.payload.indexCurrentColumn, 1);
+      allArrayItem.splice(action.payload.indexColumn, 0, reorderedItem);
+      state.dataBoardsPage = allArrayItem;
+      // const sourceColumn = state.dataBoardsPage[action.payload.indexCurrentColumn];
+      // const destinationColumn = state.dataBoardsPage[action.payload.indexColumn];
+      // state.dataBoardsPage.splice(action.payload.indexColumn, 1, currentColumn);
+      // state.dataBoardsPage.splice(action.payload.indexCurrentColumn, 1, column);
+      // console.log(action.payload.indexCurrentColumn, action.payload.indexColumn);
     },
   },
 });
