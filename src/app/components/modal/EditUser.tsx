@@ -26,7 +26,7 @@ const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
-  width: 400,
+  width: 200,
   transform: 'translate(-50%, -50%)',
   display: 'flex',
   flexDirection: 'column',
@@ -34,7 +34,7 @@ const style = {
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
-  p: 4,
+  padding: 4,
 };
 
 export default function EditUser() {
@@ -113,7 +113,13 @@ export default function EditUser() {
         }}
       >
         <Fade in={open}>
-          <Box sx={style}>
+          <Box
+            sx={{
+              ...style,
+              padding: { xs: 1, sm: 4 },
+              width: { xs: 320, sm: 400 },
+            }}
+          >
             <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
               <ManageAccountsIcon />
             </Avatar>

@@ -125,7 +125,7 @@ export default function SignIn() {
   }
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', pl: 1, pr: 1 }}>
       <Grow
         style={{ transformOrigin: '0 0 0' }}
         in={isShowForm}
