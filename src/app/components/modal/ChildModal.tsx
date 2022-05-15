@@ -61,14 +61,8 @@ export default function ChildModal() {
       <Button onClick={handleOpen} variant="outlined" color="error" sx={{ mt: 3, mb: 2 }}>
         Delete
       </Button>
-      <Modal
-        hideBackdrop
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="child-modal-title"
-        aria-describedby="child-modal-description"
-      >
-        <Box sx={{ ...style, width: 300 }}>
+      <Modal hideBackdrop open={open} onClose={handleClose} aria-labelledby="child-modal-title">
+        <Box sx={{ ...style, padding: { xs: 1, sm: 4 }, width: { xs: 300, sm: 350 } }}>
           <Avatar sx={{ m: 1, bgcolor: '#ff0000' }}>
             <PriorityHighIcon />
           </Avatar>

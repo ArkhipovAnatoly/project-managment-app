@@ -121,7 +121,7 @@ export default function SignUp() {
     navigator('/');
   };
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', pl: 1, pr: 2 }}>
       <Grow
         style={{ transformOrigin: '0 0 0' }}
         in={isShowForm}
