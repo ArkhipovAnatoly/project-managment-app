@@ -6,7 +6,6 @@ import { Box, Typography } from '@mui/material';
 import Card from '../../app/components/Card/Card';
 import { useAppSelector } from '../../app/hooks';
 import CustomizedButton from '../../app/components/share/Button/CustomizedButton';
-import Footer from '../../app/components/share/Footer/Footer';
 
 const WelcomePage = () => {
   const [videoModalActive, setVideomodalactive] = useState(false);
