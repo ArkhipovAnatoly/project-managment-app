@@ -5,27 +5,16 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 import { store } from './app/store/store';
-import { createTheme, ThemeProvider } from '@mui/material';
+import { ThemeProvider } from '@mui/material';
+import { breakpointsTheme } from './app/theme/Theme';
 
 const container = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(container);
 
-const themeBreakpoints = createTheme({
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 420,
-      md: 900,
-      lg: 1200,
-      xl: 1536,
-    },
-  },
-});
-
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme={themeBreakpoints}>
+      <ThemeProvider theme={breakpointsTheme}>
         <App />
       </ThemeProvider>
     </Provider>

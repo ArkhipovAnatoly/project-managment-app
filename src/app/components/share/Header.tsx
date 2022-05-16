@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, ChangeEvent, MouseEvent } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
-import headerTheme from '../../theme/Theme';
+import { headerTheme } from '../../theme/Theme';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import LogoutIcon from '@mui/icons-material/Logout';

@@ -46,4 +46,16 @@ declare module '@mui/material/AppBar' {
   }
 }
 
-export default headerTheme;
+const breakpointsTheme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 420,
+      md: 900,
+      lg: 1200,
+      xl: 1536,
+    },
+  },
+});
+
+export { headerTheme, breakpointsTheme };
