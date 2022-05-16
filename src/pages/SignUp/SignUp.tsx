@@ -22,7 +22,6 @@ import { SignUpResponse, UserSignUpData } from '../../types';
 import { userAPI } from '../../services/UserService';
 import { userAuthSlice } from '../../app/store/reducers/UserAuthSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import Footer from '../../app/components/share/Footer/Footer';
 
 export default function SignUp() {
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
@@ -99,8 +98,11 @@ export default function SignUp() {
 
   if (isChecking) {
     return (
-      <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-        <Container component="section" maxWidth="xs">
+      <Box
+        component="section"
+        sx={{ display: 'flex', flexDirection: 'column', height: '94%', pl: 1, pr: 1 }}
+      >
+        <Container maxWidth="xs">
           <Box
             sx={{
               marginTop: 8,
@@ -112,7 +114,6 @@ export default function SignUp() {
             <CircularProgress size={30} color="warning" />
           </Box>
         </Container>
-        <Footer />
       </Box>
     );
   }
@@ -121,17 +122,16 @@ export default function SignUp() {
     navigator('/');
   };
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', pl: 1, pr: 2 }}>
+    <Box
+      component="section"
+      sx={{ display: 'flex', flexDirection: 'column', height: '94%', pl: 1, pr: 1 }}
+    >
       <Grow
         style={{ transformOrigin: '0 0 0' }}
         in={isShowForm}
         {...(isShowForm ? { timeout: 1000 } : {})}
       >
-        <Container
-          component="section"
-          sx={{ backgroundColor: 'white', marginTop: 8 }}
-          maxWidth="xs"
-        >
+        <Container sx={{ backgroundColor: 'white', marginTop: 8 }} maxWidth="xs">
           {isShowForm && (
             <>
               <Box
@@ -265,7 +265,6 @@ export default function SignUp() {
           )}
         </Container>
       </Grow>
-      <Footer />
     </Box>
   );
 }

@@ -103,7 +103,6 @@ const WelcomePage = () => {
           </div>
         </div>
       </main>
-      <Footer />
     </>
   );
 };
