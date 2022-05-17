@@ -25,7 +25,8 @@ import {
   MenuItem,
   IconButton,
 } from '@mui/material';
-
+import { useTranslation } from 'react-i18next';
+import '../../../i18n';
 const scrollThreshold = 40;
 
 export default function Header() {
@@ -36,6 +37,7 @@ export default function Header() {
   const dispatch = useAppDispatch();
   const { setUserAuthData } = userAuthSlice.actions;
   const navigator = useNavigate();
+  const { t, i18n } = useTranslation('header');
 
   const scrollHandle = useCallback(() => {
     window.scrollY > scrollThreshold ? setIsScroll(true) : setIsScroll(false);
@@ -53,6 +55,7 @@ export default function Header() {
     handleCloseNavMenu();
     const { checked } = e.target as HTMLInputElement;
     checked ? setLanguage('Ru') : setLanguage('En');
+    checked ? i18n.changeLanguage('Ru') : i18n.changeLanguage('En');
   };
 
   const openModal = () => {
@@ -76,29 +79,11 @@ export default function Header() {
 
   const changeLanguage = () => {
     language === 'En' ? setLanguage('Ru') : setLanguage('En');
+    language === 'En' ? i18n.changeLanguage('Ru') : i18n.changeLanguage('En');
   };
   const createBoard = () => {
     handleCloseNavMenu();
   };
-
-  const pages = [
-    {
-      title: 'Create New Board',
-      handler: createBoard,
-    },
-    {
-      title: 'Edit profile',
-      handler: openModal,
-    },
-    {
-      title: 'Log Out',
-      handler: signOutHandle,
-    },
-    {
-      title: `Language: ${language}`,
-      handler: changeLanguage,
-    },
-  ];
 
   return (
     <>
@@ -158,11 +143,20 @@ export default function Header() {
                   open={Boolean(anchorElNav)}
                   onClose={handleCloseNavMenu}
                 >
-                  {pages.map((page, i) => (
-                    <MenuItem key={i} onClick={page.handler}>
-                      <Typography textAlign="center">{page.title}</Typography>
-                    </MenuItem>
-                  ))}
+                  <MenuItem onClick={createBoard}>
+                    <Typography textAlign="center">{t('newBoard')}</Typography>
+                  </MenuItem>
+                  <MenuItem onClick={openModal}>
+                    <Typography textAlign="center">{t('profile')}</Typography>
+                  </MenuItem>
+                  <MenuItem onClick={changeLanguage}>
+                    <Typography textAlign="center">
+                      {t('lng')}: {language}
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem onClick={signOutHandle}>
+                    <Typography textAlign="center">{t('out')}</Typography>
+                  </MenuItem>
                 </Menu>
               </Box>
 
@@ -178,7 +172,7 @@ export default function Header() {
                   color="warning"
                   startIcon={<AddBoxIcon />}
                 >
-                  Create new board
+                  {t('newBoard')}
                 </Button>
                 <Button
                   variant="contained"
@@ -186,7 +180,7 @@ export default function Header() {
                   endIcon={<ModeEditIcon />}
                   onClick={openModal}
                 >
-                  Edit profile
+                  {t('profile')}
                 </Button>
 
                 <Button
@@ -195,7 +189,7 @@ export default function Header() {
                   color="info"
                   endIcon={<LogoutIcon />}
                 >
-                  Sign Out
+                  {t('out')}
                 </Button>
               </Stack>
             </Toolbar>
