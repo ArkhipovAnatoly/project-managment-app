@@ -11,6 +11,7 @@ interface States {
 }
 
 interface Task {
+  id: string;
   taskTittle?: string;
   taskOption?: string;
 }
@@ -18,7 +19,7 @@ interface Task {
 export interface BoardsPageState {
   id: string;
   tittle?: string;
-  tasks?: Array<Task> | never;
+  tasks: Array<Task> | never;
 }
 
 interface AddNewTask {
@@ -44,24 +45,35 @@ interface DnDColumn {
   indexCurrentColumn: number;
 }
 
+interface DnDTask {
+  destinationColumn: string;
+  sourceColumn: string;
+  indexDestinationTask: number;
+  indexSourceTask: number;
+}
+
 const dataBoards = [
   {
     id: 'asdq23rawdjfn23uhruwnerji',
     tittle: 'Need to do',
     tasks: [
       {
+        id: 'askdhwuegr23bh54uy2g3rhb23uyr',
         taskTittle: 'Task tittle1',
         taskOption: 'Task tittle1',
       },
       {
+        id: 'sdcxmfernfejrhtu34y634rth34uih52i3jnre',
         taskTittle: 'Task tittle1',
         taskOption: 'Task tittle1',
       },
       {
+        id: 'dfg34tjn34fbqwjerui23hiruhl23jrbh',
         taskTittle: 'Task tittle1',
         taskOption: 'Task tittle1',
       },
       {
+        id: '123412jkn4rwdokaoiscjszklcmweuhfiwj',
         taskTittle: 'Task tittle1',
         taskOption: 'Task tittle1',
       },
@@ -72,6 +84,7 @@ const dataBoards = [
     tittle: 'During',
     tasks: [
       {
+        id: '2354nl2j3bh54jhi23uk54hk23ber2by3y',
         taskTittle: 'Task tittle1',
         taskOption: 'Task tittle1',
       },
@@ -126,6 +139,7 @@ export const useSliceBoardsPage = createSlice({
 
     addNewTask: (state, action: PayloadAction<AddNewTask>) => {
       const task = {
+        id: Date.now().toString(),
         taskTittle: action.payload.taskTittle,
         taskOption: action.payload.taskOption,
       };
@@ -141,6 +155,7 @@ export const useSliceBoardsPage = createSlice({
 
     changeTask: (state, action: PayloadAction<ChangeTask>) => {
       const changedTask = {
+        id: Date.now().toString(),
         taskTittle: action.payload.taskTittle,
         taskOption: action.payload.taskOption,
       };
@@ -182,6 +197,24 @@ export const useSliceBoardsPage = createSlice({
       // state.dataBoardsPage.splice(action.payload.indexColumn, 1, currentColumn);
       // state.dataBoardsPage.splice(action.payload.indexCurrentColumn, 1, column);
       // console.log(action.payload.indexCurrentColumn, action.payload.indexColumn);
+    },
+    dragAndDropTask: (state, action: PayloadAction<DnDTask>) => {
+      const { destinationColumn, sourceColumn, indexDestinationTask, indexSourceTask } =
+        action.payload;
+      const allArrayItem = state.dataBoardsPage;
+      const indexDestinationColumn = allArrayItem.findIndex((item) => {
+        if (item.id === destinationColumn) {
+          return true;
+        }
+      });
+      const indexSourceColumn = allArrayItem.findIndex((item) => {
+        if (item.id === sourceColumn) {
+          return true;
+        }
+      });
+      const [deletedItem] = allArrayItem[indexSourceColumn].tasks?.splice(indexSourceTask, 1);
+      allArrayItem[indexDestinationColumn].tasks.splice(indexDestinationTask, 0, deletedItem);
+      state.dataBoardsPage = allArrayItem;
     },
   },
 });

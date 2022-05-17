@@ -83,26 +83,6 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
   },
-  columnTasks: {
-    padding: 2,
-    overflowX: 'auto',
-    overflowY: 'auto',
-    '&::-webkit-scrollbar': {
-      backgroundColor: '#dadada',
-      width: 7,
-      borderRadius: 5,
-    },
-    '&::-webkit-scrollbar-track': {
-      backgroundColor: '#e3e3e3',
-      width: 7,
-      borderRadius: 5,
-    },
-    '&::-webkit-scrollbar-thumb': {
-      backgroundColor: '#bbbbbb',
-      width: 7,
-      borderRadius: 5,
-    },
-  },
   columnSettings: {
     margin: 5,
     padding: 3,
@@ -182,85 +162,88 @@ function BoardColumns() {
     }
   };
 
-  const dragEndHandler = (event: DropResult) => {
-    if (event.destination?.index !== undefined) {
-      dispatch(
-        reducers.dragAndDropColumn({
-          indexColumn: event.destination.index,
-          indexCurrentColumn: event.source.index,
-        })
-      );
-    }
+  const dragEndHandler = (result: DropResult) => {
+    const { destination, source, draggableId } = result;
+
+    if (!destination) return;
+
+    if (destination.droppableId === source.droppableId && destination.index === source.index)
+      return;
+
+    dispatch(
+      reducers.dragAndDropTask({
+        destinationColumn: destination.droppableId,
+        sourceColumn: source.droppableId,
+        indexDestinationTask: destination.index,
+        indexSourceTask: source.index,
+      })
+    );
+    // dispatch(
+    //   reducers.dragAndDropColumn({
+    //     indexColumn: result.destination.index,
+    //     indexCurrentColumn: result.source.index,
+    //   })
+    // );
   };
 
   return (
     <Box className={classes.columns}>
       <DragDropContext onDragEnd={dragEndHandler}>
-        <Droppable droppableId="columns" direction="horizontal">
-          {(provided: DroppableProvided) => (
-            <Box
-              sx={{
-                display: 'flex',
-              }}
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              {dataBoardsPage.map((column, indexColumn) => {
-                return (
-                  <Draggable key={column.id} draggableId={column.id} index={indexColumn}>
-                    {(provided: DroppableProvided) => (
-                      <Box
-                        className={`${classes.column}`}
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        <Box className={`${classes.columnOptions} mainDragAndDropBox`}>
-                          <ColumnTitle
-                            indexColumn={indexColumn}
-                            columnTittle={column.tittle}
-                          ></ColumnTitle>
-                          <Stack
-                            direction="column"
-                            justifyContent="flex-start"
-                            alignItems="center"
-                            spacing={2}
-                            className={classes.columnTasks}
-                          >
-                            <ColumnTasks indexColumn={indexColumn} column={column} />
-                          </Stack>
-                          <Box className={classes.columnSettings}>
-                            <Box
-                              data-modalname="addTask"
-                              data-columnindex={indexColumn}
-                              onClick={handleModalWindow}
-                              className={`${classes.columnAdd} buttonModal`}
-                            >
-                              <AddIcon color="action" />
-                              <Typography color="text.secondary">Add task</Typography>
-                            </Box>
-                            <Box
-                              className={`buttonModal`}
-                              data-modalname="deleteColumn"
-                              data-columnindex={indexColumn}
-                            >
-                              <Tooltip title="Delete Column" onClick={handleModalWindow}>
-                                <IconButton>
-                                  <DeleteIcon color="action" />
-                                </IconButton>
-                              </Tooltip>
-                            </Box>
-                          </Box>
-                        </Box>
-                      </Box>
-                    )}
-                  </Draggable>
-                );
-              })}
-              {provided.placeholder}
-            </Box>
-          )}
-        </Droppable>
+        {/* <Droppable droppableId="columns" direction="horizontal">
+          {(provided: DroppableProvided) => ( */}
+        <Box
+          sx={{
+            display: 'flex',
+          }}
+          // {...provided.droppableProps}
+          // ref={provided.innerRef}
+        >
+          {dataBoardsPage.map((column, indexColumn) => {
+            return (
+              // <Draggable key={column.id} draggableId={column.id} index={indexColumn}>
+              //   {(provided: DroppableProvided) => (
+              <Box
+                key={column.id}
+                className={`${classes.column}`}
+                // ref={provided.innerRef}
+                // {...provided.draggableProps}
+                // {...provided.dragHandleProps}
+              >
+                <Box className={`${classes.columnOptions} mainDragAndDropBox`}>
+                  <ColumnTitle indexColumn={indexColumn} columnTittle={column.tittle}></ColumnTitle>
+                  <ColumnTasks indexColumn={indexColumn} column={column} />
+                  <Box className={classes.columnSettings}>
+                    <Box
+                      data-modalname="addTask"
+                      data-columnindex={indexColumn}
+                      onClick={handleModalWindow}
+                      className={`${classes.columnAdd} buttonModal`}
+                    >
+                      <AddIcon color="action" />
+                      <Typography color="text.secondary">Add task</Typography>
+                    </Box>
+                    <Box
+                      className={`buttonModal`}
+                      data-modalname="deleteColumn"
+                      data-columnindex={indexColumn}
+                    >
+                      <Tooltip title="Delete Column" onClick={handleModalWindow}>
+                        <IconButton>
+                          <DeleteIcon color="action" />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
+              // )}
+              // </Draggable>
+            );
+          })}
+          {/* {provided.placeholder} */}
+        </Box>
+        {/* )}
+         </Droppable> */}
       </DragDropContext>
       <Box className={classes.column}>
         <Box

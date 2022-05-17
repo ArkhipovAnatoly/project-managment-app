@@ -132,6 +132,7 @@ function ColumnTitle(props: ColumnTitle) {
           className={'buttonApply'}
           variant="outlined"
           size="small"
+          color="info"
           startIcon={<SendIcon />}
         ></Button>
         <Button
@@ -139,6 +140,7 @@ function ColumnTitle(props: ColumnTitle) {
           className={'buttonCancel'}
           variant="outlined"
           size="small"
+          color="info"
           startIcon={<DeleteIcon />}
         ></Button>
       </Stack>

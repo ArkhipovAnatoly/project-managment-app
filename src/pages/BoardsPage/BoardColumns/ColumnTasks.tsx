@@ -11,13 +11,36 @@ import {
   Button,
   Paper,
   Typography,
+  Stack,
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import { makeStyles } from '@material-ui/core';
 import ClearIcon from '@mui/icons-material/Clear';
 import CreateIcon from '@mui/icons-material/Create';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import type { DroppableProvided, DropResult, DroppableStateSnapshot } from 'react-beautiful-dnd';
 
 const useStyles = makeStyles({
+  columnTasks: {
+    padding: 2,
+    overflowX: 'auto',
+    overflowY: 'auto',
+    '&::-webkit-scrollbar': {
+      backgroundColor: '#dadada',
+      width: 7,
+      borderRadius: 5,
+    },
+    '&::-webkit-scrollbar-track': {
+      backgroundColor: '#e3e3e3',
+      width: 7,
+      borderRadius: 5,
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: '#bbbbbb',
+      width: 7,
+      borderRadius: 5,
+    },
+  },
   columnTask: {
     minWidth: '95%',
     maxWidth: '200px',
@@ -77,56 +100,81 @@ function ColumnTasks(props: ColumnTasks) {
 
   return (
     <>
-      {props.column?.tasks?.map((tasks, indexTask) => {
-        return (
-          <Paper
-            key={`${tasks.taskTittle} ${indexTask}`}
-            className={classes.columnTask}
-            elevation={3}
+      {/* <DragDropContext> */}
+      <Droppable droppableId={props.column?.id}>
+        {(provided: DroppableProvided) => (
+          <Stack
+            direction="column"
+            justifyContent="flex-start"
+            alignItems="center"
+            spacing={2}
+            className={classes.columnTasks}
+            {...provided.droppableProps}
+            ref={provided.innerRef}
           >
-            <Box className={classes.buttonsSetting}>
-              <Box
-                className="buttonModal"
-                data-modalname="deleteTask"
-                data-columnindex={props.indexColumn}
-                data-taskindex={indexTask}
-                onClick={handleModalWindow}
-              >
-                <Button color="secondary">
-                  <ClearIcon fontSize="small" color="action" />
-                </Button>
-              </Box>
-              <Box
-                className="buttonModal"
-                data-modalname="editTask"
-                data-columnindex={props.indexColumn}
-                data-taskindex={indexTask}
-                onClick={handleModalWindow}
-              >
-                <Button color="secondary">
-                  <CreateIcon fontSize="small" color="action" />
-                </Button>
-              </Box>
-            </Box>
-            <Accordion elevation={0}>
-              <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
-                <Typography sx={{ mt: '4px', display: 'flex', flexWrap: 'wrap' }}>
-                  {tasks.taskTittle}
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{ mt: '4px', display: 'flex', flexWrap: 'wrap' }}
-                >
-                  {tasks.taskOption}
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-          </Paper>
-        );
-      })}
+            {props.column?.tasks?.map((tasks, indexTask) => {
+              return (
+                <Draggable key={tasks.id} draggableId={tasks.id} index={indexTask}>
+                  {(provided: DroppableProvided, snapshot: DroppableStateSnapshot) => (
+                    <Paper
+                      sx={{ maxWidth: 200 }}
+                      key={`${tasks.taskTittle} ${indexTask}`}
+                      className={classes.columnTask}
+                      elevation={3}
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      <Box className={classes.buttonsSetting}>
+                        <Box
+                          className="buttonModal"
+                          data-modalname="deleteTask"
+                          data-columnindex={props.indexColumn}
+                          data-taskindex={indexTask}
+                          onClick={handleModalWindow}
+                        >
+                          <Button color="secondary">
+                            <ClearIcon fontSize="small" color="action" />
+                          </Button>
+                        </Box>
+                        <Box
+                          className="buttonModal"
+                          data-modalname="editTask"
+                          data-columnindex={props.indexColumn}
+                          data-taskindex={indexTask}
+                          onClick={handleModalWindow}
+                        >
+                          <Button color="secondary">
+                            <CreateIcon fontSize="small" color="action" />
+                          </Button>
+                        </Box>
+                      </Box>
+                      <Accordion elevation={0}>
+                        <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
+                          <Typography sx={{ mt: '4px', display: 'flex', flexWrap: 'wrap' }}>
+                            {tasks.taskTittle}
+                          </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            sx={{ mt: '4px', display: 'flex', flexWrap: 'wrap' }}
+                          >
+                            {tasks.taskOption}
+                          </Typography>
+                        </AccordionDetails>
+                      </Accordion>
+                    </Paper>
+                  )}
+                </Draggable>
+              );
+            })}
+            {provided.placeholder}
+          </Stack>
+        )}
+      </Droppable>
+      {/* </DragDropContext> */}
     </>
   );
 }
