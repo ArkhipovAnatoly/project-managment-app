@@ -6,10 +6,12 @@ import { Box, Typography } from '@mui/material';
 import Card from '../../app/components/Card/Card';
 import { useAppSelector } from '../../app/hooks';
 import CustomizedButton from '../../app/components/share/Button/CustomizedButton';
+import { useTranslation } from 'react-i18next';
 
 const WelcomePage = () => {
   const [videoModalActive, setVideomodalactive] = useState(false);
   const { auth } = useAppSelector((state) => state.userAuthReducer);
+  const { t } = useTranslation('welcome');
 
   const openModal = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -27,18 +29,18 @@ const WelcomePage = () => {
         <div className="wrapper">
           {auth.isAuth ? (
             <div className="autorizationBtns">
-              <CustomizedButton innerText={'Go to Main page'} link={'/main'} />
+              <CustomizedButton innerText={t('toManPage')} link={'/main'} />
             </div>
           ) : (
             <div className="autorizationBtns">
               <CustomizedButton innerText={'Board'} link={'/board'} />
-              <CustomizedButton innerText={'Sign in'} link={'/signin'} />
-              <CustomizedButton innerText={'Sign up'} link={'/signup'} />
+              <CustomizedButton innerText={t('signIn')} link={'/signin'} />
+              <CustomizedButton innerText={t('signUp')} link={'/signup'} />
             </div>
           )}
           <div className="aboutTheProject">
             <h1>
-              Система управления проектами <span className="titleProject">TEMPER</span>
+              {t('aboutProject')} <span className="titleProject">TEMPER</span>
             </h1>
           </div>
           <div className="videoPlaceholder">
@@ -66,29 +68,22 @@ const WelcomePage = () => {
             </Box>
           </Modal>
           <div className="titleContainer">
-            <p className="title">
-              TEMPER позволяет эффективно организовывать работу по японской методологии
-              канбан-досок.
-            </p>
+            <p className="title">{t('whatAllows')}</p>
             <div className="imgTitle">
               <img src={'assets/img/board.png'} alt="board" />
             </div>
           </div>
           <div className="titleContainer2">
-            <p className="title">
-              Вы сами выбираете, по какому принципу организовывать карточки на досках.
-            </p>
+            <p className="title">{t('advantage')}</p>
           </div>
           <div className="titleContainer3">
             <div className="imgTitle">
               <img src={'assets/img/giphy.gif'} className="imgBoard" alt="boardGif" />
             </div>
-            <p className="title">
-              Вы сами выбираете, по какому принципу организовывать карточки на досках.
-            </p>
+            <p className="title">{t('moto')}</p>
           </div>
           <div className="aboutTheComand">
-            <h2>О команде</h2>
+            <h2> {t('teamInfo')} </h2>
             <div className="cards">
               {data.map((item, index) => (
                 <Card
