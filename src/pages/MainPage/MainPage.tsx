@@ -1,12 +1,9 @@
 import { Container, Card, Box, Link, Typography, Button } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import Header from '../../app/components/share/Header';
-import { useAppSelector } from '../../app/hooks';
 
 export default function MainPage() {
-  const { auth } = useAppSelector((state) => state.userAuthReducer);
-
-  if (!auth.isAuth) {
+  if (!localStorage.getItem('token')) {
     return (
       <Box
         sx={{
@@ -14,6 +11,7 @@ export default function MainPage() {
           flexDirection: 'column',
           alignItems: 'center',
           color: 'white',
+          minHeight: 'calc(100vh - 50px)',
         }}
       >
         <Typography component="h1" variant="h3">

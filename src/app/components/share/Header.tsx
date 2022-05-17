@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, ChangeEvent, MouseEvent } from 'react';
+import { useState, useEffect, useCallback, ChangeEvent, MouseEvent, useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import { headerTheme } from '../../theme/Theme';
@@ -30,17 +30,22 @@ import '../../../i18n';
 const scrollThreshold = 40;
 
 export default function Header() {
+  const [checked, setChecked] = useState<boolean>(false);
   const [isScroll, setIsScroll] = useState<boolean>(false);
-  const [language, setLanguage] = useState<string>('En');
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const { showModal } = modalSlice.actions;
   const dispatch = useAppDispatch();
   const { setUserAuthData } = userAuthSlice.actions;
   const navigator = useNavigate();
   const { t, i18n } = useTranslation('header');
-
   const scrollHandle = useCallback(() => {
     window.scrollY > scrollThreshold ? setIsScroll(true) : setIsScroll(false);
+  }, []);
+
+  useEffect(() => {
+    if (i18n.language === 'Ru') {
+      setChecked(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -51,10 +56,10 @@ export default function Header() {
     };
   }, [scrollHandle]);
 
-  const changeHandle = (e: ChangeEvent) => {
+  const changeHandle = (event: ChangeEvent<HTMLInputElement>) => {
     handleCloseNavMenu();
-    const { checked } = e.target as HTMLInputElement;
-    checked ? setLanguage('Ru') : setLanguage('En');
+    const { checked } = event.target as HTMLInputElement;
+    setChecked(event.target.checked);
     checked ? i18n.changeLanguage('Ru') : i18n.changeLanguage('En');
   };
 
@@ -78,8 +83,9 @@ export default function Header() {
   };
 
   const changeLanguage = () => {
-    language === 'En' ? setLanguage('Ru') : setLanguage('En');
-    language === 'En' ? i18n.changeLanguage('Ru') : i18n.changeLanguage('En');
+    i18n.resolvedLanguage === 'En'
+      ? (i18n.changeLanguage('Ru'), setChecked(true))
+      : (i18n.changeLanguage('En'), setChecked(false));
   };
   const createBoard = () => {
     handleCloseNavMenu();
@@ -151,7 +157,7 @@ export default function Header() {
                   </MenuItem>
                   <MenuItem onClick={changeLanguage}>
                     <Typography textAlign="center">
-                      {t('lng')}: {language}
+                      {t('lng')}: {i18n.language}
                     </Typography>
                   </MenuItem>
                   <MenuItem onClick={signOutHandle}>
@@ -162,8 +168,15 @@ export default function Header() {
 
               <Stack direction="row" spacing={3} sx={{ display: { md: 'flex', xs: 'none' } }}>
                 <FormControlLabel
-                  control={<Switch onChange={changeHandle} color="primary" />}
-                  label={language}
+                  control={
+                    <Switch
+                      checked={checked}
+                      onChange={changeHandle}
+                      inputProps={{ 'aria-label': 'controlled' }}
+                      color="secondary"
+                    />
+                  }
+                  label={i18n.resolvedLanguage}
                   labelPlacement="end"
                 />
                 <Button

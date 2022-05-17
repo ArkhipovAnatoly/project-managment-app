@@ -50,7 +50,7 @@ export default function ChildModal() {
       localStorage.removeItem('userId');
       localStorage.removeItem('token');
       dispatch(setUserAuthData({ userId: '', token: '', isAuth: false }));
-      setMessage('Successful deleted');
+      setMessage(t('status'));
       setTimeout(() => {
         setOpen(false);
         navigator('/');

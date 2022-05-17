@@ -80,9 +80,7 @@ const WelcomePage = () => {
             <div className="imgTitle">
               <img src={'assets/img/giphy.gif'} className="imgBoard" alt="boardGif" />
             </div>
-            <p className="title">
-              Вы сами выбираете, по какому принципу организовывать карточки на досках.
-            </p>
+            <p className="title">{t('moto')}</p>
           </div>
           <div className="aboutTheComand">
             <h2> {t('teamInfo')} </h2>

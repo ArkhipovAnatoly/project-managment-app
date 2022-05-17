@@ -22,11 +22,13 @@ import { SignUpResponse, UserSignUpData } from '../../types';
 import { userAPI } from '../../services/UserService';
 import { userAuthSlice } from '../../app/store/reducers/UserAuthSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useTranslation } from 'react-i18next';
 
 export default function SignUp() {
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [isShowForm, setIsShowForm] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
+  const { t } = useTranslation('account');
   const [signUpUser, { isLoading, isError, isSuccess }] = userAPI.useUserSignUpMutation();
   const { auth } = useAppSelector((state) => state.userAuthReducer);
   const {
@@ -55,12 +57,12 @@ export default function SignUp() {
     setMessage('');
     const response = (await signUpUser(formData)) as SignUpResponse;
     if (response.error?.status) {
-      setMessage(response.error.data.message);
+      setMessage(t('statusErrorSignUp'));
     } else {
       const userId = response.data?.id as string;
       localStorage.setItem('userId', userId);
       dispatch(setUserAuthData({ userId }));
-      setMessage('Successful sign up');
+      setMessage(t('statusOkSignUp'));
       setTimeout(() => {
         navigator('/signin');
       }, 1500);
@@ -150,7 +152,7 @@ export default function SignUp() {
                   <PersonAddAltIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                  Sign up
+                  {t('titleSignUp')}
                 </Typography>
 
                 <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
@@ -168,12 +170,12 @@ export default function SignUp() {
                       />
                       {errors.name?.type === 'required' && (
                         <FormHelperText component="span" error>
-                          Name is required
+                          {t('nameError')}
                         </FormHelperText>
                       )}
                       {errors.name?.type === 'pattern' && (
                         <FormHelperText component="span" error>
-                          Name should include letters only
+                          {t('nameErrorLetters')}
                         </FormHelperText>
                       )}
                     </Grid>
@@ -192,7 +194,7 @@ export default function SignUp() {
                       />
                       {errors.login?.type === 'required' && (
                         <FormHelperText component="span" error>
-                          Login is required
+                          {t('loginError')}
                         </FormHelperText>
                       )}
                     </Grid>
@@ -209,12 +211,12 @@ export default function SignUp() {
                       />
                       {errors.password?.type === 'required' && (
                         <FormHelperText component="span" error>
-                          Password is required
+                          {t('passwordError')}
                         </FormHelperText>
                       )}
                       {errors.password?.type === 'minLength' && (
                         <FormHelperText component="span" error>
-                          Password length should be more than 8 characters
+                          {t('passwordLengthError')}
                         </FormHelperText>
                       )}
                     </Grid>
@@ -249,12 +251,12 @@ export default function SignUp() {
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
                   >
-                    Sign Up
+                    {t('titleSignUp')}
                   </Button>
                   <Grid container justifyContent="flex-end">
                     <Grid item>
                       <Link component={NavLink} to="/signin" variant="body2">
-                        Already have an account? Sign in
+                        {t('questionSignUp')}
                       </Link>
                     </Grid>
                   </Grid>
