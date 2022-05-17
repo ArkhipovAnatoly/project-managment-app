@@ -1,0 +1,17 @@
+{
+  "header": {
+    "newBoard": "Сreate new board",
+    "profile": "Edit profile",
+    "out": "Sign out",
+    "lng": "Language"
+  },
+  "profile": {
+    "title": "Edit profile",
+    "update": "update",
+    "delete": "Delete profile",
+    "deleteBtn": "Delete",
+    "message": "Your profile will be deleted",
+    "confirm": "Confirm",
+    "back": "Back"
+  }
+}
