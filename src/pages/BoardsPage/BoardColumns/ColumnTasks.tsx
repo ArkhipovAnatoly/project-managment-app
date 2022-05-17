@@ -18,7 +18,12 @@ import { makeStyles } from '@material-ui/core';
 import ClearIcon from '@mui/icons-material/Clear';
 import CreateIcon from '@mui/icons-material/Create';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import type { DroppableProvided, DropResult, DroppableStateSnapshot } from 'react-beautiful-dnd';
+import type {
+  DroppableProvided,
+  DropResult,
+  DroppableStateSnapshot,
+  DraggableStateSnapshot,
+} from 'react-beautiful-dnd';
 
 const useStyles = makeStyles({
   columnTasks: {
@@ -42,8 +47,8 @@ const useStyles = makeStyles({
     },
   },
   columnTask: {
-    minWidth: '95%',
-    maxWidth: '200px',
+    minWidth: '240px',
+    maxWidth: '240px',
     height: 'auto',
     borderRadius: 3,
     cursor: 'pointer',
@@ -102,7 +107,7 @@ function ColumnTasks(props: ColumnTasks) {
     <>
       {/* <DragDropContext> */}
       <Droppable droppableId={props.column?.id}>
-        {(provided: DroppableProvided) => (
+        {(provided: DroppableProvided, snapshot: DroppableStateSnapshot) => (
           <Stack
             direction="column"
             justifyContent="flex-start"
@@ -115,9 +120,12 @@ function ColumnTasks(props: ColumnTasks) {
             {props.column?.tasks?.map((tasks, indexTask) => {
               return (
                 <Draggable key={tasks.id} draggableId={tasks.id} index={indexTask}>
-                  {(provided: DroppableProvided, snapshot: DroppableStateSnapshot) => (
+                  {(provided: DroppableProvided, snapshot: DraggableStateSnapshot) => (
                     <Paper
-                      sx={{ maxWidth: 200 }}
+                      sx={{
+                        maxWidth: snapshot.isDragging ? '100px' : '',
+                        opacity: snapshot.isDragging ? '0.8' : '',
+                      }}
                       key={`${tasks.taskTittle} ${indexTask}`}
                       className={classes.columnTask}
                       elevation={3}
