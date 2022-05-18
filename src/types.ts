@@ -1,6 +1,3 @@
-import { CombinedState, Store } from '@reduxjs/toolkit';
-import { AppStore, RootState, store } from './app/store/store';
-
 export type CardProps = {
   imgSrc: string;
   name: string;
