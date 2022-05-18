@@ -21,12 +21,13 @@ import { userAuthSlice } from '../../store/reducers/UserAuthSlice';
 
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import ChildModal from './ChildModal';
+import { useTranslation } from 'react-i18next';
 
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
-  width: 400,
+  width: 200,
   transform: 'translate(-50%, -50%)',
   display: 'flex',
   flexDirection: 'column',
@@ -34,7 +35,7 @@ const style = {
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
-  p: 4,
+  padding: 4,
 };
 
 export default function EditUser() {
@@ -47,6 +48,7 @@ export default function EditUser() {
     userAPI.useUserUpdateMutation();
   const { setUserAuthData } = userAuthSlice.actions;
   const dispatch = useAppDispatch();
+  const { t } = useTranslation('profile');
 
   const {
     register,
@@ -113,12 +115,18 @@ export default function EditUser() {
         }}
       >
         <Fade in={open}>
-          <Box sx={style}>
+          <Box
+            sx={{
+              ...style,
+              padding: { xs: 1, sm: 4 },
+              width: { xs: 320, sm: 400 },
+            }}
+          >
             <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
               <ManageAccountsIcon />
             </Avatar>
             <Typography id="modal-modal-title" component="h2" variant="h5">
-              Edit Profile
+              {t('title')}
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
               <Grid container spacing={2}>
@@ -216,11 +224,11 @@ export default function EditUser() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Update
+                {t('update')}
               </Button>
             </Box>
             <Typography color="#ff0000" component="h2" variant="h5">
-              Delete Profile
+              {t('delete')}
             </Typography>
             <ChildModal />
           </Box>

@@ -5,14 +5,17 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 import { store } from './app/store/store';
-import { BrowserRouter } from 'react-router-dom';
+import { ThemeProvider } from '@mui/material';
+import { breakpointsTheme } from './app/theme/Theme';
 
 const container = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(container);
 
 root.render(
   <Provider store={store}>
-    <App />
+    <ThemeProvider theme={breakpointsTheme}>
+      <App />
+    </ThemeProvider>
   </Provider>
 );
 

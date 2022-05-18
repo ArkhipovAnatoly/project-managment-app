@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback, ChangeEvent } from 'react';
+import { useState, useEffect, useCallback, ChangeEvent, MouseEvent, useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
-import headerTheme from '../../theme/Theme';
+import { headerTheme } from '../../theme/Theme';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -9,6 +9,7 @@ import { modalSlice } from '../../store/reducers/ModalSlice';
 import { useAppDispatch } from '../../hooks';
 import EditUser from '../modal/EditUser';
 import { userAuthSlice } from '../../store/reducers/UserAuthSlice';
+import MenuIcon from '@mui/icons-material/Menu';
 import {
   Container,
   Stack,
@@ -19,20 +20,32 @@ import {
   Button,
   Switch,
   FormControlLabel,
+  Box,
+  Menu,
+  MenuItem,
+  IconButton,
 } from '@mui/material';
-
+import { useTranslation } from 'react-i18next';
+import '../../../i18n';
 const scrollThreshold = 40;
 
 export default function Header() {
+  const [checked, setChecked] = useState<boolean>(false);
   const [isScroll, setIsScroll] = useState<boolean>(false);
-  const [language, setLanguage] = useState<string>('En');
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const { showModal } = modalSlice.actions;
   const dispatch = useAppDispatch();
   const { setUserAuthData } = userAuthSlice.actions;
   const navigator = useNavigate();
-
+  const { t, i18n } = useTranslation('header');
   const scrollHandle = useCallback(() => {
     window.scrollY > scrollThreshold ? setIsScroll(true) : setIsScroll(false);
+  }, []);
+
+  useEffect(() => {
+    if (i18n.language === 'Ru') {
+      setChecked(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -43,21 +56,39 @@ export default function Header() {
     };
   }, [scrollHandle]);
 
-  const changeHandle = (e: ChangeEvent) => {
-    const { checked } = e.target as HTMLInputElement;
-    checked ? setLanguage('Ru') : setLanguage('En');
+  const changeHandle = (event: ChangeEvent<HTMLInputElement>) => {
+    handleCloseNavMenu();
+    const { checked } = event.target as HTMLInputElement;
+    setChecked(event.target.checked);
+    checked ? i18n.changeLanguage('Ru') : i18n.changeLanguage('En');
   };
 
   const openModal = () => {
+    handleCloseNavMenu();
     dispatch(showModal(true));
   };
 
   const signOutHandle = () => {
+    handleCloseNavMenu();
     localStorage.removeItem('token');
     dispatch(setUserAuthData({ token: '', isAuth: false }));
-    setTimeout(() => {
-      navigator('/');
-    }, 500);
+    navigator('/');
+  };
+
+  const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
+    setAnchorElNav(event.currentTarget);
+  };
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
+  const changeLanguage = () => {
+    i18n.resolvedLanguage === 'En'
+      ? (i18n.changeLanguage('Ru'), setChecked(true))
+      : (i18n.changeLanguage('En'), setChecked(false));
+  };
+  const createBoard = () => {
+    handleCloseNavMenu();
   };
 
   return (
@@ -90,14 +121,71 @@ export default function Header() {
                 </Link>
               </Typography>
 
-              <Stack direction="row" spacing={3}>
+              <Box sx={{ display: { md: 'none', xs: 'flex' } }}>
+                <IconButton
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  color="inherit"
+                  onClick={handleOpenNavMenu}
+                >
+                  <MenuIcon fontSize="large" />
+                </IconButton>
+                <Menu
+                  id="menu-appbar"
+                  anchorEl={anchorElNav}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  sx={{
+                    display: { md: 'none', xs: 'block' },
+                  }}
+                  open={Boolean(anchorElNav)}
+                  onClose={handleCloseNavMenu}
+                >
+                  <MenuItem onClick={createBoard}>
+                    <Typography textAlign="center">{t('newBoard')}</Typography>
+                  </MenuItem>
+                  <MenuItem onClick={openModal}>
+                    <Typography textAlign="center">{t('profile')}</Typography>
+                  </MenuItem>
+                  <MenuItem onClick={changeLanguage}>
+                    <Typography textAlign="center">
+                      {t('lng')}: {i18n.language}
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem onClick={signOutHandle}>
+                    <Typography textAlign="center">{t('out')}</Typography>
+                  </MenuItem>
+                </Menu>
+              </Box>
+
+              <Stack direction="row" spacing={3} sx={{ display: { md: 'flex', xs: 'none' } }}>
                 <FormControlLabel
-                  control={<Switch onChange={changeHandle} color="primary" />}
-                  label={language}
+                  control={
+                    <Switch
+                      checked={checked}
+                      onChange={changeHandle}
+                      inputProps={{ 'aria-label': 'controlled' }}
+                      color="secondary"
+                    />
+                  }
+                  label={i18n.resolvedLanguage}
                   labelPlacement="end"
                 />
-                <Button variant="contained" color="warning" startIcon={<AddBoxIcon />}>
-                  Create new board
+                <Button
+                  onClick={createBoard}
+                  variant="contained"
+                  color="warning"
+                  startIcon={<AddBoxIcon />}
+                >
+                  {t('newBoard')}
                 </Button>
                 <Button
                   variant="contained"
@@ -105,7 +193,7 @@ export default function Header() {
                   endIcon={<ModeEditIcon />}
                   onClick={openModal}
                 >
-                  Edit profile
+                  {t('profile')}
                 </Button>
 
                 <Button
@@ -114,7 +202,7 @@ export default function Header() {
                   color="info"
                   endIcon={<LogoutIcon />}
                 >
-                  Sign Out
+                  {t('out')}
                 </Button>
               </Stack>
             </Toolbar>
