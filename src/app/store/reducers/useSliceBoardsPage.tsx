@@ -41,8 +41,8 @@ interface ChangeColumn {
 }
 
 interface DnDColumn {
-  indexColumn: number;
-  indexCurrentColumn: number;
+  indexDestinationColumn: number;
+  indexSourceColumn: number;
 }
 
 interface DnDTask {
@@ -188,15 +188,11 @@ export const useSliceBoardsPage = createSlice({
     },
 
     dragAndDropColumn: (state, action: PayloadAction<DnDColumn>) => {
+      const { indexDestinationColumn, indexSourceColumn } = action.payload;
       const allArrayItem = state.dataBoardsPage;
-      const [reorderedItem] = allArrayItem.splice(action.payload.indexCurrentColumn, 1);
-      allArrayItem.splice(action.payload.indexColumn, 0, reorderedItem);
+      const [reorderedItem] = allArrayItem.splice(indexSourceColumn, 1);
+      allArrayItem.splice(indexDestinationColumn, 0, reorderedItem);
       state.dataBoardsPage = allArrayItem;
-      // const sourceColumn = state.dataBoardsPage[action.payload.indexCurrentColumn];
-      // const destinationColumn = state.dataBoardsPage[action.payload.indexColumn];
-      // state.dataBoardsPage.splice(action.payload.indexColumn, 1, currentColumn);
-      // state.dataBoardsPage.splice(action.payload.indexCurrentColumn, 1, column);
-      // console.log(action.payload.indexCurrentColumn, action.payload.indexColumn);
     },
     dragAndDropTask: (state, action: PayloadAction<DnDTask>) => {
       const { destinationColumn, sourceColumn, indexDestinationTask, indexSourceTask } =

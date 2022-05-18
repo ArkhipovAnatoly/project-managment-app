@@ -160,7 +160,6 @@ function BoardColumns() {
 
   const dragEndHandler = (result: DropResult) => {
     const { destination, source, type } = result;
-    console.log(type);
 
     if (!destination) return;
 
@@ -170,8 +169,8 @@ function BoardColumns() {
     if (type === 'column') {
       dispatch(
         reducers.dragAndDropColumn({
-          indexColumn: destination.index,
-          indexCurrentColumn: source.index,
+          indexDestinationColumn: destination.index,
+          indexSourceColumn: source.index,
         })
       );
     }

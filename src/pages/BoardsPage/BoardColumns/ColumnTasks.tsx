@@ -1,3 +1,4 @@
+import React from 'react';
 import { useAppDispatch } from '../../../app/hooks';
 import {
   BoardsPageState,
@@ -178,4 +179,4 @@ function ColumnTasks(props: ColumnTasks) {
     </>
   );
 }
-export default ColumnTasks;
+export default React.memo(ColumnTasks);
