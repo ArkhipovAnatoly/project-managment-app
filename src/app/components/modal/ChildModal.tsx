@@ -60,7 +60,7 @@ export default function ChildModal() {
 
   return (
     <>
-      <Button onClick={handleOpen} variant="outlined" color="error" sx={{ mt: 3, mb: 2 }}>
+      <Button onClick={handleOpen} variant="outlined" color="error">
         {t('deleteBtn')}
       </Button>
       <Modal hideBackdrop open={open} onClose={handleClose} aria-labelledby="child-modal-title">
