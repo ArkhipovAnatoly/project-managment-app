@@ -53,6 +53,7 @@ const useStyles = makeStyles({
     position: 'relative',
     whiteSpace: 'normal',
     width: '100%',
+    cursor: 'default',
   },
   columnAddOptions: {
     backgroundColor: '#ebecf0b8',
