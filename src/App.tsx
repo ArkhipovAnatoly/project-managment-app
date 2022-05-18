@@ -10,17 +10,23 @@ import { userAuthSlice } from './app/store/reducers/UserAuthSlice';
 import { useEffect } from 'react';
 import { useAppDispatch } from './app/hooks';
 import BoardsPage from './pages/BoardsPage/BoardsPage';
+import { useTranslation } from 'react-i18next';
 
 function App() {
   const { setUserAuthData } = userAuthSlice.actions;
   const dispatch = useAppDispatch();
+  const { i18n } = useTranslation();
   useEffect(() => {
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
+    const lng = localStorage.getItem('i18nextLng');
+    if (lng === 'En' || lng === 'Ru') {
+      i18n.changeLanguage(lng);
+    }
 
     token && dispatch(setUserAuthData({ token }));
     userId && dispatch(setUserAuthData({ userId }));
-  }, [dispatch, setUserAuthData]);
+  }, [dispatch, setUserAuthData, i18n]);
 
   return (
     <Router>
