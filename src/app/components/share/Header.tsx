@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, ChangeEvent, MouseEvent, useRef } from 'react';
+import { useState, useEffect, useCallback, ChangeEvent, MouseEvent } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import { headerTheme } from '../../theme/Theme';
@@ -43,10 +43,10 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
-    if (i18n.language === 'Ru') {
+    if (i18n.resolvedLanguage === 'Ru') {
       setChecked(true);
     }
-  }, []);
+  }, [i18n.resolvedLanguage]);
 
   useEffect(() => {
     document.addEventListener('scroll', scrollHandle);
@@ -157,7 +157,7 @@ export default function Header() {
                   </MenuItem>
                   <MenuItem onClick={changeLanguage}>
                     <Typography textAlign="center">
-                      {t('lng')}: {i18n.language}
+                      {t('lng')}: {i18n.resolvedLanguage}
                     </Typography>
                   </MenuItem>
                   <MenuItem onClick={signOutHandle}>
