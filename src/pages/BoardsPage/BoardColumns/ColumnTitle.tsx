@@ -117,6 +117,7 @@ function ColumnTitle(props: ColumnTitle) {
           onBlur={onBlurButtonColumnTitle}
           onChange={onChangeButtonColumnTitle}
           inputProps={{ maxLength: 20 }}
+          sx={{ pl: '5px' }}
         />
       </Paper>
       <Stack

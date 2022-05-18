@@ -59,23 +59,23 @@ const dataBoards = [
     tasks: [
       {
         id: 'askdhwuegr23bh54uy2g3rhb23uyr',
-        taskTittle: 'Task tittle1',
-        taskOption: 'Task tittle1',
+        taskTittle: 'Some Title For Task',
+        taskOption: 'Some Description For Task',
       },
       {
         id: 'sdcxmfernfejrhtu34y634rth34uih52i3jnre',
-        taskTittle: 'Task tittle1',
-        taskOption: 'Task tittle1',
+        taskTittle: 'Some Title For Task',
+        taskOption: 'Some Description For Task',
       },
       {
         id: 'dfg34tjn34fbqwjerui23hiruhl23jrbh',
-        taskTittle: 'Task tittle1',
-        taskOption: 'Task tittle1',
+        taskTittle: 'Some Title For Task',
+        taskOption: 'Some Description For Task',
       },
       {
         id: '123412jkn4rwdokaoiscjszklcmweuhfiwj',
-        taskTittle: 'Task tittle1',
-        taskOption: 'Task tittle1',
+        taskTittle: 'Some Title For Task',
+        taskOption: 'Some Description For Task',
       },
     ],
   },
@@ -85,8 +85,8 @@ const dataBoards = [
     tasks: [
       {
         id: '2354nl2j3bh54jhi23uk54hk23ber2by3y',
-        taskTittle: 'Task tittle1',
-        taskOption: 'Task tittle1',
+        taskTittle: 'Some Title For Task',
+        taskOption: 'Some Description For Task',
       },
     ],
   },
