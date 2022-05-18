@@ -1,4 +1,3 @@
-import AddIcon from '@mui/icons-material/Add';
 import { useAppDispatch } from '../../../app/hooks';
 import {
   BoardsPageState,
@@ -17,13 +16,8 @@ import Box from '@mui/material/Box';
 import { makeStyles } from '@material-ui/core';
 import ClearIcon from '@mui/icons-material/Clear';
 import CreateIcon from '@mui/icons-material/Create';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import type {
-  DroppableProvided,
-  DropResult,
-  DroppableStateSnapshot,
-  DraggableStateSnapshot,
-} from 'react-beautiful-dnd';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
+import type { DroppableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 
 const useStyles = makeStyles({
   columnTasks: {
@@ -105,9 +99,8 @@ function ColumnTasks(props: ColumnTasks) {
 
   return (
     <>
-      {/* <DragDropContext> */}
-      <Droppable droppableId={props.column?.id}>
-        {(provided: DroppableProvided, snapshot: DroppableStateSnapshot) => (
+      <Droppable droppableId={props.column?.id} type="task">
+        {(provided: DroppableProvided) => (
           <Stack
             direction="column"
             justifyContent="flex-start"
@@ -182,7 +175,6 @@ function ColumnTasks(props: ColumnTasks) {
           </Stack>
         )}
       </Droppable>
-      {/* </DragDropContext> */}
     </>
   );
 }

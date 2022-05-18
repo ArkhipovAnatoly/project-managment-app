@@ -1,5 +1,4 @@
-import { Button, InputBase, Paper, TextField, Typography } from '@mui/material';
-import { createRef, useEffect, useState } from 'react';
+import { Button, InputBase, Paper } from '@mui/material';
 import BoardColumns from './BoardColumns/BoardColumns';
 import { makeStyles } from '@material-ui/core';
 import Box from '@mui/material/Box';
