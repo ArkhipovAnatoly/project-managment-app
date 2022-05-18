@@ -69,7 +69,9 @@ export default function ChildModal() {
             <PriorityHighIcon />
           </Avatar>
           <h3 id="child-modal-title">{t('message')}</h3>
-          <Button onClick={handleConfirm}>{t('confirm')}</Button>
+          <Button sx={{ mt: 2 }} onClick={handleConfirm}>
+            {t('confirm')}
+          </Button>
           <Button onClick={handleClose}>{t('back')}</Button>
           {isDeleting && <CircularProgress size={26} color="error" />}
           {
