@@ -2,7 +2,7 @@ export default [
   {
     imgSrc: 'assets/img/avatars/Tolik.jpg',
     name: 'Анатолий - Team Lead',
-    description: '- Вставим описание,- О проделанной работе',
+    description: 'Header,Авторизация/Регистрация, Локализация',
   },
   {
     imgSrc: 'assets/img/avatars/Marina.png',
