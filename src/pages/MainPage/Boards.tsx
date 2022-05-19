@@ -227,6 +227,23 @@ export default function Boards() {
                   onBlur={closeButtonSettings}
                   onChange={changeButtonSettings}
                 />
+                <Paper
+                  key={`${board.tittle} ${indexBoard}`}
+                  className={classes.columnBoard}
+                  elevation={3}
+                >
+                  <Accordion elevation={0}>
+                    <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
+                      <Typography>{board.tittle}</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <Typography variant="body2" color="text.secondary">
+                        {board.boardDescription}
+                      </Typography>
+                    </AccordionDetails>
+                  </Accordion>
+                </Paper>
+
                 <Button
                   onClick={buttonSettingsApply}
                   className={'buttonApply'}
@@ -251,7 +268,7 @@ export default function Boards() {
                 spacing={2}
                 className={classes.columnBoards}
               >
-                {board.boards?.map((boards, indexBoard) => {
+                {/* {board.map((boards, indexBoard) => {
                   return (
                     <Paper
                       key={`${boards.boardTittle} ${indexBoard}`}
@@ -270,7 +287,7 @@ export default function Boards() {
                       </Accordion>
                     </Paper>
                   );
-                })}
+                })} */}
               </Stack>
               <Box className={classes.buttonsSetting}>
                 <Box

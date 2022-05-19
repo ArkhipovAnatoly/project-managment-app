@@ -40,7 +40,6 @@ function ModalWindowMain() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const { openModalWindow } = useAppSelector((state) => state.mainPage);
-  const { indexOfCurrentColumn } = useAppSelector((state) => state.mainPage);
   const { indexOfCurrentBoard } = useAppSelector((state) => state.mainPage);
   const reducers = useSliceMainPage.actions;
   const dispatch = useAppDispatch();
@@ -67,7 +66,13 @@ function ModalWindowMain() {
 
   const addNewBoard = () => {
     if (title.trim()) {
-      dispatch(reducers.addNewBoard(title));
+      dispatch(
+        reducers.addNewBoard({
+          index: indexOfCurrentBoard,
+          boardTittle: title,
+          boardDescription: description,
+        })
+      );
       closeModalWindow();
       clearTextModal();
     }
@@ -75,10 +80,12 @@ function ModalWindowMain() {
 
   const deleteBoard = () => {
     const deleteBoardIndex = {
-      boardTittle: indexOfCurrentColumn,
+      indexBoard: indexOfCurrentBoard,
+      boardTittle: indexOfCurrentBoard,
       boardDescription: indexOfCurrentBoard,
     };
     dispatch(reducers.deleteBoard(Number(deleteBoardIndex)));
+    // dispatch(reducers.deleteBoard(Number(indexOfCurrentBoard)));
     closeModalWindow();
     clearTextModal();
   };
