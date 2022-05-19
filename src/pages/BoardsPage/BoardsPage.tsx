@@ -1,5 +1,5 @@
 import { Button, InputBase, Paper } from '@mui/material';
-import BoardColumns from './BoardColumns/BoardColumns';
+import BoardColumns from './BoardColumns';
 import { makeStyles } from '@material-ui/core';
 import Box from '@mui/material/Box';
 import { NavLink } from 'react-router-dom';

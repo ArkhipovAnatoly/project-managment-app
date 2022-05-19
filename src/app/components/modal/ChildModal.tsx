@@ -6,7 +6,6 @@ import { DeleteUserResponse } from '../../../types';
 import { userAuthSlice } from '../../store/reducers/UserAuthSlice';
 import { useNavigate } from 'react-router-dom';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
-import { useTranslation } from 'react-i18next';
 
 const style = {
   position: 'absolute',
@@ -32,7 +31,6 @@ export default function ChildModal() {
   const { setUserAuthData } = userAuthSlice.actions;
   const dispatch = useAppDispatch();
   const navigator = useNavigate();
-  const { t } = useTranslation('profile');
 
   const handleOpen = () => {
     setOpen(true);
@@ -50,7 +48,7 @@ export default function ChildModal() {
       localStorage.removeItem('userId');
       localStorage.removeItem('token');
       dispatch(setUserAuthData({ userId: '', token: '', isAuth: false }));
-      setMessage(t('status'));
+      setMessage('Successful deleted');
       setTimeout(() => {
         setOpen(false);
         navigator('/');
@@ -61,16 +59,16 @@ export default function ChildModal() {
   return (
     <>
       <Button onClick={handleOpen} variant="outlined" color="error" sx={{ mt: 3, mb: 2 }}>
-        {t('deleteBtn')}
+        Delete
       </Button>
       <Modal hideBackdrop open={open} onClose={handleClose} aria-labelledby="child-modal-title">
         <Box sx={{ ...style, padding: { xs: 1, sm: 4 }, width: { xs: 300, sm: 350 } }}>
           <Avatar sx={{ m: 1, bgcolor: '#ff0000' }}>
             <PriorityHighIcon />
           </Avatar>
-          <h3 id="child-modal-title">{t('message')}</h3>
-          <Button onClick={handleConfirm}>{t('confirm')}</Button>
-          <Button onClick={handleClose}>{t('back')}</Button>
+          <h3 id="child-modal-title">Your profile will be deleted</h3>
+          <Button onClick={handleConfirm}>Confirm</Button>
+          <Button onClick={handleClose}>Back</Button>
           {isDeleting && <CircularProgress size={26} color="error" />}
           {
             <FormHelperText

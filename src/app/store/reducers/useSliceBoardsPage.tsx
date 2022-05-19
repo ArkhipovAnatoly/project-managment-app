@@ -11,15 +11,13 @@ interface States {
 }
 
 interface Task {
-  id: string;
   taskTittle?: string;
   taskOption?: string;
 }
 
 export interface BoardsPageState {
-  id: string;
   tittle?: string;
-  tasks: Array<Task> | never;
+  tasks?: Array<Task> | never;
 }
 
 interface AddNewTask {
@@ -34,64 +32,63 @@ interface ChangeTask {
   taskTittle?: string;
   taskOption?: string;
 }
-
 interface ChangeColumn {
   indexColumn: string;
   columnTittle?: string;
 }
 
-interface DnDColumn {
-  indexDestinationColumn: number;
-  indexSourceColumn: number;
-}
-
-interface DnDTask {
-  destinationColumn: string;
-  sourceColumn: string;
-  indexDestinationTask: number;
-  indexSourceTask: number;
-}
-
 const dataBoards = [
   {
-    id: 'asdq23rawdjfn23uhruwnerji',
     tittle: 'Need to do',
     tasks: [
       {
-        id: 'askdhwuegr23bh54uy2g3rhb23uyr',
-        taskTittle: 'Some Title For Task',
-        taskOption: 'Some Description For Task',
+        taskTittle: 'Task tittle1',
+        taskOption: 'Task tittle1',
       },
       {
-        id: 'sdcxmfernfejrhtu34y634rth34uih52i3jnre',
-        taskTittle: 'Some Title For Task',
-        taskOption: 'Some Description For Task',
+        taskTittle: 'Task tittle1',
+        taskOption: 'Task tittle1',
       },
       {
-        id: 'dfg34tjn34fbqwjerui23hiruhl23jrbh',
-        taskTittle: 'Some Title For Task',
-        taskOption: 'Some Description For Task',
+        taskTittle: 'Task tittle1',
+        taskOption: 'Task tittle1',
       },
       {
-        id: '123412jkn4rwdokaoiscjszklcmweuhfiwj',
-        taskTittle: 'Some Title For Task',
-        taskOption: 'Some Description For Task',
+        taskTittle: 'Task tittle1',
+        taskOption: 'Task tittle1',
+      },
+      {
+        taskTittle: 'Task tittle1',
+        taskOption: 'Task tittle1',
+      },
+      {
+        taskTittle: 'Task tittle1',
+        taskOption: 'Task tittle1',
+      },
+      {
+        taskTittle: 'Task tittle1',
+        taskOption: 'Task tittle1',
+      },
+      {
+        taskTittle: 'Task tittle1',
+        taskOption: 'Task tittle1',
+      },
+      {
+        taskTittle: 'Task tittle1',
+        taskOption: 'Task tittle1',
       },
     ],
   },
   {
-    id: 'asfaw3rxcnvxcnv67867ikjhk67',
     tittle: 'During',
     tasks: [
       {
-        id: '2354nl2j3bh54jhi23uk54hk23ber2by3y',
-        taskTittle: 'Some Title For Task',
-        taskOption: 'Some Description For Task',
+        taskTittle: 'Task tittle1',
+        taskOption: 'Task tittle1',
       },
     ],
   },
   {
-    id: 'xzcw45345y56he5n6456hnwe45b',
     tittle: 'Completed',
     tasks: [],
   },
@@ -121,16 +118,16 @@ export const useSliceBoardsPage = createSlice({
 
     addNewColumn: (state, action: PayloadAction<string>) => {
       const emptyColumn = {
-        id: Date.now().toString(),
         tittle: action.payload,
         tasks: [],
       };
       state.dataBoardsPage.push(emptyColumn);
     },
 
-    changeTitleOfCurrentColumn: (state, action: PayloadAction<ChangeColumn>) => {
-      state.dataBoardsPage[Number(action.payload.indexColumn)].tittle = action.payload.columnTittle;
-    },
+    // changeTitleOfCurrentColumn: (state, action: PayloadAction<ChangeColumn>) => {
+    //   state.titleOfCurrentColumn = action.payload.columnTittle;
+    //   state.dataBoardsPage[Number(action.payload.indexColumn)].tittle = action.payload.columnTittle;
+    // },
 
     deleteColumn: (state, action: PayloadAction<number>) => {
       const deleteOneElement = 1;
@@ -139,7 +136,6 @@ export const useSliceBoardsPage = createSlice({
 
     addNewTask: (state, action: PayloadAction<AddNewTask>) => {
       const task = {
-        id: Date.now().toString(),
         taskTittle: action.payload.taskTittle,
         taskOption: action.payload.taskOption,
       };
@@ -155,7 +151,6 @@ export const useSliceBoardsPage = createSlice({
 
     changeTask: (state, action: PayloadAction<ChangeTask>) => {
       const changedTask = {
-        id: Date.now().toString(),
         taskTittle: action.payload.taskTittle,
         taskOption: action.payload.taskOption,
       };
@@ -185,32 +180,6 @@ export const useSliceBoardsPage = createSlice({
 
     addNameForModalWindow: (state, action: PayloadAction<string>) => {
       state.nameModalWindow = action.payload;
-    },
-
-    dragAndDropColumn: (state, action: PayloadAction<DnDColumn>) => {
-      const { indexDestinationColumn, indexSourceColumn } = action.payload;
-      const allArrayItem = state.dataBoardsPage;
-      const [reorderedItem] = allArrayItem.splice(indexSourceColumn, 1);
-      allArrayItem.splice(indexDestinationColumn, 0, reorderedItem);
-      state.dataBoardsPage = allArrayItem;
-    },
-    dragAndDropTask: (state, action: PayloadAction<DnDTask>) => {
-      const { destinationColumn, sourceColumn, indexDestinationTask, indexSourceTask } =
-        action.payload;
-      const allArrayItem = state.dataBoardsPage;
-      const indexDestinationColumn = allArrayItem.findIndex((item) => {
-        if (item.id === destinationColumn) {
-          return true;
-        }
-      });
-      const indexSourceColumn = allArrayItem.findIndex((item) => {
-        if (item.id === sourceColumn) {
-          return true;
-        }
-      });
-      const [deletedItem] = allArrayItem[indexSourceColumn].tasks?.splice(indexSourceTask, 1);
-      allArrayItem[indexDestinationColumn].tasks.splice(indexDestinationTask, 0, deletedItem);
-      state.dataBoardsPage = allArrayItem;
     },
   },
 });

@@ -22,13 +22,12 @@ import { SignUpResponse, UserSignUpData } from '../../types';
 import { userAPI } from '../../services/UserService';
 import { userAuthSlice } from '../../app/store/reducers/UserAuthSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { useTranslation } from 'react-i18next';
+import Footer from '../../app/components/share/Footer/Footer';
 
 export default function SignUp() {
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [isShowForm, setIsShowForm] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
-  const { t } = useTranslation('account');
   const [signUpUser, { isLoading, isError, isSuccess }] = userAPI.useUserSignUpMutation();
   const { auth } = useAppSelector((state) => state.userAuthReducer);
   const {
@@ -57,12 +56,12 @@ export default function SignUp() {
     setMessage('');
     const response = (await signUpUser(formData)) as SignUpResponse;
     if (response.error?.status) {
-      setMessage(t('statusErrorSignUp'));
+      setMessage(response.error.data.message);
     } else {
       const userId = response.data?.id as string;
       localStorage.setItem('userId', userId);
       dispatch(setUserAuthData({ userId }));
-      setMessage(t('statusOkSignUp'));
+      setMessage('Successful sign up');
       setTimeout(() => {
         navigator('/signin');
       }, 1500);
@@ -100,11 +99,8 @@ export default function SignUp() {
 
   if (isChecking) {
     return (
-      <Box
-        component="section"
-        sx={{ display: 'flex', flexDirection: 'column', height: '94%', pl: 1, pr: 1 }}
-      >
-        <Container maxWidth="xs">
+      <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <Container component="section" maxWidth="xs">
           <Box
             sx={{
               marginTop: 8,
@@ -116,6 +112,7 @@ export default function SignUp() {
             <CircularProgress size={30} color="warning" />
           </Box>
         </Container>
+        <Footer />
       </Box>
     );
   }
@@ -124,16 +121,17 @@ export default function SignUp() {
     navigator('/');
   };
   return (
-    <Box
-      component="section"
-      sx={{ display: 'flex', flexDirection: 'column', height: '94%', pl: 1, pr: 1 }}
-    >
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', pl: 1, pr: 2 }}>
       <Grow
         style={{ transformOrigin: '0 0 0' }}
         in={isShowForm}
         {...(isShowForm ? { timeout: 1000 } : {})}
       >
-        <Container sx={{ backgroundColor: 'white', marginTop: 8 }} maxWidth="xs">
+        <Container
+          component="section"
+          sx={{ backgroundColor: 'white', marginTop: 8 }}
+          maxWidth="xs"
+        >
           {isShowForm && (
             <>
               <Box
@@ -152,7 +150,7 @@ export default function SignUp() {
                   <PersonAddAltIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                  {t('titleSignUp')}
+                  Sign up
                 </Typography>
 
                 <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
@@ -170,12 +168,12 @@ export default function SignUp() {
                       />
                       {errors.name?.type === 'required' && (
                         <FormHelperText component="span" error>
-                          {t('nameError')}
+                          Name is required
                         </FormHelperText>
                       )}
                       {errors.name?.type === 'pattern' && (
                         <FormHelperText component="span" error>
-                          {t('nameErrorLetters')}
+                          Name should include letters only
                         </FormHelperText>
                       )}
                     </Grid>
@@ -194,7 +192,7 @@ export default function SignUp() {
                       />
                       {errors.login?.type === 'required' && (
                         <FormHelperText component="span" error>
-                          {t('loginError')}
+                          Login is required
                         </FormHelperText>
                       )}
                     </Grid>
@@ -211,12 +209,12 @@ export default function SignUp() {
                       />
                       {errors.password?.type === 'required' && (
                         <FormHelperText component="span" error>
-                          {t('passwordError')}
+                          Password is required
                         </FormHelperText>
                       )}
                       {errors.password?.type === 'minLength' && (
                         <FormHelperText component="span" error>
-                          {t('passwordLengthError')}
+                          Password length should be more than 8 characters
                         </FormHelperText>
                       )}
                     </Grid>
@@ -251,12 +249,12 @@ export default function SignUp() {
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
                   >
-                    {t('titleSignUp')}
+                    Sign Up
                   </Button>
                   <Grid container justifyContent="flex-end">
                     <Grid item>
                       <Link component={NavLink} to="/signin" variant="body2">
-                        {t('questionSignUp')}
+                        Already have an account? Sign in
                       </Link>
                     </Grid>
                   </Grid>
@@ -267,6 +265,7 @@ export default function SignUp() {
           )}
         </Container>
       </Grow>
+      <Footer />
     </Box>
   );
 }

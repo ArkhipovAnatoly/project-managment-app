@@ -17,49 +17,15 @@ import { useSliceBoardsPage } from '../../app/store/reducers/useSliceBoardsPage'
 import DialogContent from '@mui/material/DialogContent';
 
 const useStyles = makeStyles({
-  firstModalWindowForNewColumn: {
-    minWidth: 300,
-    maxWidth: 800,
+  modalWindow: {
     width: '70%',
-    height: '50%',
+    height: '75%',
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     backgroundColor: '#ffff',
-    borderRadius: 10,
-    outline: 'none',
-  },
-  secondModalWindowForNewColumn: {
-    width: '80%',
-    height: '60%',
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    outline: 'none',
-  },
-  firstModalWindowForTask: {
-    minWidth: 300,
-    maxWidth: 800,
-    minHeight: 450,
-    width: '70%',
-    height: '50%',
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    backgroundColor: '#ffff',
-    borderRadius: 10,
-    outline: 'none',
-  },
-  secondModalWindowForTask: {
-    width: '80%',
-    height: '65%',
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
+    borderRadius: 3,
     outline: 'none',
   },
 });
@@ -158,8 +124,8 @@ function ModalWindow() {
     <>
       {nameModalWindow === 'addColumn' && (
         <Modal open={openModalWindow} onClose={closeModalWindow}>
-          <Box className={classes.firstModalWindowForNewColumn}>
-            <Box className={classes.secondModalWindowForNewColumn}>
+          <Box className={classes.modalWindow}>
+            <Box className={classes.modalWindow}>
               <Stack direction="column" spacing={5}>
                 <Typography gutterBottom variant="h5">
                   Add new column
@@ -170,7 +136,6 @@ function ModalWindow() {
                     label="Tittle of new column"
                     variant="filled"
                     onChange={handleTitle}
-                    inputProps={{ maxLength: 20 }}
                   />
                 </Stack>
                 <Stack direction="row" spacing={2}>
@@ -208,8 +173,8 @@ function ModalWindow() {
       )}
       {nameModalWindow === 'addTask' && (
         <Modal open={openModalWindow} onClose={closeModalWindow}>
-          <Box className={classes.firstModalWindowForTask}>
-            <Box className={classes.secondModalWindowForTask}>
+          <Box className={classes.modalWindow}>
+            <Box className={classes.modalWindow}>
               <Stack direction="column" spacing={3}>
                 <Typography gutterBottom variant="h5">
                   Add new task
@@ -265,8 +230,8 @@ function ModalWindow() {
       )}
       {nameModalWindow === 'editTask' && (
         <Modal open={openModalWindow} onClose={closeModalWindow}>
-          <Box className={classes.firstModalWindowForTask}>
-            <Box className={classes.secondModalWindowForTask}>
+          <Box className={classes.modalWindow}>
+            <Box className={classes.modalWindow}>
               <Stack direction="column" spacing={3}>
                 <Typography gutterBottom variant="h5">
                   Edit your task

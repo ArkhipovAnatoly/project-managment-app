@@ -3,12 +3,14 @@ import { userAPI } from '../../services/UserService';
 import userAuthReducer from './reducers/UserAuthSlice';
 import modalReducer from './reducers/ModalSlice';
 import boardsPage from './reducers/useSliceBoardsPage';
+import mainPage from './reducers/useSliceMainPage';
 
 const rootReducer = combineReducers({
   userAuthReducer,
   modalReducer,
   [userAPI.reducerPath]: userAPI.reducer,
   boardsPage,
+  mainPage,
 });
 
 const setupStore = () => {
