@@ -1,14 +1,14 @@
-import { useState, useEffect, useCallback, ChangeEvent, MouseEvent } from 'react';
+import { useState, useEffect, useCallback, ChangeEvent, MouseEvent, useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
-import headerTheme from '../theme/Theme';
+import { headerTheme } from '../../theme/Theme';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { modalSlice } from '../store/reducers/ModalSlice';
-import { useAppDispatch } from '../hooks';
-import EditUser from '../components/modal/EditUser';
-import { userAuthSlice } from '../store/reducers/UserAuthSlice';
+import { modalSlice } from '../../store/reducers/ModalSlice';
+import { useAppDispatch } from '../../hooks';
+import EditUser from '../modal/EditUser';
+import { userAuthSlice } from '../../store/reducers/UserAuthSlice';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
   Container,
@@ -25,20 +25,27 @@ import {
   MenuItem,
   IconButton,
 } from '@mui/material';
-
+import { useTranslation } from 'react-i18next';
+import '../../../i18n';
 const scrollThreshold = 40;
 
 export default function Header() {
+  const [checked, setChecked] = useState<boolean>(false);
   const [isScroll, setIsScroll] = useState<boolean>(false);
-  const [language, setLanguage] = useState<string>('En');
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const { showModal } = modalSlice.actions;
   const dispatch = useAppDispatch();
   const { setUserAuthData } = userAuthSlice.actions;
   const navigator = useNavigate();
-
+  const { t, i18n } = useTranslation('header');
   const scrollHandle = useCallback(() => {
     window.scrollY > scrollThreshold ? setIsScroll(true) : setIsScroll(false);
+  }, []);
+
+  useEffect(() => {
+    if (i18n.language === 'Ru') {
+      setChecked(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -49,10 +56,11 @@ export default function Header() {
     };
   }, [scrollHandle]);
 
-  const changeHandle = (e: ChangeEvent) => {
+  const changeHandle = (event: ChangeEvent<HTMLInputElement>) => {
     handleCloseNavMenu();
-    const { checked } = e.target as HTMLInputElement;
-    checked ? setLanguage('Ru') : setLanguage('En');
+    const { checked } = event.target as HTMLInputElement;
+    setChecked(event.target.checked);
+    checked ? i18n.changeLanguage('Ru') : i18n.changeLanguage('En');
   };
 
   const openModal = () => {
@@ -75,30 +83,13 @@ export default function Header() {
   };
 
   const changeLanguage = () => {
-    language === 'En' ? setLanguage('Ru') : setLanguage('En');
+    i18n.resolvedLanguage === 'En'
+      ? (i18n.changeLanguage('Ru'), setChecked(true))
+      : (i18n.changeLanguage('En'), setChecked(false));
   };
   const createBoard = () => {
     handleCloseNavMenu();
   };
-
-  const pages = [
-    {
-      title: 'Create New Board',
-      handler: createBoard,
-    },
-    {
-      title: 'Edit profile',
-      handler: openModal,
-    },
-    {
-      title: 'Log Out',
-      handler: signOutHandle,
-    },
-    {
-      title: `Language: ${language}`,
-      handler: changeLanguage,
-    },
-  ];
 
   return (
     <>
@@ -158,18 +149,34 @@ export default function Header() {
                   open={Boolean(anchorElNav)}
                   onClose={handleCloseNavMenu}
                 >
-                  {pages.map((page, i) => (
-                    <MenuItem key={i} onClick={page.handler}>
-                      <Typography textAlign="center">{page.title}</Typography>
-                    </MenuItem>
-                  ))}
+                  <MenuItem onClick={createBoard}>
+                    <Typography textAlign="center">{t('newBoard')}</Typography>
+                  </MenuItem>
+                  <MenuItem onClick={openModal}>
+                    <Typography textAlign="center">{t('profile')}</Typography>
+                  </MenuItem>
+                  <MenuItem onClick={changeLanguage}>
+                    <Typography textAlign="center">
+                      {t('lng')}: {i18n.language}
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem onClick={signOutHandle}>
+                    <Typography textAlign="center">{t('out')}</Typography>
+                  </MenuItem>
                 </Menu>
               </Box>
 
               <Stack direction="row" spacing={3} sx={{ display: { md: 'flex', xs: 'none' } }}>
                 <FormControlLabel
-                  control={<Switch onChange={changeHandle} color="primary" />}
-                  label={language}
+                  control={
+                    <Switch
+                      checked={checked}
+                      onChange={changeHandle}
+                      inputProps={{ 'aria-label': 'controlled' }}
+                      color="secondary"
+                    />
+                  }
+                  label={i18n.resolvedLanguage}
                   labelPlacement="end"
                 />
                 <Button
@@ -178,7 +185,7 @@ export default function Header() {
                   color="warning"
                   startIcon={<AddBoxIcon />}
                 >
-                  Create new board
+                  {t('newBoard')}
                 </Button>
                 <Button
                   variant="contained"
@@ -186,7 +193,7 @@ export default function Header() {
                   endIcon={<ModeEditIcon />}
                   onClick={openModal}
                 >
-                  Edit profile
+                  {t('profile')}
                 </Button>
 
                 <Button
@@ -195,7 +202,7 @@ export default function Header() {
                   color="info"
                   endIcon={<LogoutIcon />}
                 >
-                  Sign Out
+                  {t('out')}
                 </Button>
               </Stack>
             </Toolbar>

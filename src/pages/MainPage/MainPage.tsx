@@ -1,7 +1,7 @@
 import { Container, Box, Link, Typography } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import Footer from '../../app/components/share/Footer/Footer';
-import Header from '../../app/layout/Header';
+import Header from '../../app/components/share/Header';
 import { useAppSelector } from '../../app/hooks';
 import Boards from './Boards';
 

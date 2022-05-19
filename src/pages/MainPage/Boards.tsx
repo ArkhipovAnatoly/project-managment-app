@@ -16,7 +16,6 @@ import Stack from '@mui/material/Stack';
 import { makeStyles } from '@material-ui/core';
 import SendIcon from '@mui/icons-material/Send';
 import ModalWindowMain from './ModalWindowMain';
-import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles({
   boards: {
@@ -119,7 +118,6 @@ export default function Boards() {
   const { dataMainPage } = useAppSelector((state) => state.mainPage);
   const reducers = useSliceMainPage.actions;
   const dispatch = useAppDispatch();
-  const navigator = useNavigate();
 
   const openModalWindowAddBoard = (targetButtonModal: HTMLElement) => {
     const currentIndexBoard = String(targetButtonModal?.dataset.boardindex);
@@ -229,6 +227,14 @@ export default function Boards() {
                   onBlur={closeButtonSettings}
                   onChange={changeButtonSettings}
                 />
+                <Button
+                  onClick={buttonSettingsApply}
+                  className={'buttonApply'}
+                  variant="contained"
+                  size="small"
+                  startIcon={<SendIcon />}
+                  sx={{ mt: '2px', display: 'none' }}
+                ></Button>
                 <Button
                   onClick={buttonSettingsClose}
                   className={'buttonCancel'}

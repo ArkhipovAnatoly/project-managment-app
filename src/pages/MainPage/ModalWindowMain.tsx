@@ -40,6 +40,7 @@ function ModalWindowMain() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const { openModalWindow } = useAppSelector((state) => state.mainPage);
+  const { indexOfCurrentColumn } = useAppSelector((state) => state.mainPage);
   const { indexOfCurrentBoard } = useAppSelector((state) => state.mainPage);
   const reducers = useSliceMainPage.actions;
   const dispatch = useAppDispatch();
@@ -73,7 +74,11 @@ function ModalWindowMain() {
   };
 
   const deleteBoard = () => {
-    dispatch(reducers.deleteBoard(Number(indexOfCurrentBoard)));
+    const deleteBoardIndex = {
+      boardTittle: indexOfCurrentColumn,
+      boardDescription: indexOfCurrentBoard,
+    };
+    dispatch(reducers.deleteBoard(Number(deleteBoardIndex)));
     closeModalWindow();
     clearTextModal();
   };

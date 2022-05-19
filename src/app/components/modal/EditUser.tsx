@@ -21,6 +21,7 @@ import { userAuthSlice } from '../../store/reducers/UserAuthSlice';
 
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import ChildModal from './ChildModal';
+import { useTranslation } from 'react-i18next';
 
 const style = {
   position: 'absolute',
@@ -47,6 +48,7 @@ export default function EditUser() {
     userAPI.useUserUpdateMutation();
   const { setUserAuthData } = userAuthSlice.actions;
   const dispatch = useAppDispatch();
+  const { t } = useTranslation('profile');
 
   const {
     register,
@@ -124,7 +126,7 @@ export default function EditUser() {
               <ManageAccountsIcon />
             </Avatar>
             <Typography id="modal-modal-title" component="h2" variant="h5">
-              Edit Profile
+              {t('title')}
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
               <Grid container spacing={2}>
@@ -222,11 +224,11 @@ export default function EditUser() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Update
+                {t('update')}
               </Button>
             </Box>
             <Typography color="#ff0000" component="h2" variant="h5">
-              Delete Profile
+              {t('delete')}
             </Typography>
             <ChildModal />
           </Box>

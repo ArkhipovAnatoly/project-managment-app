@@ -4,6 +4,7 @@ interface States {
   dataMainPage: Array<MainPageState> | never;
   openModalWindow: boolean;
   nameModalWindow: string;
+  indexOfCurrentColumn: string;
   indexOfCurrentBoard: string;
   tittleOfCurrentBoard?: string;
   DescriptionOfCurrentBoard?: string;
@@ -53,6 +54,7 @@ const initialState: States = {
   dataMainPage: dataBoards,
   openModalWindow: false,
   nameModalWindow: '',
+  indexOfCurrentColumn: '',
   indexOfCurrentBoard: '',
   tittleOfCurrentBoard: '',
   DescriptionOfCurrentBoard: '',
@@ -71,11 +73,11 @@ export const useSliceMainPage = createSlice({
     },
 
     addNewBoard: (state, action: PayloadAction<string>) => {
-      const emptyColumn = {
+      const emptyBoard = {
         tittle: action.payload,
         boards: [],
       };
-      state.dataMainPage.push(emptyColumn);
+      state.dataMainPage.push(emptyBoard);
     },
 
     addNew: (state, action: PayloadAction<AddNew>) => {
@@ -83,7 +85,6 @@ export const useSliceMainPage = createSlice({
         boardTittle: action.payload.boardTittle,
         boardOption: action.payload.boardOption,
       };
-
       state.dataMainPage[Number(action.payload.index)].boards?.push(board);
     },
 

@@ -24,7 +24,7 @@ import { SignInResponse, UserSignInData } from '../../types';
 import { userAPI } from '../../services/UserService';
 import { userAuthSlice } from '../../app/store/reducers/UserAuthSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import Footer from '../../app/components/share/Footer/Footer';
+import { useTranslation } from 'react-i18next';
 
 export default function SignIn() {
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
@@ -38,7 +38,7 @@ export default function SignIn() {
     isSuccess: isSuccessUser,
   } = userAPI.useGetUserQuery(auth.userId as string);
   const { setUserAuthData } = userAuthSlice.actions;
-
+  const { t } = useTranslation('account');
   const dispatch = useAppDispatch();
   const navigator = useNavigate();
 
@@ -59,12 +59,12 @@ export default function SignIn() {
     setMessage('');
     const response = (await signInUser(formData)) as SignInResponse;
     if (response.error?.status) {
-      setMessage(response.error.data.message);
+      setMessage(t('statusErrorSignIn'));
     } else {
       const token = response.data?.token as string;
       localStorage.setItem('token', token);
       dispatch(setUserAuthData({ token, isAuth: true }));
-      setMessage('Successful sign in');
+      setMessage(t('statusOkSignIn'));
       setTimeout(() => {
         navigator('/main');
       }, 1500);
@@ -85,6 +85,7 @@ export default function SignIn() {
 
   useEffect(() => {
     if (Object.values(touchedFields).some((v) => v === true) && !isSubmitted) {
+      setMessage('');
       setIsDisabled(false);
     }
   }, [touchedFields.login, touchedFields.password, touchedFields, isSubmitted]);
@@ -106,8 +107,11 @@ export default function SignIn() {
 
   if (isChecking) {
     return (
-      <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-        <Container component="section" maxWidth="xs">
+      <Box
+        component="section"
+        sx={{ display: 'flex', flexDirection: 'column', height: '94%', pl: 1, pr: 1 }}
+      >
+        <Container maxWidth="xs">
           <Box
             sx={{
               marginTop: 8,
@@ -119,23 +123,21 @@ export default function SignIn() {
             <CircularProgress size={30} color="warning" />
           </Box>
         </Container>
-        <Footer />
       </Box>
     );
   }
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', pl: 1, pr: 1 }}>
+    <Box
+      component="section"
+      sx={{ display: 'flex', flexDirection: 'column', height: '94%', pl: 1, pr: 1 }}
+    >
       <Grow
         style={{ transformOrigin: '0 0 0' }}
         in={isShowForm}
         {...(isShowForm ? { timeout: 1000 } : {})}
       >
-        <Container
-          component="section"
-          sx={{ backgroundColor: 'white', marginTop: 8 }}
-          maxWidth="xs"
-        >
+        <Container sx={{ backgroundColor: 'white', marginTop: 8 }} maxWidth="xs">
           {isShowForm && (
             <>
               <Box
@@ -155,7 +157,7 @@ export default function SignIn() {
                   <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                  Sign in
+                  {t('titleSignIn')}
                 </Typography>
 
                 <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
@@ -172,7 +174,7 @@ export default function SignIn() {
                   />
                   {errors.login?.type === 'required' && (
                     <FormHelperText component="span" error>
-                      Login is required
+                      {t('loginError')}
                     </FormHelperText>
                   )}
 
@@ -189,12 +191,12 @@ export default function SignIn() {
                   />
                   {errors.password?.type === 'required' && (
                     <FormHelperText component="span" error>
-                      Password is required
+                      {t('passwordError')}
                     </FormHelperText>
                   )}
                   {errors.password?.type === 'minLength' && (
                     <FormHelperText component="span" error>
-                      Password length should be more than 8 characters
+                      {t('passwordLengthError')}
                     </FormHelperText>
                   )}
                   <Box
@@ -226,13 +228,13 @@ export default function SignIn() {
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
                   >
-                    Sign In
+                    {t('titleSignIn')}
                   </Button>
 
                   <Grid container>
                     <Grid item>
                       <Link component={NavLink} to="/signup" variant="body2">
-                        {"Don't have an account? Sign Up"}
+                        {t('questionSignIn')}
                       </Link>
                     </Grid>
                   </Grid>
@@ -243,7 +245,6 @@ export default function SignIn() {
           )}
         </Container>
       </Grow>
-      <Footer />
     </Box>
   );
 }
