@@ -52,9 +52,10 @@ export const useSliceMainPage = createSlice({
       state.dataMainPage.push(emptyBoard);
     },
 
-    deleteBoard: (state, action: PayloadAction<number>) => {
+    deleteBoard: (state, action: PayloadAction<AddNew>) => {
       const deleteOneElement = 1;
-      state.dataMainPage.splice(action.payload, deleteOneElement);
+      const indexForTask = Number(action.payload.index);
+      state.dataMainPage.splice(indexForTask, deleteOneElement);
     },
 
     openModalWindow: (state, action: PayloadAction<boolean>) => {
