@@ -1,9 +1,14 @@
-import { Container, Card, Box, Link, Typography, Button } from '@mui/material';
+import { Container, Box, Link, Typography } from '@mui/material';
 import { NavLink } from 'react-router-dom';
+import Footer from '../../app/components/share/Footer/Footer';
 import Header from '../../app/components/share/Header';
+import { useAppSelector } from '../../app/hooks';
+import Boards from './Boards';
 
 export default function MainPage() {
-  if (!localStorage.getItem('token')) {
+  const { auth } = useAppSelector((state) => state.userAuthReducer);
+
+  if (!auth.isAuth) {
     return (
       <Box
         sx={{
@@ -11,7 +16,6 @@ export default function MainPage() {
           flexDirection: 'column',
           alignItems: 'center',
           color: 'white',
-          minHeight: 'calc(100vh - 50px)',
         }}
       >
         <Typography component="h1" variant="h3">
@@ -37,30 +41,15 @@ export default function MainPage() {
           minHeight: 'calc(100vh - 50px)',
         }}
       >
-        <Card
+        <Box
           sx={{
-            width: '275px',
-            height: '80px',
             textAlign: 'center',
-            padding: '22px 0',
-            backgroundColor: '#ebecf0b8',
           }}
         >
-          <Box
-            component="span"
-            sx={{
-              p: 2,
-              border: '1px dashed grey',
-            }}
-          >
-            <Button
-            // onClick={handleModal}
-            >
-              Add board
-            </Button>
-          </Box>
-        </Card>
+          <Boards />
+        </Box>
       </Container>
+      <Footer />
     </>
   );
 }

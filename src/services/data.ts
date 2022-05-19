@@ -5,12 +5,12 @@ export default [
     description: '- Вставим описание,- О проделанной работе',
   },
   {
-    imgSrc: 'assets/img/avatars/avatar.gif',
+    imgSrc: 'assets/img/avatars/Marina.png',
     name: 'Марина',
     description: '- Вставим фото, - Описание,- О проделанной работе',
   },
   {
-    imgSrc: 'assets/img/avatars/avatar2.gif',
+    imgSrc: 'assets/img/avatars/Nikita.png',
     name: 'Никита',
     description: '- Вставим фото, - Описание,- О проделанной работе',
   },
