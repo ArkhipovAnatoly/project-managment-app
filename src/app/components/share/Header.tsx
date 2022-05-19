@@ -10,6 +10,10 @@ import { useAppDispatch } from '../../hooks';
 import EditUser from '../modal/EditUser';
 import { userAuthSlice } from '../../store/reducers/UserAuthSlice';
 import MenuIcon from '@mui/icons-material/Menu';
+import Logout from '@mui/icons-material/Logout';
+import LanguageIcon from '@mui/icons-material/Language';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
 import {
   Container,
   Stack,
@@ -24,6 +28,8 @@ import {
   Menu,
   MenuItem,
   IconButton,
+  ListItemIcon,
+  Divider,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import '../../../i18n';
@@ -132,7 +138,7 @@ export default function Header() {
                   <MenuIcon fontSize="large" />
                 </IconButton>
                 <Menu
-                  id="menu-appbar"
+                  id="account-menu"
                   anchorEl={anchorElNav}
                   anchorOrigin={{
                     vertical: 'bottom',
@@ -145,23 +151,64 @@ export default function Header() {
                   }}
                   sx={{
                     display: { md: 'none', xs: 'block' },
+                    right: 0,
+                    left: 0,
+                  }}
+                  PaperProps={{
+                    elevation: 0,
+                    sx: {
+                      overflow: 'visible',
+                      filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                      mt: 1.5,
+                      '& .MuiAvatar-root': {
+                        width: 32,
+                        height: 32,
+                        ml: -0.5,
+                        mr: 1,
+                      },
+                      '&:before': {
+                        content: '""',
+                        display: 'block',
+                        position: 'absolute',
+                        top: 0,
+                        right: 14,
+                        width: 10,
+                        height: 10,
+                        bgcolor: 'background.paper',
+                        transform: 'translateY(-50%) rotate(45deg)',
+                        zIndex: 0,
+                      },
+                    },
                   }}
                   open={Boolean(anchorElNav)}
                   onClose={handleCloseNavMenu}
                 >
                   <MenuItem onClick={createBoard}>
-                    <Typography textAlign="center">{t('newBoard')}</Typography>
+                    <ListItemIcon>
+                      <AddIcon color="warning" fontSize="small" />
+                    </ListItemIcon>
+                    <Typography>{t('newBoard')}</Typography>
                   </MenuItem>
                   <MenuItem onClick={openModal}>
-                    <Typography textAlign="center">{t('profile')}</Typography>
+                    <ListItemIcon>
+                      <EditIcon color="warning" fontSize="small" />
+                    </ListItemIcon>
+                    <Typography>{t('profile')}</Typography>
                   </MenuItem>
                   <MenuItem onClick={changeLanguage}>
-                    <Typography textAlign="center">
+                    <ListItemIcon>
+                      <LanguageIcon color="warning" fontSize="small" />
+                    </ListItemIcon>
+                    <Typography>
                       {t('lng')}: {i18n.resolvedLanguage}
                     </Typography>
                   </MenuItem>
+                  <Divider sx={{ my: 0.5 }} />
                   <MenuItem onClick={signOutHandle}>
-                    <Typography textAlign="center">{t('out')}</Typography>
+                    <ListItemIcon>
+                      <Logout color="warning" fontSize="small" />
+                    </ListItemIcon>
+                    <Typography> {t('out')}</Typography>
                   </MenuItem>
                 </Menu>
               </Box>
