@@ -151,8 +151,6 @@ export default function Header() {
                   }}
                   sx={{
                     display: { md: 'none', xs: 'block' },
-                    right: 0,
-                    left: 0,
                   }}
                   PaperProps={{
                     elevation: 0,
