@@ -80,12 +80,11 @@ function ModalWindowMain() {
 
   const deleteBoard = () => {
     const deleteBoardIndex = {
-      indexBoard: indexOfCurrentBoard,
+      index: indexOfCurrentBoard,
       boardTittle: indexOfCurrentBoard,
       boardDescription: indexOfCurrentBoard,
     };
-    dispatch(reducers.deleteBoard(Number(deleteBoardIndex)));
-    // dispatch(reducers.deleteBoard(Number(indexOfCurrentBoard)));
+    dispatch(reducers.deleteBoard(deleteBoardIndex));
     closeModalWindow();
     clearTextModal();
   };

@@ -10,12 +10,13 @@ import {
   Button,
   Paper,
   Typography,
-  InputBase,
+  Link,
 } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import { makeStyles } from '@material-ui/core';
 import SendIcon from '@mui/icons-material/Send';
 import ModalWindowMain from './ModalWindowMain';
+import { NavLink } from 'react-router-dom';
 
 const useStyles = makeStyles({
   boards: {
@@ -78,7 +79,7 @@ const useStyles = makeStyles({
     padding: 2,
   },
   columnBoard: {
-    minWidth: '95%',
+    minWidth: '100%',
     maxWidth: '200px',
     height: 'auto',
     borderRadius: 3,
@@ -107,7 +108,7 @@ const useStyles = makeStyles({
   buttonsSetting: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     backgroundColor: '#f7f7f8',
     borderRadius: 3,
   },
@@ -216,17 +217,11 @@ export default function Boards() {
             <Box className={classes.boardOptions}>
               <Box
                 className={`${classes.boardTitle} boxForTitle`}
-                data-columnindex={indexBoard}
+                data-boardindex={indexBoard}
                 data-onopen={board.tittle}
                 data-onclose={board.tittle}
               >
-                <InputBase
-                  className={'inputTitleChange'}
-                  defaultValue={board.tittle}
-                  onClick={openButtonSettings}
-                  onBlur={closeButtonSettings}
-                  onChange={changeButtonSettings}
-                />
+                Board
                 <Paper
                   key={`${board.tittle} ${indexBoard}`}
                   className={classes.columnBoard}
@@ -243,7 +238,6 @@ export default function Boards() {
                     </AccordionDetails>
                   </Accordion>
                 </Paper>
-
                 <Button
                   onClick={buttonSettingsApply}
                   className={'buttonApply'}
@@ -267,39 +261,21 @@ export default function Boards() {
                 alignItems="center"
                 spacing={2}
                 className={classes.columnBoards}
-              >
-                {/* {board.map((boards, indexBoard) => {
-                  return (
-                    <Paper
-                      key={`${boards.boardTittle} ${indexBoard}`}
-                      className={classes.columnBoard}
-                      elevation={3}
-                    >
-                      <Accordion elevation={0}>
-                        <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
-                          <Typography>{boards.boardTittle}</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <Typography variant="body2" color="text.secondary">
-                            {boards.boardDescription}
-                          </Typography>
-                        </AccordionDetails>
-                      </Accordion>
-                    </Paper>
-                  );
-                })} */}
-              </Stack>
+              />
               <Box className={classes.buttonsSetting}>
                 <Box
                   className="buttonModal"
                   data-modalname="deleteBoard"
-                  data-columnindex={indexBoard}
+                  data-boardindex={indexBoard}
                   onClick={handleModalWindow}
                 >
                   <Button color="secondary">
                     <DeleteIcon fontSize="small" color="action" />
                   </Button>
                 </Box>
+                <Link component={NavLink} underline="none" color="#397c42" to="/board">
+                  Open board
+                </Link>
               </Box>
             </Box>
           </Box>

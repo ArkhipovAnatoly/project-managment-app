@@ -15,11 +15,6 @@ const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
 export default function CustomizedButtons() {
   return (
     <Stack spacing={2} direction="row">
-      <NavLink to="/board" className="nav">
-        <Button variant="outlined" className="logInBtn">
-          Board
-        </Button>
-      </NavLink>
       <NavLink to="/signin" className="nav">
         <ColorButton variant="contained" className="logInBtn">
           Sing in
