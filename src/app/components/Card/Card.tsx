@@ -4,8 +4,11 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import { CardProps } from '../../../types';
+import { useState } from 'react';
 
 export default function ActionAreaCard(props: CardProps) {
+  const [isBackgroundBlack, setIsBackgroundBlack] = useState(false);
+
   return (
     <Card
       sx={{
@@ -13,7 +16,7 @@ export default function ActionAreaCard(props: CardProps) {
         padding: '20px',
         objectFit: 'contain',
         color: '#9ca9b3',
-        backgroundColor: '#25282c',
+        backgroundColor: isBackgroundBlack ? '#fff' : '#25282c',
         boxShadow: 'rgb(21 23 25 / 64%) 0px 2px 34px;',
       }}
     >

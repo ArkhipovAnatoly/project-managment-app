@@ -44,6 +44,10 @@ const WelcomePage = () => {
         <div className="wrapper">
           {auth.isAuth ? (
             <div className="autorizationBtns">
+              <FormControlLabel
+                control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked onClick={renkDegis} />}
+                label=""
+              />
               <CustomizedButton innerText={t('toManPage')} link={'/main'} />
             </div>
           ) : (
