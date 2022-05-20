@@ -5,8 +5,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { modalSlice } from '../../store/reducers/ModalSlice';
-import { themeSlice } from '../../store/reducers/ThemeSlice';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppDispatch } from '../../hooks';
 import EditUser from '../modal/EditUser';
 import { userAuthSlice } from '../../store/reducers/UserAuthSlice';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -17,7 +16,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import {
   Container,
   Stack,
-  ThemeProvider,
   Toolbar,
   AppBar,
   Link,
@@ -33,8 +31,9 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import '../../../i18n';
-import MaterialUISwitch from '../Switch/MaterialUISwitch';
+
 import { alpha, useTheme } from '@mui/material/styles';
+import { blue } from '@material-ui/core/colors';
 
 const scrollThreshold = 40;
 
@@ -45,18 +44,13 @@ export default function Header() {
   const { showModal } = modalSlice.actions;
   const dispatch = useAppDispatch();
   const { setUserAuthData } = userAuthSlice.actions;
-  const { setTheme } = themeSlice.actions;
+  const theme = useTheme();
   const navigator = useNavigate();
   const { t, i18n } = useTranslation('header');
 
   const scrollHandle = useCallback(() => {
     window.scrollY > scrollThreshold ? setIsScroll(true) : setIsScroll(false);
   }, []);
-  const theme = useTheme();
-
-  const changeTheme = () => {
-    dispatch(setTheme());
-  };
 
   useEffect(() => {
     if (i18n.resolvedLanguage === 'Ru') {
@@ -112,7 +106,9 @@ export default function Header() {
       <AppBar
         position="fixed"
         sx={{
-          bgcolor: isScroll ? `${alpha('#151719', 0.6)}` : 'background.default',
+          bgcolor: isScroll
+            ? `${alpha(theme.palette.mode === 'dark' ? '#151719' : '#fff', 0.6)}`
+            : 'background.default',
           backgroundImage: 'none',
           backdropFilter: 'blur(5px)',
           transition: 'background-color 1s',
@@ -136,8 +132,12 @@ export default function Header() {
                 TEMPER
               </Link>
             </Typography>
-            <MaterialUISwitch onClick={changeTheme} />
-            <Box sx={{ display: { md: 'none', xs: 'flex' } }}>
+            <Box
+              sx={{
+                display: { md: 'none', xs: 'flex' },
+                color: theme.palette.mode === 'dark' ? 'common.white' : 'common.black',
+              }}
+            >
               <IconButton
                 aria-label="account of current user"
                 aria-controls="menu-appbar"
@@ -233,6 +233,7 @@ export default function Header() {
                 }
                 label={i18n.resolvedLanguage}
                 labelPlacement="end"
+                sx={{ color: blue[600] }}
               />
               <Button
                 onClick={createBoard}
@@ -243,7 +244,7 @@ export default function Header() {
                 {t('newBoard')}
               </Button>
               <Button
-                color="secondary"
+                color="primary"
                 variant="contained"
                 endIcon={<ModeEditIcon />}
                 onClick={openModal}
@@ -251,7 +252,12 @@ export default function Header() {
                 {t('profile')}
               </Button>
 
-              <Button onClick={signOutHandle} variant="contained" endIcon={<LogoutIcon />}>
+              <Button
+                color="primary"
+                onClick={signOutHandle}
+                variant="contained"
+                endIcon={<LogoutIcon />}
+              >
                 {t('out')}
               </Button>
             </Stack>

@@ -1,25 +1,5 @@
-import { createTheme, alpha, PaletteMode } from '@mui/material';
-import { amber, indigo } from '@mui/material/colors';
-
-declare module '@mui/material/styles' {
-  interface Palette {
-    appBarColor: Palette['primary'];
-    appBarColorScroll: Palette['primary'];
-  }
-
-  // allow configuration using `createTheme`
-  interface PaletteOptions {
-    appBarColor?: PaletteOptions['primary'];
-    appBarColorScroll?: PaletteOptions['primary'];
-  }
-}
-
-declare module '@mui/material/AppBar' {
-  interface AppBarPropsColorOverrides {
-    appBarColor: true;
-    appBarColorScroll: true;
-  }
-}
+import { createTheme, PaletteMode } from '@mui/material';
+import { amber, blue, indigo } from '@mui/material/colors';
 
 const breakpointsTheme = createTheme({
   breakpoints: {
@@ -39,15 +19,18 @@ const getDesignTokens = (mode: PaletteMode) => ({
     ...(mode === 'dark'
       ? {
           warning: {
-            main: amber[900],
+            main: amber[700],
             contrastText: '#fff',
           },
+
           background: {
             default: '#151719',
           },
+
           primary: {
-            main: indigo[500],
-            dark: indigo[700],
+            main: indigo[800],
+            dark: indigo[900],
+            contrastText: '#fff',
           },
           secondary: {
             main: '#26c6da',
@@ -57,7 +40,19 @@ const getDesignTokens = (mode: PaletteMode) => ({
             primary: '#fff',
           },
         }
-      : {}),
+      : {
+          primary: {
+            main: blue[400],
+            dark: blue[500],
+            contrastText: '#fff',
+          },
+          background: {
+            default: '#fff',
+          },
+          text: {
+            primary: '#000',
+          },
+        }),
   },
 });
 

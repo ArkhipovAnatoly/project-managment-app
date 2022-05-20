@@ -53,7 +53,7 @@ function BoardsPage() {
   const classes = useStyles();
 
   return (
-    <>
+    <Box sx={{ bgcolor: 'background.default' }}>
       <Header />
       <Box className={classes.container}>
         <Box className={classes.header} sx={{ m: '20px 10px 0' }}>
@@ -77,7 +77,7 @@ function BoardsPage() {
           <BoardColumns></BoardColumns>
         </Box>
       </Box>
-    </>
+    </Box>
   );
 }
 export default BoardsPage;

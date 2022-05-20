@@ -10,6 +10,8 @@ import {
   Typography,
   Backdrop,
   Fade,
+  useTheme,
+  Divider,
 } from '@mui/material';
 import { modalSlice } from '../../store/reducers/ModalSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -49,7 +51,7 @@ export default function EditUser() {
   const { setUserAuthData } = userAuthSlice.actions;
   const dispatch = useAppDispatch();
   const { t } = useTranslation('profile');
-
+  const theme = useTheme();
   const {
     register,
     handleSubmit,
@@ -122,7 +124,12 @@ export default function EditUser() {
               width: { xs: 320, sm: 400 },
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <Avatar
+              sx={{
+                m: 1,
+                bgcolor: theme.palette.mode === 'dark' ? 'warning.main' : 'primary.main',
+              }}
+            >
               <ManageAccountsIcon />
             </Avatar>
             <Typography id="modal-modal-title" component="h2" variant="h5">
@@ -222,15 +229,14 @@ export default function EditUser() {
                 type="submit"
                 fullWidth
                 variant="contained"
-                color="warning"
+                color="primary"
                 sx={{ mt: 3, mb: 2 }}
               >
                 {t('update')}
               </Button>
+              <Divider sx={{ my: 0.5 }} />
             </Box>
-            <Typography color="#ff0000" component="h2" variant="h5">
-              {t('delete')}
-            </Typography>
+
             <ChildModal />
           </Box>
         </Fade>
