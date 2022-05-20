@@ -6,7 +6,7 @@ interface AppTheme {
 }
 
 const initialState: AppTheme = {
-  mode: 'dark',
+  mode: 'light',
 };
 
 export const themeSlice = createSlice({
