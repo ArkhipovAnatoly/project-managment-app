@@ -1,12 +1,12 @@
 import { useState, useEffect, useCallback, ChangeEvent, MouseEvent } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
-import { headerTheme } from '../../theme/Theme';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { modalSlice } from '../../store/reducers/ModalSlice';
-import { useAppDispatch } from '../../hooks';
+import { themeSlice } from '../../store/reducers/ThemeSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import EditUser from '../modal/EditUser';
 import { userAuthSlice } from '../../store/reducers/UserAuthSlice';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -33,6 +33,9 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import '../../../i18n';
+import MaterialUISwitch from '../Switch/MaterialUISwitch';
+import { alpha, useTheme } from '@mui/material/styles';
+
 const scrollThreshold = 40;
 
 export default function Header() {
@@ -42,11 +45,18 @@ export default function Header() {
   const { showModal } = modalSlice.actions;
   const dispatch = useAppDispatch();
   const { setUserAuthData } = userAuthSlice.actions;
+  const { setTheme } = themeSlice.actions;
   const navigator = useNavigate();
   const { t, i18n } = useTranslation('header');
+
   const scrollHandle = useCallback(() => {
     window.scrollY > scrollThreshold ? setIsScroll(true) : setIsScroll(false);
   }, []);
+  const theme = useTheme();
+
+  const changeTheme = () => {
+    dispatch(setTheme());
+  };
 
   useEffect(() => {
     if (i18n.resolvedLanguage === 'Ru') {
@@ -99,161 +109,155 @@ export default function Header() {
 
   return (
     <>
-      <ThemeProvider theme={headerTheme}>
-        <AppBar
-          position="fixed"
-          color={isScroll ? 'appBarColorScroll' : 'appBarColor'}
-          sx={{
-            backdropFilter: 'blur(5px)',
-            transition: 'background-color 1s',
-            boxShadow: isScroll
-              ? '0px 2px 4px -1px rgb(0, 0, 0 / 20%) ,0px 4px 5px 0px rgb(0, 0 ,0 / 14%), 0px 1px 10px 0px rgb(0, 0 ,0 / 12%)'
-              : 'none',
-          }}
-        >
-          <Container maxWidth="xl">
-            <Toolbar
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignTtems: 'center',
-              }}
-              variant="dense"
-            >
-              <Typography component="h1" variant="h6">
-                <Link component={NavLink} underline="none" color="#fff" to="/">
-                  TEMPER
-                </Link>
-              </Typography>
-
-              <Box sx={{ display: { md: 'none', xs: 'flex' } }}>
-                <IconButton
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  color="inherit"
-                  onClick={handleOpenNavMenu}
-                >
-                  <MenuIcon fontSize="large" />
-                </IconButton>
-                <Menu
-                  id="account-menu"
-                  anchorEl={anchorElNav}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  sx={{
-                    display: { md: 'none', xs: 'block' },
-                  }}
-                  PaperProps={{
-                    elevation: 0,
-                    sx: {
-                      overflow: 'visible',
-                      filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                      mt: 1.5,
-                      '& .MuiAvatar-root': {
-                        width: 32,
-                        height: 32,
-                        ml: -0.5,
-                        mr: 1,
-                      },
-                      '&:before': {
-                        content: '""',
-                        display: 'block',
-                        position: 'absolute',
-                        top: 0,
-                        right: 14,
-                        width: 10,
-                        height: 10,
-                        bgcolor: 'background.paper',
-                        transform: 'translateY(-50%) rotate(45deg)',
-                        zIndex: 0,
-                      },
+      <AppBar
+        position="fixed"
+        sx={{
+          bgcolor: isScroll ? `${alpha('#151719', 0.6)}` : 'background.default',
+          backgroundImage: 'none',
+          backdropFilter: 'blur(5px)',
+          transition: 'background-color 1s',
+          boxShadow: isScroll
+            ? '0px 2px 4px -1px rgb(0, 0, 0 / 20%) ,0px 4px 5px 0px rgb(0, 0 ,0 / 14%), 0px 1px 10px 0px rgb(0, 0 ,0 / 12%)'
+            : 'none',
+        }}
+      >
+        <Container maxWidth="xl">
+          <Toolbar
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignTtems: 'center',
+            }}
+            variant="dense"
+          >
+            <Typography component="h1" variant="h6">
+              <Link component={NavLink} underline="none" color={'text.primary'} to="/">
+                TEMPER
+              </Link>
+            </Typography>
+            <MaterialUISwitch onClick={changeTheme} />
+            <Box sx={{ display: { md: 'none', xs: 'flex' } }}>
+              <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                color="inherit"
+                onClick={handleOpenNavMenu}
+              >
+                <MenuIcon fontSize="large" />
+              </IconButton>
+              <Menu
+                id="account-menu"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                sx={{
+                  display: { md: 'none', xs: 'block' },
+                }}
+                PaperProps={{
+                  elevation: 0,
+                  sx: {
+                    overflow: 'visible',
+                    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                    mt: 1.5,
+                    '& .MuiAvatar-root': {
+                      width: 32,
+                      height: 32,
+                      ml: -0.5,
+                      mr: 1,
                     },
-                  }}
-                  open={Boolean(anchorElNav)}
-                  onClose={handleCloseNavMenu}
-                >
-                  <MenuItem onClick={createBoard}>
-                    <ListItemIcon>
-                      <AddIcon color="warning" fontSize="small" />
-                    </ListItemIcon>
-                    <Typography>{t('newBoard')}</Typography>
-                  </MenuItem>
-                  <MenuItem onClick={openModal}>
-                    <ListItemIcon>
-                      <EditIcon color="warning" fontSize="small" />
-                    </ListItemIcon>
-                    <Typography>{t('profile')}</Typography>
-                  </MenuItem>
-                  <MenuItem onClick={changeLanguage}>
-                    <ListItemIcon>
-                      <LanguageIcon color="warning" fontSize="small" />
-                    </ListItemIcon>
-                    <Typography>
-                      {t('lng')}: {i18n.resolvedLanguage}
-                    </Typography>
-                  </MenuItem>
-                  <Divider sx={{ my: 0.5 }} />
-                  <MenuItem onClick={signOutHandle}>
-                    <ListItemIcon>
-                      <Logout color="warning" fontSize="small" />
-                    </ListItemIcon>
-                    <Typography> {t('out')}</Typography>
-                  </MenuItem>
-                </Menu>
-              </Box>
+                    '&:before': {
+                      content: '""',
+                      display: 'block',
+                      position: 'absolute',
+                      top: 0,
+                      right: 14,
+                      width: 10,
+                      height: 10,
+                      bgcolor: 'background.paper',
+                      transform: 'translateY(-50%) rotate(45deg)',
+                      zIndex: 0,
+                    },
+                  },
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+              >
+                <MenuItem onClick={createBoard}>
+                  <ListItemIcon>
+                    <AddIcon color="warning" fontSize="small" />
+                  </ListItemIcon>
+                  <Typography>{t('newBoard')}</Typography>
+                </MenuItem>
+                <MenuItem onClick={openModal}>
+                  <ListItemIcon>
+                    <EditIcon color="warning" fontSize="small" />
+                  </ListItemIcon>
+                  <Typography>{t('profile')}</Typography>
+                </MenuItem>
+                <MenuItem onClick={changeLanguage}>
+                  <ListItemIcon>
+                    <LanguageIcon color="warning" fontSize="small" />
+                  </ListItemIcon>
+                  <Typography>
+                    {t('lng')}: {i18n.resolvedLanguage}
+                  </Typography>
+                </MenuItem>
+                <Divider sx={{ my: 0.5 }} />
+                <MenuItem onClick={signOutHandle}>
+                  <ListItemIcon>
+                    <Logout color="warning" fontSize="small" />
+                  </ListItemIcon>
+                  <Typography> {t('out')}</Typography>
+                </MenuItem>
+              </Menu>
+            </Box>
 
-              <Stack direction="row" spacing={3} sx={{ display: { md: 'flex', xs: 'none' } }}>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={checked}
-                      onChange={changeHandle}
-                      inputProps={{ 'aria-label': 'controlled' }}
-                      color="secondary"
-                    />
-                  }
-                  label={i18n.resolvedLanguage}
-                  labelPlacement="end"
-                />
-                <Button
-                  onClick={createBoard}
-                  variant="contained"
-                  color="warning"
-                  startIcon={<AddBoxIcon />}
-                >
-                  {t('newBoard')}
-                </Button>
-                <Button
-                  variant="contained"
-                  color="info"
-                  endIcon={<ModeEditIcon />}
-                  onClick={openModal}
-                >
-                  {t('profile')}
-                </Button>
+            <Stack direction="row" spacing={3} sx={{ display: { md: 'flex', xs: 'none' } }}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={checked}
+                    onChange={changeHandle}
+                    inputProps={{ 'aria-label': 'controlled' }}
+                    color="info"
+                  />
+                }
+                label={i18n.resolvedLanguage}
+                labelPlacement="end"
+              />
+              <Button
+                onClick={createBoard}
+                variant="contained"
+                color="warning"
+                startIcon={<AddBoxIcon />}
+              >
+                {t('newBoard')}
+              </Button>
+              <Button
+                color="secondary"
+                variant="contained"
+                endIcon={<ModeEditIcon />}
+                onClick={openModal}
+              >
+                {t('profile')}
+              </Button>
 
-                <Button
-                  onClick={signOutHandle}
-                  variant="contained"
-                  color="info"
-                  endIcon={<LogoutIcon />}
-                >
-                  {t('out')}
-                </Button>
-              </Stack>
-            </Toolbar>
-          </Container>
-        </AppBar>
-      </ThemeProvider>
+              <Button onClick={signOutHandle} variant="contained" endIcon={<LogoutIcon />}>
+                {t('out')}
+              </Button>
+            </Stack>
+          </Toolbar>
+        </Container>
+      </AppBar>
       <EditUser />
     </>
   );
