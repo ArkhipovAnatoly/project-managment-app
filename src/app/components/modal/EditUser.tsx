@@ -122,7 +122,7 @@ export default function EditUser() {
               width: { xs: 320, sm: 400 },
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
               <ManageAccountsIcon />
             </Avatar>
             <Typography id="modal-modal-title" component="h2" variant="h5">
@@ -222,6 +222,7 @@ export default function EditUser() {
                 type="submit"
                 fullWidth
                 variant="contained"
+                color="warning"
                 sx={{ mt: 3, mb: 2 }}
               >
                 {t('update')}
