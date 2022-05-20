@@ -2,16 +2,18 @@ import './WelcomePage.css';
 import data from '../../services/data';
 import { useState } from 'react';
 import Modal from '@mui/material/Modal';
-import { Box, Typography } from '@mui/material';
+import { Box, FormControlLabel, Typography } from '@mui/material';
 import Card from '../../app/components/Card/Card';
 import { useAppSelector } from '../../app/hooks';
 import CustomizedButton from '../../app/components/share/Button/CustomizedButton';
 import { useTranslation } from 'react-i18next';
+import MaterialUISwitch from '../../app/components/switch/MaterialUISwitch';
 
 const WelcomePage = () => {
   const [videoModalActive, setVideomodalactive] = useState(false);
   const { auth } = useAppSelector((state) => state.userAuthReducer);
   const { t } = useTranslation('welcome');
+  const [isBackgroundBlack, setIsBackgroundBlack] = useState(false);
 
   const openModal = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -23,9 +25,22 @@ const WelcomePage = () => {
     setVideomodalactive(false);
   };
 
+  const renkDegis = () => {
+    if (isBackgroundBlack == true) {
+      setIsBackgroundBlack(false);
+    } else {
+      setIsBackgroundBlack(true);
+    }
+  };
+
   return (
     <>
-      <main className="main">
+      <main
+        className="main"
+        style={{
+          backgroundColor: isBackgroundBlack ? '#fff' : '#151719',
+        }}
+      >
         <div className="wrapper">
           {auth.isAuth ? (
             <div className="autorizationBtns">
@@ -33,6 +48,10 @@ const WelcomePage = () => {
             </div>
           ) : (
             <div className="autorizationBtns">
+              <FormControlLabel
+                control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked onClick={renkDegis} />}
+                label=""
+              />
               <CustomizedButton innerText={t('signIn')} link={'/signin'} />
               <CustomizedButton innerText={t('signUp')} link={'/signup'} />
             </div>
@@ -41,6 +60,7 @@ const WelcomePage = () => {
             <h1>
               {t('aboutProject')} <span className="titleProject">TEMPER</span>
             </h1>
+            <p className="title">Видео обзор приложения</p>
           </div>
           <div className="videoPlaceholder">
             <a
@@ -59,10 +79,25 @@ const WelcomePage = () => {
             </a>
           </div>
           <Modal id="videoModal" open={videoModalActive} onClose={closeModal}>
-            <Box>
-              <Typography id="modal-modal-title" variant="h6" component="h2"></Typography>
+            <Box
+              sx={{
+                top: '30%',
+                left: '30%',
+                outline: 'none',
+                position: 'absolute',
+                borderRadius: 3,
+              }}
+            >
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                <iframe src="https://player.vimeo.com/video/174002812%22%3E"></iframe>
+                <iframe
+                  src="https://www.youtube.com/embed/E7wJTI-1dvQ"
+                  frameBorder="0"
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                  title="video"
+                  width="500px"
+                  height="350px"
+                />
               </Typography>
             </Box>
           </Modal>
