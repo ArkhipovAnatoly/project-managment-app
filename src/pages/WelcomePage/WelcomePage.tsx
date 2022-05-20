@@ -2,7 +2,7 @@ import './WelcomePage.css';
 import data from '../../services/data';
 import { useState, MouseEvent } from 'react';
 import Modal from '@mui/material/Modal';
-import { Box, FormControlLabel, Typography, useTheme } from '@mui/material';
+import { Box, FormControlLabel, Typography } from '@mui/material';
 import Card from '../../app/components/Card/Card';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import CustomizedButton from '../../app/components/share/Button/CustomizedButton';
@@ -16,8 +16,6 @@ const WelcomePage = () => {
   const { t } = useTranslation('welcome');
   const { setTheme } = themeSlice.actions;
   const dispatch = useAppDispatch();
-
-  const theme = useTheme();
 
   const changeTheme = () => {
     dispatch(setTheme());
