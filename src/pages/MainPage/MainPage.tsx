@@ -10,20 +10,17 @@ import {
 } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import Header from '../../app/components/share/Header';
-import { useAppSelector } from '../../app/hooks';
 import HomeIcon from '@mui/icons-material/Home';
 import { grey } from '@mui/material/colors';
 import SearchIcon from '@mui/icons-material/Search';
 import Boards from './Boards';
 
 export default function MainPage() {
-  const { auth } = useAppSelector((state) => state.userAuthReducer);
-
   const search = () => {
     console.log('search');
   };
 
-  if (!auth.isAuth) {
+  if (!localStorage.getItem('token')) {
     return (
       <>
         <Header />
@@ -58,7 +55,7 @@ export default function MainPage() {
   }
 
   return (
-    <>
+    <Box sx={{ bgcolor: 'background.default' }}>
       <Header />
       <Container
         sx={{
@@ -108,6 +105,6 @@ export default function MainPage() {
           <Boards />
         </Box>
       </Container>
-    </>
+    </Box>
   );
 }

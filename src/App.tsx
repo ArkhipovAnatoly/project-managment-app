@@ -7,34 +7,48 @@ import SignIn from './pages/SingIn/SignIn';
 import SignUp from './pages/SignUp/SignUp';
 import MainPage from './pages/MainPage/MainPage';
 import { userAuthSlice } from './app/store/reducers/UserAuthSlice';
-import { useEffect } from 'react';
-import { useAppDispatch } from './app/hooks';
+import { useEffect, useMemo } from 'react';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 import BoardsPage from './pages/BoardsPage/BoardsPage';
+import { useTranslation } from 'react-i18next';
+import { createTheme, ThemeProvider } from '@mui/material';
+import { getDesignTokens } from './app/theme/Theme';
 
 function App() {
+  const { mode } = useAppSelector((state) => state.themeReducer);
   const { setUserAuthData } = userAuthSlice.actions;
   const dispatch = useAppDispatch();
+  const { i18n } = useTranslation();
+
+  const appTheme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
+    const lng = localStorage.getItem('i18nextLng');
+    if (lng === 'En' || lng === 'Ru') {
+      i18n.changeLanguage(lng);
+    }
 
     token && dispatch(setUserAuthData({ token }));
     userId && dispatch(setUserAuthData({ userId }));
-  }, [dispatch, setUserAuthData]);
+  }, [dispatch, setUserAuthData, i18n]);
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<AppLayout />}>
-          <Route index element={<WelcomePage />} />
-          <Route path="/main" element={<MainPage />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/board" element={<BoardsPage />} />
-        </Route>
-        <Route path="*" element={<Error />} />
-      </Routes>
-    </Router>
+    <ThemeProvider theme={appTheme}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<AppLayout />}>
+            <Route index element={<WelcomePage />} />
+            <Route path="/main" element={<MainPage />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/board" element={<BoardsPage />} />
+          </Route>
+          <Route path="*" element={<Error />} />
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 }
 

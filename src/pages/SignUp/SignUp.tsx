@@ -15,6 +15,8 @@ import {
   FormHelperText,
   CircularProgress,
   Grow,
+  useTheme,
+  alpha,
 } from '@mui/material';
 
 import Copyright from '../../app/components/share/Copyright';
@@ -39,6 +41,7 @@ export default function SignUp() {
   const { setUserAuthData } = userAuthSlice.actions;
   const dispatch = useAppDispatch();
   const navigator = useNavigate();
+  const theme = useTheme();
   const {
     register,
     handleSubmit,
@@ -102,12 +105,18 @@ export default function SignUp() {
     return (
       <Box
         component="section"
-        sx={{ display: 'flex', flexDirection: 'column', height: '94%', pl: 1, pr: 1 }}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: '94%',
+          pl: 1,
+          pr: 1,
+          bgcolor: 'background.default',
+        }}
       >
-        <Container maxWidth="xs">
+        <Container sx={{ mt: 8 }} maxWidth="xs">
           <Box
             sx={{
-              marginTop: 8,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -126,14 +135,28 @@ export default function SignUp() {
   return (
     <Box
       component="section"
-      sx={{ display: 'flex', flexDirection: 'column', height: '94%', pl: 1, pr: 1 }}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '94%',
+        pl: 1,
+        pr: 1,
+        bgcolor: 'background.default',
+      }}
     >
       <Grow
         style={{ transformOrigin: '0 0 0' }}
         in={isShowForm}
         {...(isShowForm ? { timeout: 1000 } : {})}
       >
-        <Container sx={{ backgroundColor: 'white', marginTop: 8 }} maxWidth="xs">
+        <Container
+          sx={{
+            mt: 8,
+            boxShadow:
+              '0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%),0px 1px 10px 0px rgb(0 0 0 / 90%)',
+          }}
+          maxWidth="xs"
+        >
           {isShowForm && (
             <>
               <Box
@@ -144,11 +167,20 @@ export default function SignUp() {
                 }}
               >
                 <CloseIcon
-                  sx={{ m: 1, marginLeft: 'auto', cursor: 'pointer' }}
+                  sx={{
+                    m: 1,
+                    marginLeft: 'auto',
+                    cursor: 'pointer',
+                    color: theme.palette.mode == 'dark' ? 'common.white' : 'primary.main',
+                  }}
                   onClick={clickHandler}
-                  color="primary"
                 />
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                <Avatar
+                  sx={{
+                    m: 1,
+                    bgcolor: theme.palette.mode === 'dark' ? 'warning.main' : 'primary.main',
+                  }}
+                >
                   <PersonAddAltIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
@@ -255,7 +287,14 @@ export default function SignUp() {
                   </Button>
                   <Grid container justifyContent="flex-end">
                     <Grid item>
-                      <Link component={NavLink} to="/signin" variant="body2">
+                      <Link
+                        sx={{
+                          color: theme.palette.mode === 'dark' ? `${alpha('#fff', 0.7)}` : '',
+                        }}
+                        component={NavLink}
+                        to="/signin"
+                        variant="body2"
+                      >
                         {t('questionSignUp')}
                       </Link>
                     </Grid>

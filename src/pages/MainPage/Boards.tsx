@@ -11,6 +11,7 @@ import {
   Paper,
   Typography,
   Link,
+  useTheme,
 } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import { makeStyles } from '@material-ui/core';
@@ -119,6 +120,7 @@ export default function Boards() {
   const { dataMainPage } = useAppSelector((state) => state.mainPage);
   const reducers = useSliceMainPage.actions;
   const dispatch = useAppDispatch();
+  const theme = useTheme();
 
   const openModalWindowAddBoard = (targetButtonModal: HTMLElement) => {
     const currentIndexBoard = String(targetButtonModal?.dataset.boardindex);
@@ -188,7 +190,7 @@ export default function Boards() {
                   className={'buttonCancel'}
                   variant="contained"
                   size="small"
-                  startIcon={<DeleteIcon />}
+                  startIcon={<DeleteIcon sx={{ color: 'common.black' }} />}
                   sx={{ mb: '2px', mt: '4px', display: 'none' }}
                 ></Button>
               </Box>
@@ -207,7 +209,12 @@ export default function Boards() {
                   onClick={handleModalWindow}
                 >
                   <Button color="secondary">
-                    <DeleteIcon fontSize="small" color="action" />
+                    <DeleteIcon
+                      fontSize="small"
+                      sx={{
+                        color: theme.palette.mode === 'dark' ? 'common.black' : 'action.active',
+                      }}
+                    />
                   </Button>
                 </Box>
                 <Link component={NavLink} underline="none" color="#397c42" to="/board">

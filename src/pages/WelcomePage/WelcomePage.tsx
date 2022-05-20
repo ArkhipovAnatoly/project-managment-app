@@ -1,70 +1,67 @@
 import './WelcomePage.css';
 import data from '../../services/data';
-import { useState } from 'react';
+import { useState, MouseEvent } from 'react';
 import Modal from '@mui/material/Modal';
-import { Box, FormControlLabel, Typography } from '@mui/material';
+import { Box, FormControlLabel, Typography, useTheme } from '@mui/material';
 import Card from '../../app/components/Card/Card';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import CustomizedButton from '../../app/components/share/Button/CustomizedButton';
 import { useTranslation } from 'react-i18next';
 import MaterialUISwitch from '../../app/components/switch/MaterialUISwitch';
+import { themeSlice } from '../../app/store/reducers/ThemeSlice';
 
 const WelcomePage = () => {
   const [videoModalActive, setVideomodalactive] = useState(false);
   const { auth } = useAppSelector((state) => state.userAuthReducer);
   const { t } = useTranslation('welcome');
-  const [isBackgroundBlack, setIsBackgroundBlack] = useState(false);
+  const { setTheme } = themeSlice.actions;
+  const dispatch = useAppDispatch();
 
-  const openModal = (e: React.MouseEvent) => {
+  const theme = useTheme();
+
+  const changeTheme = () => {
+    dispatch(setTheme());
+  };
+
+  const openModal = (e: MouseEvent) => {
     e.preventDefault();
     setVideomodalactive(true);
   };
 
-  const closeModal = (e: React.MouseEvent) => {
+  const closeModal = (e: MouseEvent) => {
     e.preventDefault();
     setVideomodalactive(false);
   };
 
-  const renkDegis = () => {
-    if (isBackgroundBlack == true) {
-      setIsBackgroundBlack(false);
-    } else {
-      setIsBackgroundBlack(true);
-    }
-  };
-
   return (
     <>
-      <main
+      <Box
+        component={'main'}
         className="main"
-        style={{
-          backgroundColor: isBackgroundBlack ? '#fff' : '#151719',
+        sx={{
+          bgcolor: 'background.default',
         }}
       >
         <div className="wrapper">
-          {auth.isAuth ? (
-            <div className="autorizationBtns">
-              <FormControlLabel
-                control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked onClick={renkDegis} />}
-                label=""
-              />
-              <CustomizedButton innerText={t('toManPage')} link={'/main'} />
-            </div>
-          ) : (
-            <div className="autorizationBtns">
-              <FormControlLabel
-                control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked onClick={renkDegis} />}
-                label=""
-              />
-              <CustomizedButton innerText={t('signIn')} link={'/signin'} />
-              <CustomizedButton innerText={t('signUp')} link={'/signup'} />
-            </div>
-          )}
+          <div className="autorizationBtns">
+            <FormControlLabel
+              control={<MaterialUISwitch sx={{ m: 1 }} onClick={changeTheme} />}
+              label=""
+            />
+            {auth.isAuth ? (
+              <CustomizedButton innerText={t('toMainPage')} link={'/main'} />
+            ) : (
+              <div className="button-wrapper">
+                <CustomizedButton innerText={t('signIn')} link={'/signin'} />
+                <CustomizedButton innerText={t('signUp')} link={'/signup'} />
+              </div>
+            )}
+          </div>
           <div className="aboutTheProject">
             <h1>
               {t('aboutProject')} <span className="titleProject">TEMPER</span>
             </h1>
-            <p className="title">Видео обзор приложения</p>
+            <p className="title">{t('videoReview')}</p>
           </div>
           <div className="videoPlaceholder">
             <a
@@ -134,7 +131,7 @@ const WelcomePage = () => {
             </div>
           </div>
         </div>
-      </main>
+      </Box>
     </>
   );
 };

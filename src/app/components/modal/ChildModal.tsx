@@ -1,5 +1,13 @@
 import { useState } from 'react';
-import { Button, Modal, Box, CircularProgress, FormHelperText, Avatar } from '@mui/material';
+import {
+  Button,
+  Modal,
+  Box,
+  CircularProgress,
+  FormHelperText,
+  Avatar,
+  useTheme,
+} from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { userAPI } from '../../../services/UserService';
 import { DeleteUserResponse } from '../../../types';
@@ -33,7 +41,7 @@ export default function ChildModal() {
   const dispatch = useAppDispatch();
   const navigator = useNavigate();
   const { t } = useTranslation('profile');
-
+  const theme = useTheme();
   const handleOpen = () => {
     setOpen(true);
   };
@@ -60,8 +68,8 @@ export default function ChildModal() {
 
   return (
     <>
-      <Button onClick={handleOpen} variant="outlined" color="error" sx={{ mt: 3, mb: 2 }}>
-        {t('deleteBtn')}
+      <Button sx={{ mt: 2 }} onClick={handleOpen} variant="outlined" color="error">
+        {t('delete')}
       </Button>
       <Modal hideBackdrop open={open} onClose={handleClose} aria-labelledby="child-modal-title">
         <Box sx={{ ...style, padding: { xs: 1, sm: 4 }, width: { xs: 300, sm: 350 } }}>
@@ -69,8 +77,18 @@ export default function ChildModal() {
             <PriorityHighIcon />
           </Avatar>
           <h3 id="child-modal-title">{t('message')}</h3>
-          <Button onClick={handleConfirm}>{t('confirm')}</Button>
-          <Button onClick={handleClose}>{t('back')}</Button>
+          <Button
+            sx={{ mt: 2, color: theme.palette.mode === 'dark' ? 'secondary.main' : 'primary.main' }}
+            onClick={handleConfirm}
+          >
+            {t('confirm')}
+          </Button>
+          <Button
+            sx={{ color: theme.palette.mode === 'dark' ? 'secondary.main' : 'primary.main' }}
+            onClick={handleClose}
+          >
+            {t('back')}
+          </Button>
           {isDeleting && <CircularProgress size={26} color="error" />}
           {
             <FormHelperText
