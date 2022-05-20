@@ -137,7 +137,7 @@ export default function SignIn() {
         in={isShowForm}
         {...(isShowForm ? { timeout: 1000 } : {})}
       >
-        <Container sx={{ backgroundColor: 'white', marginTop: 8 }} maxWidth="xs">
+        <Container sx={{ marginTop: 8 }} maxWidth="xs">
           {isShowForm && (
             <>
               <Box
