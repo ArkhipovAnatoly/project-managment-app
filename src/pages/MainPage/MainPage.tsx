@@ -25,7 +25,7 @@ export default function MainPage() {
       <Box className="app" sx={{ bgcolor: 'background.default' }}>
         <Container
           sx={{
-            minHeight: 'calc(100vh - 50px)',
+            minHeight: 'calc(100vh - 58px)',
           }}
         >
           <Box
@@ -58,7 +58,7 @@ export default function MainPage() {
         sx={{
           paddingTop: '80px',
           paddingBottom: '20px',
-          minHeight: 'calc(100vh - 50px)',
+          minHeight: 'calc(100vh - 58px)',
         }}
       >
         <Box
