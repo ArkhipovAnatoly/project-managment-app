@@ -4,7 +4,6 @@ import Typography from '@mui/material/Typography';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { modalSlice } from '../../store/reducers/ModalSlice';
 import { useAppDispatch } from '../../hooks';
 
 import { userAuthSlice } from '../../store/reducers/UserAuthSlice';
