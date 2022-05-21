@@ -194,6 +194,7 @@ export default function SignIn() {
 
                 <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
                   <TextField
+                    color="info"
                     error={errors.login && true}
                     margin="normal"
                     required
@@ -211,6 +212,7 @@ export default function SignIn() {
                   )}
 
                   <TextField
+                    color="info"
                     error={errors.password && true}
                     margin="normal"
                     required

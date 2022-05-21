@@ -191,6 +191,7 @@ export default function SignUp() {
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
                       <TextField
+                        color="info"
                         error={errors.name && true}
                         autoComplete="given-name"
                         required
@@ -214,6 +215,7 @@ export default function SignUp() {
 
                     <Grid item xs={12}>
                       <TextField
+                        color="info"
                         error={errors.login && true}
                         required
                         fullWidth
@@ -233,6 +235,7 @@ export default function SignUp() {
                     </Grid>
                     <Grid item xs={12}>
                       <TextField
+                        color="info"
                         error={errors.password && true}
                         required
                         fullWidth
