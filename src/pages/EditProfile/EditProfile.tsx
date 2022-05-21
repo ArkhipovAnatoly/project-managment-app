@@ -88,7 +88,7 @@ export default function EditProfile() {
     const updateData = { ...formData, userId: auth.userId };
     const response = (await updateProfile(updateData)) as EditUserProfileResponse;
     if (response.error?.status) {
-      setMessage(response.error.data.message);
+      setMessage(t('statusErrorUid'));
     } else {
       const userId = response.data?.id as string;
       localStorage.setItem('userId', userId);
