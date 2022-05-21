@@ -7,7 +7,7 @@ type CustomizedButtonProps = {
   link?: string;
 };
 
-export default function CustomizedButton({ innerText, link = '' }: CustomizedButtonProps) {
+export default function CustomizedButton({ innerText, link = '/' }: CustomizedButtonProps) {
   return (
     <NavLink to={link} className="nav">
       <Button variant="contained" className="logInBtn">
