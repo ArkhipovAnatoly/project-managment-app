@@ -36,10 +36,10 @@ export default function MainPage() {
               color: 'white',
             }}
           >
-            <Typography component="h2" variant="h3">
+            <Typography padding={1} component="h2" variant="h3">
               Access denied
             </Typography>
-            <Typography component="h2" variant="h4">
+            <Typography padding={1} component="h2" variant="h4">
               Sign in is required
             </Typography>
             <Link component={NavLink} to="/" variant="body1">
