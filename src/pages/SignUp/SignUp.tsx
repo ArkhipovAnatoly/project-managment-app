@@ -102,6 +102,7 @@ export default function SignUp() {
   if (isChecking) {
     return (
       <Box
+        className="app"
         component="section"
         sx={{
           display: 'flex',
@@ -132,6 +133,7 @@ export default function SignUp() {
   };
   return (
     <Box
+      className="app"
       component="section"
       sx={{
         display: 'flex',

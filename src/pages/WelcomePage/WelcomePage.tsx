@@ -44,8 +44,8 @@ const WelcomePage = () => {
   return (
     <>
       <Box
-        component={'main'}
-        className="main"
+        component="main"
+        className="main app"
         sx={{
           bgcolor: 'background.default',
         }}

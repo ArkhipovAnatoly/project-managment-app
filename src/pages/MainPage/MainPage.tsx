@@ -22,7 +22,7 @@ export default function MainPage() {
 
   if (!localStorage.getItem('token')) {
     return (
-      <Box sx={{ bgcolor: 'background.default' }}>
+      <Box className="app" sx={{ bgcolor: 'background.default' }}>
         <Container
           sx={{
             minHeight: 'calc(100vh - 50px)',
@@ -52,7 +52,7 @@ export default function MainPage() {
   }
 
   return (
-    <Box sx={{ bgcolor: 'background.default' }}>
+    <Box className="app" sx={{ bgcolor: 'background.default' }}>
       <Header />
       <Container
         sx={{

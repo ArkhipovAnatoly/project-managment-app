@@ -1,14 +1,10 @@
 body {
-  margin: 0 auto;
   color: #9ca9b3;
   font-size: 18px;
 }
 
 .main {
   min-height: calc(100vh - 116px);
-  background-image: url(../../../public/assets/img/illustration.svg);
-  background-position: top center;
-  background-repeat: no-repeat;
 }
 
 .wrapper {

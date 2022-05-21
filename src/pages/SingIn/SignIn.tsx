@@ -112,6 +112,7 @@ export default function SignIn() {
     return (
       <Box
         component="section"
+        className="app"
         sx={{
           display: 'flex',
           flexDirection: 'column',
@@ -139,6 +140,7 @@ export default function SignIn() {
   return (
     <Box
       component="section"
+      className="app"
       sx={{
         display: 'flex',
         flexDirection: 'column',
