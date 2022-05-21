@@ -222,6 +222,7 @@ export default function SignUp() {
                         autoComplete="login"
                         {...register('login', {
                           required: true,
+                          pattern: /^[A-Za-zА-Яа-я0-9]+$/i,
                         })}
                       />
                       {errors.login?.type === 'required' && (
@@ -267,7 +268,7 @@ export default function SignUp() {
                         error={isError}
                         component="span"
                         sx={{
-                          color: { isSuccess } && '#00FF00',
+                          color: { isSuccess } && 'success.main',
                           fontSize: '18px',
                         }}
                       >

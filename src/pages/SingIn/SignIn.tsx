@@ -244,7 +244,7 @@ export default function SignIn() {
                         error={isError}
                         component="span"
                         sx={{
-                          color: { isSuccess } && '#00FF00',
+                          color: { isSuccess } && 'success.main',
                           fontSize: '18px',
                         }}
                       >

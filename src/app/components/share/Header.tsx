@@ -6,13 +6,14 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { modalSlice } from '../../store/reducers/ModalSlice';
 import { useAppDispatch } from '../../hooks';
-import EditUser from '../modal/EditUser';
+
 import { userAuthSlice } from '../../store/reducers/UserAuthSlice';
 import MenuIcon from '@mui/icons-material/Menu';
 import Logout from '@mui/icons-material/Logout';
 import LanguageIcon from '@mui/icons-material/Language';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
+
 import {
   Container,
   Stack,
@@ -41,13 +42,11 @@ export default function Header() {
   const [checked, setChecked] = useState<boolean>(false);
   const [isScroll, setIsScroll] = useState<boolean>(false);
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
-  const { showModal } = modalSlice.actions;
   const dispatch = useAppDispatch();
   const { setUserAuthData } = userAuthSlice.actions;
   const theme = useTheme();
-  const navigator = useNavigate();
   const { t, i18n } = useTranslation('header');
-
+  const navigator = useNavigate();
   const scrollHandle = useCallback(() => {
     window.scrollY > scrollThreshold ? setIsScroll(true) : setIsScroll(false);
   }, []);
@@ -73,9 +72,9 @@ export default function Header() {
     checked ? i18n.changeLanguage('Ru') : i18n.changeLanguage('En');
   };
 
-  const openModal = () => {
+  const editProfile = () => {
     handleCloseNavMenu();
-    dispatch(showModal(true));
+    navigator('/edit');
   };
 
   const signOutHandle = () => {
@@ -197,7 +196,8 @@ export default function Header() {
                   </ListItemIcon>
                   <Typography>{t('newBoard')}</Typography>
                 </MenuItem>
-                <MenuItem onClick={openModal}>
+                <MenuItem>
+                  <Link component={NavLink} underline="none" to="/edit" />
                   <ListItemIcon>
                     <EditIcon color="warning" fontSize="small" />
                   </ListItemIcon>
@@ -247,7 +247,7 @@ export default function Header() {
                 color="primary"
                 variant="contained"
                 endIcon={<ModeEditIcon />}
-                onClick={openModal}
+                onClick={editProfile}
               >
                 {t('profile')}
               </Button>
@@ -264,7 +264,6 @@ export default function Header() {
           </Toolbar>
         </Container>
       </AppBar>
-      <EditUser />
     </>
   );
 }

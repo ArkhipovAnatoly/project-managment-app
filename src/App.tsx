@@ -13,6 +13,7 @@ import BoardsPage from './pages/BoardsPage/BoardsPage';
 import { useTranslation } from 'react-i18next';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { getDesignTokens } from './app/theme/Theme';
+import EditProfile from './pages/EditProfile/EditProfile';
 
 function App() {
   const { mode } = useAppSelector((state) => state.themeReducer);
@@ -43,6 +44,7 @@ function App() {
             <Route path="/main" element={<MainPage />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/edit" element={<EditProfile />} />
             <Route path="/board" element={<BoardsPage />} />
           </Route>
           <Route path="*" element={<Error />} />
