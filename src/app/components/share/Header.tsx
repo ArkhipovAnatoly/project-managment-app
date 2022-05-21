@@ -196,10 +196,11 @@ export default function Header() {
                   <Typography>{t('newBoard')}</Typography>
                 </MenuItem>
                 <MenuItem>
-                  <Link component={NavLink} underline="none" to="/edit" />
-                  <ListItemIcon>
-                    <EditIcon color="warning" fontSize="small" />
-                  </ListItemIcon>
+                  <Link component={NavLink} underline="none" to="/edit">
+                    <ListItemIcon>
+                      <EditIcon color="warning" fontSize="small" />
+                    </ListItemIcon>
+                  </Link>
                   <Typography>{t('profile')}</Typography>
                 </MenuItem>
                 <MenuItem onClick={changeLanguage}>
