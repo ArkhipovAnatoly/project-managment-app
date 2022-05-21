@@ -66,9 +66,7 @@ export default function SignUp() {
       localStorage.setItem('userId', userId);
       dispatch(setUserAuthData({ userId }));
       setMessage(t('statusOkSignUp'));
-      setTimeout(() => {
-        navigator('/signin');
-      }, 1500);
+      navigator('/signin');
     }
   };
 
