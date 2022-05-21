@@ -43,7 +43,7 @@ const getDesignTokens = (mode: PaletteMode) => ({
       : {
           primary: {
             main: blue[400],
-            dark: blue[500],
+            dark: blue[600],
             contrastText: '#fff',
           },
           background: {
