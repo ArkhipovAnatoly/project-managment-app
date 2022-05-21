@@ -1,14 +1,6 @@
-import { styled } from '@mui/material/styles';
-import Button, { ButtonProps } from '@mui/material/Button';
-import { NavLink } from 'react-router-dom';
 import { ReactNode } from 'react';
-
-const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
-  backgroundColor: theme.palette.primary.main,
-  '&:hover': {
-    backgroundColor: theme.palette.primary.dark,
-  },
-}));
+import { NavLink } from 'react-router-dom';
+import Button from '@mui/material/Button';
 
 type CustomizedButtonProps = {
   innerText: ReactNode;
@@ -18,9 +10,9 @@ type CustomizedButtonProps = {
 export default function CustomizedButton({ innerText, link = '' }: CustomizedButtonProps) {
   return (
     <NavLink to={link} className="nav">
-      <ColorButton variant="contained" className="logInBtn">
+      <Button variant="contained" className="logInBtn">
         {innerText}
-      </ColorButton>
+      </Button>
     </NavLink>
   );
 }
