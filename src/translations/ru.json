@@ -12,7 +12,13 @@
     "message": "Ваш профиль будет удален",
     "confirm": "Подтвердить",
     "back": "Назад",
-    "status": "Удаление успешно"
+    "statusOk": "Удаление успешно",
+    "statusErrorUid": "Некорректный uuid",
+    "nameError": "Поле name обязательное",
+    "nameErrorLetters": "Поле name должно содержать только буквы",
+    "loginError": "Поле login обязательное",
+    "passwordError": "Поле password обязательное",
+    "passwordLengthError": "Длина должна быть не менее 8 символов"
   },
   "welcome": {
     "videoReview": "Видеобзор приложения",

@@ -7,6 +7,8 @@ import {
   FormHelperText,
   Avatar,
   useTheme,
+  Fade,
+  Backdrop,
 } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { userAPI } from '../../../services/UserService';
@@ -15,6 +17,7 @@ import { userAuthSlice } from '../../store/reducers/UserAuthSlice';
 import { useNavigate } from 'react-router-dom';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import { useTranslation } from 'react-i18next';
+import { modalSlice } from '../../store/reducers/ModalSlice';
 
 const style = {
   position: 'absolute',
@@ -31,36 +34,36 @@ const style = {
   p: 4,
 };
 
-export default function ChildModal() {
-  const [open, setOpen] = useState(false);
+export default function ConfirmModal() {
+  const { open } = useAppSelector((state) => state.modalReducer);
+  const { showModal } = modalSlice.actions;
   const [message, setMessage] = useState<string>('');
   const [deleteUser, { isLoading: isDeleting, isError, isSuccess }] =
     userAPI.useUserDeleteMutation();
   const { auth } = useAppSelector((state) => state.userAuthReducer);
   const { setUserAuthData } = userAuthSlice.actions;
+
   const dispatch = useAppDispatch();
   const navigator = useNavigate();
   const { t } = useTranslation('profile');
   const theme = useTheme();
-  const handleOpen = () => {
-    setOpen(true);
-  };
+
   const handleClose = () => {
     setMessage('');
-    setOpen(false);
+    dispatch(showModal(false));
   };
   const handleConfirm = async () => {
     setMessage('');
     const response = (await deleteUser(auth.userId as string)) as DeleteUserResponse;
     if (response.error?.status) {
-      setMessage(response.error.data.message);
+      setMessage(t('statusErrorUid'));
     } else {
       localStorage.removeItem('userId');
       localStorage.removeItem('token');
       dispatch(setUserAuthData({ userId: '', token: '', isAuth: false }));
-      setMessage(t('status'));
+      setMessage(t('statusOk'));
       setTimeout(() => {
-        setOpen(false);
+        dispatch(showModal(false));
         navigator('/');
       }, 2000);
     }
@@ -68,41 +71,52 @@ export default function ChildModal() {
 
   return (
     <>
-      <Button sx={{ mt: 2 }} onClick={handleOpen} variant="outlined" color="error">
-        {t('delete')}
-      </Button>
-      <Modal hideBackdrop open={open} onClose={handleClose} aria-labelledby="child-modal-title">
-        <Box sx={{ ...style, padding: { xs: 1, sm: 4 }, width: { xs: 300, sm: 350 } }}>
-          <Avatar sx={{ m: 1, bgcolor: '#ff0000' }}>
-            <PriorityHighIcon />
-          </Avatar>
-          <h3 id="child-modal-title">{t('message')}</h3>
-          <Button
-            sx={{ mt: 2, color: theme.palette.mode === 'dark' ? 'secondary.main' : 'primary.main' }}
-            onClick={handleConfirm}
-          >
-            {t('confirm')}
-          </Button>
-          <Button
-            sx={{ color: theme.palette.mode === 'dark' ? 'secondary.main' : 'primary.main' }}
-            onClick={handleClose}
-          >
-            {t('back')}
-          </Button>
-          {isDeleting && <CircularProgress size={26} color="error" />}
-          {
-            <FormHelperText
-              error={isError}
-              component="span"
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-title"
+        BackdropComponent={Backdrop}
+        closeAfterTransition
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <Box sx={{ ...style, padding: { xs: 1, sm: 4 }, width: { xs: 300, sm: 350 } }}>
+            <Avatar sx={{ m: 1, bgcolor: 'error.main' }}>
+              <PriorityHighIcon />
+            </Avatar>
+            <h3 id="modal-title">{t('message')}</h3>
+            <Button
               sx={{
-                color: { isSuccess } && '#00FF00',
-                fontSize: '18px',
+                mt: 2,
+                color: theme.palette.mode === 'dark' ? 'secondary.main' : 'primary.main',
               }}
+              onClick={handleConfirm}
             >
-              {message}
-            </FormHelperText>
-          }
-        </Box>
+              {t('confirm')}
+            </Button>
+            <Button
+              sx={{ color: theme.palette.mode === 'dark' ? 'secondary.main' : 'primary.main' }}
+              onClick={handleClose}
+            >
+              {t('back')}
+            </Button>
+            {isDeleting && <CircularProgress size={26} color="error" />}
+            {
+              <FormHelperText
+                error={isError}
+                component="span"
+                sx={{
+                  color: { isSuccess } && 'success.main',
+                  fontSize: '18px',
+                }}
+              >
+                {message}
+              </FormHelperText>
+            }
+          </Box>
+        </Fade>
       </Modal>
     </>
   );

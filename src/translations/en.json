@@ -12,7 +12,13 @@
     "message": "Your profile will be deleted",
     "confirm": "Confirm",
     "back": "Back",
-    "status": "Successful deleted"
+    "statusOk": "Successful deleted",
+    "statusErrorUid": "uuid is expected",
+    "nameError": "Name is required",
+    "nameErrorLetters": "Name should include letters only",
+    "loginError": "Login is required",
+    "passwordError": "Password is required",
+    "passwordLengthError": "Password length should be at least 8 characters"
   },
   "welcome": {
     "videoReview": "Video review of the application",

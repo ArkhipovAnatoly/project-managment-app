@@ -66,9 +66,7 @@ export default function SignUp() {
       localStorage.setItem('userId', userId);
       dispatch(setUserAuthData({ userId }));
       setMessage(t('statusOkSignUp'));
-      setTimeout(() => {
-        navigator('/signin');
-      }, 1500);
+      navigator('/signin');
     }
   };
 
@@ -191,6 +189,7 @@ export default function SignUp() {
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
                       <TextField
+                        color="info"
                         error={errors.name && true}
                         autoComplete="given-name"
                         required
@@ -214,6 +213,7 @@ export default function SignUp() {
 
                     <Grid item xs={12}>
                       <TextField
+                        color="info"
                         error={errors.login && true}
                         required
                         fullWidth
@@ -222,6 +222,7 @@ export default function SignUp() {
                         autoComplete="login"
                         {...register('login', {
                           required: true,
+                          pattern: /^[A-Za-zА-Яа-я0-9]+$/i,
                         })}
                       />
                       {errors.login?.type === 'required' && (
@@ -232,6 +233,7 @@ export default function SignUp() {
                     </Grid>
                     <Grid item xs={12}>
                       <TextField
+                        color="info"
                         error={errors.password && true}
                         required
                         fullWidth
@@ -267,7 +269,7 @@ export default function SignUp() {
                         error={isError}
                         component="span"
                         sx={{
-                          color: { isSuccess } && '#00FF00',
+                          color: { isSuccess } && 'success.main',
                           fontSize: '18px',
                         }}
                       >

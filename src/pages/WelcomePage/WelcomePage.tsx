@@ -1,6 +1,6 @@
 import './WelcomePage.css';
+import { useState, MouseEvent, useEffect, ChangeEvent } from 'react';
 import data from '../../services/data';
-import { useState, MouseEvent } from 'react';
 import Modal from '@mui/material/Modal';
 import { Box, FormControlLabel, Typography } from '@mui/material';
 import Card from '../../app/components/Card/Card';
@@ -11,13 +11,23 @@ import MaterialUISwitch from '../../app/components/switch/MaterialUISwitch';
 import { themeSlice } from '../../app/store/reducers/ThemeSlice';
 
 const WelcomePage = () => {
+  const [checked, setChecked] = useState<boolean>(false);
   const [videoModalActive, setVideomodalactive] = useState(false);
   const { auth } = useAppSelector((state) => state.userAuthReducer);
   const { t } = useTranslation('welcome');
   const { setTheme } = themeSlice.actions;
   const dispatch = useAppDispatch();
 
-  const changeTheme = () => {
+  useEffect(() => {
+    if (localStorage.getItem('theme') === 'dark') {
+      setChecked(true);
+    }
+  }, []);
+
+  const changeTheme = (event: ChangeEvent<HTMLInputElement>) => {
+    const { checked } = event.target as HTMLInputElement;
+    checked ? localStorage.setItem('theme', 'dark') : localStorage.setItem('theme', 'light');
+    setChecked(event.target.checked);
     dispatch(setTheme());
   };
 
@@ -43,7 +53,14 @@ const WelcomePage = () => {
         <div className="wrapper">
           <div className="autorizationBtns">
             <FormControlLabel
-              control={<MaterialUISwitch sx={{ m: 1 }} onClick={changeTheme} />}
+              control={
+                <MaterialUISwitch
+                  sx={{ m: 1 }}
+                  onChange={changeTheme}
+                  checked={checked}
+                  inputProps={{ 'aria-label': 'controlled' }}
+                />
+              }
               label=""
             />
             {auth.isAuth ? (
