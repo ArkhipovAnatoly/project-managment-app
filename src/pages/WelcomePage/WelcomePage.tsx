@@ -130,7 +130,7 @@ const WelcomePage = () => {
             <div className="imgTitle">
               <img src={'assets/img/giphy.gif'} className="imgBoard" alt="boardGif" />
             </div>
-            <p className="title">{t('moto')}</p>
+            <p className="title title-center">{t('moto')}</p>
           </div>
           <div className="aboutTheComand">
             <h2> {t('teamInfo')} </h2>
