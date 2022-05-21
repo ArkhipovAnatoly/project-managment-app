@@ -22,12 +22,9 @@ export default function MainPage() {
 
   if (!localStorage.getItem('token')) {
     return (
-      <>
-        <Header />
+      <Box sx={{ bgcolor: 'background.default' }}>
         <Container
           sx={{
-            paddingTop: '80px',
-            paddingBottom: '20px',
             minHeight: 'calc(100vh - 50px)',
           }}
         >
@@ -39,7 +36,7 @@ export default function MainPage() {
               color: 'white',
             }}
           >
-            <Typography component="h1" variant="h3">
+            <Typography component="h2" variant="h3">
               Access denied
             </Typography>
             <Typography component="h2" variant="h4">
@@ -50,7 +47,7 @@ export default function MainPage() {
             </Link>
           </Box>
         </Container>
-      </>
+      </Box>
     );
   }
 
