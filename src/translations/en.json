@@ -9,7 +9,7 @@
     "title": "Edit profile",
     "update": "update",
     "delete": "Delete profile",
-    "message": "Your profile will be deleted",
+    "question": "Your profile will be deleted!",
     "confirm": "Confirm",
     "back": "Back",
     "statusOk": "Successful deleted",
@@ -67,5 +67,13 @@
     "changeDescriptionOfTask": "Change description of this task",
     "editTaskButton": "Edit task",
     "cancelEditTaskButton": "Cancel"
+  },
+  "main": {
+    "home": "Home"
+  },
+  "board": {
+    "title": "Create new board",
+    "add": "Add",
+    "cancel": "Cancel"
   }
 }
