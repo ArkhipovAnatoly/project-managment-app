@@ -9,7 +9,7 @@
     "title": "Edit profile",
     "update": "update",
     "delete": "Delete profile",
-    "message": "Your profile will be deleted",
+    "question": "Your profile will be deleted!",
     "confirm": "Confirm",
     "back": "Back",
     "statusOk": "Successful deleted",
@@ -45,5 +45,13 @@
     "passwordLengthError": "Password length should be at least 8 characters",
     "questionSignIn": "Don't have an account? Sign Up",
     "questionSignUp": " Already have an account? Sign in"
+  },
+  "main": {
+    "home": "Home"
+  },
+  "board": {
+    "title": "Create new board",
+    "add": "Add",
+    "cancel": "Cancel"
   }
 }
