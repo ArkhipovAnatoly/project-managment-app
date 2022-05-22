@@ -8,14 +8,14 @@ const initialState: ModalState = {
   open: false,
 };
 
-export const modalSlice = createSlice({
-  name: 'modal',
+export const confirmModalSlice = createSlice({
+  name: 'confirmModal',
   initialState,
   reducers: {
-    showModal(state, action: PayloadAction<boolean>) {
+    showConfirmModal(state, action: PayloadAction<boolean>) {
       state.open = action.payload;
     },
   },
 });
 
-export default modalSlice.reducer;
+export default confirmModalSlice.reducer;
