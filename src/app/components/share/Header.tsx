@@ -34,6 +34,8 @@ import '../../../i18n';
 
 import { alpha, useTheme } from '@mui/material/styles';
 import { blue } from '@material-ui/core/colors';
+import { createBoardModalSlice } from '../../store/reducers/CreateBoardModalSlice';
+import CreateBoardModal from '../modal/CreateBoardModal';
 
 const scrollThreshold = 40;
 
@@ -43,6 +45,7 @@ export default function Header() {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const dispatch = useAppDispatch();
   const { setUserAuthData } = userAuthSlice.actions;
+  const { showCreateBoardModal } = createBoardModalSlice.actions;
   const theme = useTheme();
   const { t, i18n } = useTranslation('header');
   const navigator = useNavigate();
@@ -97,6 +100,7 @@ export default function Header() {
   };
   const createBoard = () => {
     handleCloseNavMenu();
+    dispatch(showCreateBoardModal(true));
   };
 
   return (
@@ -264,6 +268,7 @@ export default function Header() {
           </Toolbar>
         </Container>
       </AppBar>
+      <CreateBoardModal />
     </>
   );
 }
