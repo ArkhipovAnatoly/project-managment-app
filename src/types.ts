@@ -56,6 +56,15 @@ export type EditUserProfileData = {
   password: string;
 };
 
+export type BoardData = {
+  title: string;
+};
+
+export type BoardDataResponse = {
+  id: string;
+  title: string;
+};
+
 export type EditUserProfileResponse = SignUpResponse;
 
 export type DeleteUserResponse = {
@@ -75,7 +84,3 @@ export type User = {
 };
 
 export type GetUserByIdResponse = SignUpResponse;
-
-/* export type HeaderParams = {
-  getState: AppStore;
-}; */
