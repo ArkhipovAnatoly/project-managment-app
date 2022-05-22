@@ -22,7 +22,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { userAPI } from '../../services/UserService';
 import { userAuthSlice } from '../../app/store/reducers/UserAuthSlice';
 import { EditUserProfileData, EditUserProfileResponse } from '../../types';
-import { modalSlice } from '../../app/store/reducers/ModalSlice';
+import { confirmModalSlice } from '../../app/store/reducers/ConfirmModalSlice';
 import ConfirmModal from '../../app/components/modal/ConfirmModal';
 
 const style = {
@@ -46,7 +46,7 @@ export default function EditProfile() {
   const { auth } = useAppSelector((state) => state.userAuthReducer);
   const [updateProfile, { isLoading: isUpdating, isError, isSuccess }] =
     userAPI.useUserUpdateMutation();
-  const { showModal } = modalSlice.actions;
+  const { showConfirmModal } = confirmModalSlice.actions;
   const { setUserAuthData } = userAuthSlice.actions;
   const dispatch = useAppDispatch();
   const { t } = useTranslation('profile');
@@ -95,12 +95,12 @@ export default function EditProfile() {
       dispatch(setUserAuthData({ userId }));
       setMessage(t('update'));
       setTimeout(() => {
-        dispatch(showModal(false));
+        dispatch(showConfirmModal(false));
       }, 1500);
     }
   };
   const handleOpen = () => {
-    dispatch(showModal(true));
+    dispatch(showConfirmModal(true));
   };
 
   const clickHandler = () => {
@@ -139,7 +139,7 @@ export default function EditProfile() {
         >
           <ManageAccountsIcon />
         </Avatar>
-        <Typography id="modal-modal-title" component="h2" variant="h5">
+        <Typography component="h2" variant="h5">
           {t('title')}
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
@@ -247,7 +247,7 @@ export default function EditProfile() {
         <Button sx={{ mt: 2 }} onClick={handleOpen} variant="outlined" color="error">
           {t('delete')}
         </Button>
-        <ConfirmModal />
+        <ConfirmModal title={t('question')} />
       </Box>
     </Box>
   );
