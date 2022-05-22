@@ -9,6 +9,7 @@ import {
   useTheme,
   Fade,
   Backdrop,
+  Typography,
 } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { userAPI } from '../../../services/UserService';
@@ -17,7 +18,7 @@ import { userAuthSlice } from '../../store/reducers/UserAuthSlice';
 import { useNavigate } from 'react-router-dom';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import { useTranslation } from 'react-i18next';
-import { modalSlice } from '../../store/reducers/ModalSlice';
+import { confirmModalSlice } from '../../store/reducers/ConfirmModalSlice';
 
 const style = {
   position: 'absolute',
@@ -34,9 +35,13 @@ const style = {
   p: 4,
 };
 
-export default function ConfirmModal() {
-  const { open } = useAppSelector((state) => state.modalReducer);
-  const { showModal } = modalSlice.actions;
+type ConfirmModalProps = {
+  title: string;
+};
+
+export default function ConfirmModal({ title }: ConfirmModalProps) {
+  const { open } = useAppSelector((state) => state.confirmModalReducer);
+  const { showConfirmModal } = confirmModalSlice.actions;
   const [message, setMessage] = useState<string>('');
   const [deleteUser, { isLoading: isDeleting, isError, isSuccess }] =
     userAPI.useUserDeleteMutation();
@@ -50,7 +55,7 @@ export default function ConfirmModal() {
 
   const handleClose = () => {
     setMessage('');
-    dispatch(showModal(false));
+    dispatch(showConfirmModal(false));
   };
   const handleConfirm = async () => {
     setMessage('');
@@ -63,7 +68,7 @@ export default function ConfirmModal() {
       dispatch(setUserAuthData({ userId: '', token: '', isAuth: false }));
       setMessage(t('statusOk'));
       setTimeout(() => {
-        dispatch(showModal(false));
+        dispatch(showConfirmModal(false));
         navigator('/');
       }, 2000);
     }
@@ -86,7 +91,9 @@ export default function ConfirmModal() {
             <Avatar sx={{ m: 1, bgcolor: 'error.main' }}>
               <PriorityHighIcon />
             </Avatar>
-            <h3 id="modal-title">{t('message')}</h3>
+            <Typography marginTop={2} component="h3" variant="h6" id="modal-title">
+              {title}
+            </Typography>
             <Button
               sx={{
                 mt: 2,
@@ -97,7 +104,10 @@ export default function ConfirmModal() {
               {t('confirm')}
             </Button>
             <Button
-              sx={{ color: theme.palette.mode === 'dark' ? 'secondary.main' : 'primary.main' }}
+              sx={{
+                mt: 1,
+                color: theme.palette.mode === 'dark' ? 'secondary.main' : 'primary.main',
+              }}
               onClick={handleClose}
             >
               {t('back')}
