@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 
 import Copyright from '../../app/components/share/Copyright';
-import { SignUpResponse, UserSignUpData } from '../../types';
+import { SignUpResponse, StatusCode, UserSignUpData } from '../../types';
 import { userAPI } from '../../services/UserService';
 import { userAuthSlice } from '../../app/store/reducers/UserAuthSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -59,7 +59,7 @@ export default function SignUp() {
   const onSubmit: SubmitHandler<UserSignUpData> = async (formData) => {
     setMessage('');
     const response = (await signUpUser(formData)) as SignUpResponse;
-    if (response.error?.status) {
+    if (response.error?.status === StatusCode.Conflict) {
       setMessage(t('statusErrorSignUp'));
     } else {
       const userId = response.data?.id as string;
@@ -128,9 +128,6 @@ export default function SignUp() {
     );
   }
 
-  const clickHandler = () => {
-    navigator('/');
-  };
   return (
     <Box
       className="app"
@@ -166,15 +163,18 @@ export default function SignUp() {
                   alignItems: 'center',
                 }}
               >
-                <CloseIcon
-                  sx={{
-                    m: 1,
-                    marginLeft: 'auto',
-                    cursor: 'pointer',
-                    color: theme.palette.mode == 'dark' ? 'common.white' : 'primary.main',
-                  }}
-                  onClick={clickHandler}
-                />
+                <Link
+                  sx={{ m: 1, cursor: 'pointer', alignSelf: 'flex-end' }}
+                  component={NavLink}
+                  to="/"
+                  underline="none"
+                >
+                  <CloseIcon
+                    sx={{
+                      color: theme.palette.mode == 'dark' ? 'common.white' : 'primary.main',
+                    }}
+                  />
+                </Link>
                 <Avatar
                   sx={{
                     m: 1,
@@ -196,10 +196,10 @@ export default function SignUp() {
                         autoComplete="given-name"
                         required
                         fullWidth
-                        id="Name"
+                        id="name"
                         label="Name"
                         autoFocus
-                        {...register('name', { required: true, pattern: /^[A-Za-zА-Яа-я]+$/i })}
+                        {...register('name', { required: true, pattern: /^[A-Za-zА-Яа-я\s]+$/i })}
                       />
                       {errors.name?.type === 'required' && (
                         <FormHelperText component="span" error>
@@ -224,7 +224,6 @@ export default function SignUp() {
                         autoComplete="login"
                         {...register('login', {
                           required: true,
-                          pattern: /^[A-Za-zА-Яа-я0-9]+$/i,
                         })}
                       />
                       {errors.login?.type === 'required' && (

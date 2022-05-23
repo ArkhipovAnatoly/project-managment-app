@@ -22,7 +22,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Container from '@mui/material/Container';
 
 import Copyright from '../../app/components/share/Copyright';
-import { SignInResponse, UserSignInData } from '../../types';
+import { SignInResponse, StatusCode, UserSignInData } from '../../types';
 import { userAPI } from '../../services/UserService';
 import { userAuthSlice } from '../../app/store/reducers/UserAuthSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -61,7 +61,7 @@ export default function SignIn() {
   const onSubmit: SubmitHandler<UserSignInData> = async (formData) => {
     setMessage('');
     const response = (await signInUser(formData)) as SignInResponse;
-    if (response.error?.status) {
+    if (response.error?.status === StatusCode.Forbidden) {
       setMessage(t('statusErrorSignIn'));
     } else {
       const token = response.data?.token as string;
@@ -103,10 +103,6 @@ export default function SignIn() {
       navigator('/main');
     }
   }, [isSuccessUser, isErrorUser, dispatch, setUserAuthData, navigator]);
-
-  const clickHandler = () => {
-    navigator('/');
-  };
 
   if (isChecking) {
     return (
@@ -172,15 +168,18 @@ export default function SignIn() {
                   alignItems: 'center',
                 }}
               >
-                <CloseIcon
-                  sx={{
-                    m: 1,
-                    marginLeft: 'auto',
-                    cursor: 'pointer',
-                    color: theme.palette.mode == 'dark' ? 'common.white' : 'primary.main',
-                  }}
-                  onClick={clickHandler}
-                />
+                <Link
+                  sx={{ m: 1, cursor: 'pointer', alignSelf: 'flex-end' }}
+                  component={NavLink}
+                  to="/"
+                  underline="none"
+                >
+                  <CloseIcon
+                    sx={{
+                      color: theme.palette.mode == 'dark' ? 'common.white' : 'primary.main',
+                    }}
+                  />
+                </Link>
 
                 <Avatar
                   sx={{
@@ -200,7 +199,7 @@ export default function SignIn() {
                     error={errors.login && true}
                     margin="normal"
                     required
-                    id="Login"
+                    id="login"
                     label="Login"
                     fullWidth
                     autoComplete="given-login"

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   Avatar,
@@ -12,6 +12,7 @@ import {
   Typography,
   useTheme,
   Divider,
+  Link,
 } from '@mui/material';
 
 import CloseIcon from '@mui/icons-material/Close';
@@ -35,9 +36,9 @@ const style = {
   flexDirection: 'column',
   alignItems: 'center',
   bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  padding: 4,
+  boxShadow:
+    '0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%),0px 1px 10px 0px rgb(0 0 0 / 90%)',
+  padding: 3,
 };
 
 export default function EditProfile() {
@@ -50,7 +51,6 @@ export default function EditProfile() {
   const { setUserAuthData } = userAuthSlice.actions;
   const dispatch = useAppDispatch();
   const { t } = useTranslation('profile');
-  const navigator = useNavigate();
   const theme = useTheme();
   const {
     register,
@@ -103,10 +103,6 @@ export default function EditProfile() {
     dispatch(showConfirmModal(true));
   };
 
-  const clickHandler = () => {
-    navigator('/main');
-  };
-
   return (
     <Box
       sx={{
@@ -118,19 +114,22 @@ export default function EditProfile() {
         component="section"
         sx={{
           ...style,
-          padding: { xs: 1, sm: 4 },
+          padding: { xs: 1, sm: 3 },
           width: { xs: 320, sm: 400 },
         }}
       >
-        <CloseIcon
-          sx={{
-            m: 1,
-            marginLeft: 'auto',
-            cursor: 'pointer',
-            color: theme.palette.mode == 'dark' ? 'common.white' : 'primary.main',
-          }}
-          onClick={clickHandler}
-        />
+        <Link
+          sx={{ m: 1, cursor: 'pointer', alignSelf: 'flex-end' }}
+          component={NavLink}
+          to="/main"
+          underline="none"
+        >
+          <CloseIcon
+            sx={{
+              color: theme.palette.mode == 'dark' ? 'common.white' : 'primary.main',
+            }}
+          />
+        </Link>
         <Avatar
           sx={{
             m: 1,
@@ -146,6 +145,7 @@ export default function EditProfile() {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
+                color="info"
                 error={errors.name && true}
                 autoComplete="given-name"
                 required
@@ -169,6 +169,7 @@ export default function EditProfile() {
 
             <Grid item xs={12}>
               <TextField
+                color="info"
                 error={errors.login && true}
                 required
                 fullWidth
@@ -188,6 +189,7 @@ export default function EditProfile() {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                color="info"
                 error={errors.password && true}
                 required
                 fullWidth
