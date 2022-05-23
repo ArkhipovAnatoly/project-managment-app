@@ -6,6 +6,7 @@ import createBoardModalReducer from './reducers/CreateBoardModalSlice';
 import themeReducer from './reducers/ThemeSlice';
 import boardsPage from './reducers/useSliceBoardsPage';
 import mainPage from './reducers/useSliceMainPage';
+import { boardAPI } from '../../services/BoardService';
 
 const rootReducer = combineReducers({
   userAuthReducer,
@@ -15,12 +16,14 @@ const rootReducer = combineReducers({
   boardsPage,
   mainPage,
   [userAPI.reducerPath]: userAPI.reducer,
+  [boardAPI.reducerPath]: boardAPI.reducer,
 });
 
 const setupStore = () => {
   return configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(userAPI.middleware),
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat([userAPI.middleware, boardAPI.middleware]),
   });
 };
 export const store = setupStore();
