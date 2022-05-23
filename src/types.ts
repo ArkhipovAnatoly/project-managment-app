@@ -97,8 +97,10 @@ export type User = {
 export type GetUserByIdResponse = SignUpResponse;
 
 export enum StatusCode {
+  OK = 200,
   Unauthorized = 401,
   Forbidden = 403,
   NotFound = 404,
   Conflict = 409,
+  InternalServerError = 500,
 }
