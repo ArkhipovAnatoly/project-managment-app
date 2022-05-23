@@ -161,7 +161,7 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
                 error={isErrorUser || isErrorBoard}
                 component="span"
                 sx={{
-                  color: ({ isSuccessBoard } || { isSuccessBoard }) && 'success.main',
+                  color: ({ isSuccessBoard } || { isSuccessUser }) && 'success.main',
                   fontSize: '18px',
                 }}
               >

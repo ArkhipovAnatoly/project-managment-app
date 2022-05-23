@@ -1,12 +1,10 @@
 import {
-  Avatar,
   Divider,
   Grid,
   IconButton,
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Paper,
   Typography,
   useTheme,
 } from '@mui/material';
