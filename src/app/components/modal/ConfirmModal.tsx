@@ -62,8 +62,8 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
   const theme = useTheme();
 
   const modalClose = () => {
-    setMessage('');
     dispatch(showConfirmModal(false));
+    setMessage('');
   };
   const handleConfirm = async () => {
     let response: DeleteUserResponse | DeleteBoardResponse = {};
@@ -114,16 +114,14 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
         dispatch(setUserAuthData({ userId: '', token: '', isAuth: false }));
         setMessage(t('profile:statusOk'));
         setTimeout(() => {
-          setMessage('');
-          dispatch(showConfirmModal(false));
+          modalClose();
           navigator('/');
         }, 1500);
         break;
       case 'board':
         setMessage(t('board:statusDeleteOk'));
         setTimeout(() => {
-          setMessage('');
-          dispatch(showConfirmModal(false));
+          modalClose();
         }, 1500);
         break;
       default:
