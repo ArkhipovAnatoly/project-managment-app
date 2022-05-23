@@ -38,6 +38,7 @@
     "titleSignIn": "Войти",
     "statusOkSignUp": "Успешная регистрация",
     "statusErrorSignUp": "Такой логин уже есть!",
+    "statusServerError": "Внутренняя ошибка сервера",
     "titleSignUp": "Регистрация",
     "nameError": "Поле name обязательное",
     "nameErrorLetters": "Поле name должно содержать только буквы",

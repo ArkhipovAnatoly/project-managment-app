@@ -38,6 +38,7 @@
     "titleSignIn": "Sign in",
     "statusOkSignUp": "Successfully signed up",
     "statusErrorSignUp": "User login already exists!",
+    "statusServerError": "Internal server error",
     "titleSignUp": "Sign up",
     "nameError": "Name is required",
     "nameErrorLetters": "Name should include letters only",
