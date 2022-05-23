@@ -11,11 +11,13 @@ import ColumnTasks from './ColumnTasks';
 import React from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import type { DroppableProvided, DropResult, DraggableStateSnapshot } from 'react-beautiful-dnd';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles({
   columns: {
     display: 'flex',
     flexWrap: 'nowrap',
+    flexGrow: 1,
     overflowX: 'auto',
     overflowY: 'hidden',
     maxHeight: '100%',
@@ -107,6 +109,7 @@ function BoardColumns() {
   const { dataBoardsPage } = useAppSelector((state) => state.boardsPage);
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
+  const { t, i18n } = useTranslation('boardsPage');
 
   const openModalWindowAddTask = (targetButtonModal: HTMLElement) => {
     const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
@@ -226,14 +229,14 @@ function BoardColumns() {
                               className={`${classes.columnAdd} buttonModal`}
                             >
                               <AddIcon color="action" />
-                              <Typography color="text.secondary">Add task</Typography>
+                              <Typography color="text.secondary">{t('addNewTask')}</Typography>
                             </Box>
                             <Box
                               className={`buttonModal`}
                               data-modalname="deleteColumn"
                               data-columnindex={indexColumn}
                             >
-                              <Tooltip title="Delete Column" onClick={handleModalWindow}>
+                              <Tooltip title={t('deleteColumn')} onClick={handleModalWindow}>
                                 <IconButton>
                                   <DeleteIcon color="action" />
                                 </IconButton>
@@ -259,7 +262,7 @@ function BoardColumns() {
         >
           <Box className={classes.columnAddOptionsText}>
             <AddIcon color={'action'} />
-            <Typography color="text.secondary">Add new column</Typography>
+            <Typography color="text.secondary">{t('addNewColumn')}</Typography>
           </Box>
         </Box>
       </Box>

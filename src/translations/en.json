@@ -45,5 +45,27 @@
     "passwordLengthError": "Password length should be at least 8 characters",
     "questionSignIn": "Don't have an account? Sign Up",
     "questionSignUp": " Already have an account? Sign in"
+  },
+  "boardsPage": {
+    "onMainPage": "Main Page",
+    "addNewColumn": "Add new column",
+    "addNewTask": "Add task",
+    "deleteColumn": "Delete column"
+  },
+  "modalWindowBoardsPage": {
+    "addNewColumn": "Add new column",
+    "tittleOfColumn": "Tittle of new column",
+    "addColumnButton": "Add column",
+    "cancelColumnButton": "Cancel",
+    "addNewTask": "Add new task",
+    "tittleOfTask": "Tittle of new task",
+    "descriptionOfTask": "Description of new task",
+    "addTaskButton": "Add column",
+    "cancelTaskButton": "Cancel",
+    "changeTask": "Edit your task",
+    "changeTittleOfTask": "Change tittle of this task",
+    "changeDescriptionOfTask": "Change description of this task",
+    "editTaskButton": "Edit task",
+    "cancelEditTaskButton": "Cancel"
   }
 }

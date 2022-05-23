@@ -47,11 +47,11 @@
 .githab {
   display: flex;
   flex-wrap: wrap;
-  gap: 50px;
+  gap: 25px;
 }
 
 .githab a {
-  padding: 10px 0px 0px 40px;
+  padding: 10px 0px 0px 30px;
   background-image: url('../../../../../public/assets/img/git.png');
   background-size: contain;
   background-repeat: no-repeat;
@@ -63,8 +63,8 @@
   color: gold;
 }
 
-@media screen and (min-width: 180px) and (max-width: 600px) {
+/* @media screen and (min-width: 180px) and (max-width: 600px) {
   .githab {
     padding: 10px 20px;
   }
-}
+} */

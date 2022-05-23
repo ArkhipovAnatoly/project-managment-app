@@ -7,7 +7,7 @@ import Card from '../../app/components/Card/Card';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import CustomizedButton from '../../app/components/share/Button/CustomizedButton';
 import { useTranslation } from 'react-i18next';
-import MaterialUISwitch from '../../app/components/switch/MaterialUISwitch';
+import MaterialUISwitch from '../../app/components/Switch/MaterialUISwitch';
 import { themeSlice } from '../../app/store/reducers/ThemeSlice';
 
 const WelcomePage = () => {
