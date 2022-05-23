@@ -13,7 +13,8 @@
     "confirm": "Confirm",
     "back": "Back",
     "statusOk": "Successfully deleted",
-    "statusErrorUid": "uuid is expected",
+    "statusErrorUserDelete": "Could not delete",
+    "statusErrorUserUpdate": "Could not update",
     "nameError": "Name is required",
     "nameErrorLetters": "Name should include letters only",
     "loginError": "Login is required",
@@ -55,8 +56,13 @@
     "cancel": "Cancel",
     "statusError": "Board was not founded!",
     "authError": "Sign in is required",
-    "statusOk": "Successfully created!",
+    "statusOk": "Successfully created",
     "titleEmpty": "Field is required",
-    "titlePattern": "Title should include letters only"
+    "titlePattern": "Title should include letters only",
+    "errorLoad": "Could not load Boards",
+    "statusErrorBoardDelete": "Could not delete",
+    "statusErrorBoardUpdate": "Could not update",
+    "statusDeleteOk": "Successfully deleted",
+    "question": "Board will be deleted!"
   }
 }
