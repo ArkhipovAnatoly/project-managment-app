@@ -74,6 +74,10 @@ export default function CreateBoardModal() {
       setMessage(t('statusError'));
     } else {
       setMessage(t('statusOk'));
+      setTimeout(() => {
+        setMessage('');
+        modalClose();
+      }, 1500);
     }
   };
   useEffect(() => {
@@ -168,7 +172,7 @@ export default function CreateBoardModal() {
               <Button disabled={isDisabled} type="submit" variant="contained">
                 {t('add')}
               </Button>
-              <Button variant="outlined" onClick={modalClose}>
+              <Button variant="contained" onClick={modalClose}>
                 {t('cancel')}
               </Button>
             </Stack>
