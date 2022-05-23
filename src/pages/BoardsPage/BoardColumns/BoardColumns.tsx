@@ -16,6 +16,7 @@ const useStyles = makeStyles({
   columns: {
     display: 'flex',
     flexWrap: 'nowrap',
+    flexGrow: 1,
     overflowX: 'auto',
     overflowY: 'hidden',
     maxHeight: '100%',
