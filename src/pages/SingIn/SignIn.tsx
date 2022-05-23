@@ -13,6 +13,8 @@ import {
   FormHelperText,
   CircularProgress,
   Grow,
+  useTheme,
+  alpha,
 } from '@mui/material';
 
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -41,6 +43,7 @@ export default function SignIn() {
   const { t } = useTranslation('account');
   const dispatch = useAppDispatch();
   const navigator = useNavigate();
+  const theme = useTheme();
 
   const {
     register,
@@ -109,12 +112,19 @@ export default function SignIn() {
     return (
       <Box
         component="section"
-        sx={{ display: 'flex', flexDirection: 'column', height: '94%', pl: 1, pr: 1 }}
+        className="app"
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: '94%',
+          pl: 1,
+          pr: 1,
+          bgcolor: 'background.default',
+        }}
       >
-        <Container maxWidth="xs">
+        <Container sx={{ mt: 8 }} maxWidth="xs">
           <Box
             sx={{
-              marginTop: 8,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -130,14 +140,29 @@ export default function SignIn() {
   return (
     <Box
       component="section"
-      sx={{ display: 'flex', flexDirection: 'column', height: '94%', pl: 1, pr: 1 }}
+      className="app"
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '94%',
+        pl: 1,
+        pr: 1,
+        bgcolor: 'background.default',
+      }}
     >
       <Grow
         style={{ transformOrigin: '0 0 0' }}
         in={isShowForm}
         {...(isShowForm ? { timeout: 1000 } : {})}
       >
-        <Container sx={{ backgroundColor: 'white', marginTop: 8 }} maxWidth="xs">
+        <Container
+          sx={{
+            mt: 8,
+            boxShadow:
+              '0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%),0px 1px 10px 0px rgb(0 0 0 / 90%)',
+          }}
+          maxWidth="xs"
+        >
           {isShowForm && (
             <>
               <Box
@@ -148,12 +173,21 @@ export default function SignIn() {
                 }}
               >
                 <CloseIcon
-                  sx={{ m: 1, marginLeft: 'auto', cursor: 'pointer' }}
+                  sx={{
+                    m: 1,
+                    marginLeft: 'auto',
+                    cursor: 'pointer',
+                    color: theme.palette.mode == 'dark' ? 'common.white' : 'primary.main',
+                  }}
                   onClick={clickHandler}
-                  color="primary"
                 />
 
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                <Avatar
+                  sx={{
+                    m: 1,
+                    bgcolor: theme.palette.mode === 'dark' ? 'warning.main' : 'primary.main',
+                  }}
+                >
                   <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
@@ -162,6 +196,7 @@ export default function SignIn() {
 
                 <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
                   <TextField
+                    color="info"
                     error={errors.login && true}
                     margin="normal"
                     required
@@ -179,6 +214,7 @@ export default function SignIn() {
                   )}
 
                   <TextField
+                    color="info"
                     error={errors.password && true}
                     margin="normal"
                     required
@@ -212,7 +248,7 @@ export default function SignIn() {
                         error={isError}
                         component="span"
                         sx={{
-                          color: { isSuccess } && '#00FF00',
+                          color: { isSuccess } && 'success.main',
                           fontSize: '18px',
                         }}
                       >
@@ -233,7 +269,14 @@ export default function SignIn() {
 
                   <Grid container>
                     <Grid item>
-                      <Link component={NavLink} to="/signup" variant="body2">
+                      <Link
+                        sx={{
+                          color: theme.palette.mode === 'dark' ? `${alpha('#fff', 0.7)}` : '',
+                        }}
+                        component={NavLink}
+                        to="/signup"
+                        variant="body2"
+                      >
                         {t('questionSignIn')}
                       </Link>
                     </Grid>

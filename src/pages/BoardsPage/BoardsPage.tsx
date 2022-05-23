@@ -69,7 +69,7 @@ function BoardsPage() {
   const { t, i18n } = useTranslation('boardsPage');
 
   return (
-    <Box>
+    <Box className="app" sx={{ bgcolor: 'background.default' }}>
       <Header />
       <Box className={classes.container}>
         <Box className={classes.content}>

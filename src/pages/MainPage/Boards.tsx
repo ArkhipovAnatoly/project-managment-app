@@ -11,6 +11,7 @@ import {
   Paper,
   Typography,
   Link,
+  useTheme,
 } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import { makeStyles } from '@material-ui/core';
@@ -119,6 +120,7 @@ export default function Boards() {
   const { dataMainPage } = useAppSelector((state) => state.mainPage);
   const reducers = useSliceMainPage.actions;
   const dispatch = useAppDispatch();
+  const theme = useTheme();
 
   const openModalWindowAddBoard = (targetButtonModal: HTMLElement) => {
     const currentIndexBoard = String(targetButtonModal?.dataset.boardindex);
@@ -146,67 +148,6 @@ export default function Boards() {
         openModalWindowDeleteBoard(targetButtonModal);
         break;
     }
-  };
-
-  const openButtonSettings = (event: React.MouseEvent) => {
-    // const target = (event.target as HTMLInputElement).closest('.boxForTitle') as HTMLElement;
-    // const target2 = target.querySelector('.buttonApply');
-    // const target3 = target.querySelector('.buttonCancel');
-    // (target2 as HTMLElement).style.display = 'block';
-    // (target3 as HTMLElement).style.display = 'block';
-    // target.dataset.onopen = (event.target as HTMLInputElement).value;
-    // target.dataset.onclose = (event.target as HTMLInputElement).value;
-  };
-
-  const closeButtonSettings = (event: React.FocusEvent) => {
-    // const mainBox = (event.target as HTMLInputElement).closest('.boxForTitle') as HTMLElement;
-    // const buttonApply = mainBox.querySelector('.buttonApply');
-    // const buttonCancel = mainBox.querySelector('.buttonCancel');
-    // // (target2 as HTMLElement).style.display = 'none';
-    // // (target3 as HTMLElement).style.display = 'none';
-    // // (event.target as HTMLInputElement).value = `${target.dataset.onclose}`;
-  };
-
-  const changeButtonSettings = (event: React.ChangeEvent) => {
-    // const mainBox = (event.target as HTMLInputElement).closest('.boxForTitle') as HTMLElement;
-    // mainBox.dataset.onopen = `${(event.target as HTMLInputElement).value}`;
-  };
-
-  const buttonSettingsApply = (event: React.MouseEvent) => {
-    // const mainBox = (event.target as HTMLElement).closest('.boxForTitle') as HTMLElement;
-    // dispatch(
-    //   reducers.changeTitleOfCurrentColumn({
-    //     indexColumn: mainBox.dataset.columnindex as string,
-    //     columnTittle: mainBox.dataset.onopen as string,
-    //   })
-    // );
-    // const inputTitle = mainBox.querySelector('.inputTitleChange') as HTMLInputElement;
-    // const buttonApply = mainBox.querySelector('.buttonApply') as HTMLElement;
-    // const buttonCancel = mainBox.querySelector('.buttonCancel') as HTMLElement;
-    // setTitleOnApplyButton(mainBox.dataset.onopen as string);
-    // buttonApply.style.display = 'none';
-    // buttonCancel.style.display = 'none';
-  };
-
-  const buttonSettingsClose = (event: React.MouseEvent) => {
-    // const mainBox = (event.target as HTMLElement).closest('.boxForTitle') as HTMLElement;
-    // dispatch(
-    //   reducers.changeTitleOfCurrentColumn({
-    //     indexColumn: mainBox.dataset.columnindex as string,
-    //     columnTittle: mainBox.dataset.onclose as string,
-    //   })
-    // );
-    // console.log(mainBox.dataset.onclose);
-    // console.log(dataMainPage);
-    // const mainBox = (event.target as HTMLElement).closest('.boxForTitle') as HTMLElement;
-    // const buttonApply = mainBox.querySelector('.buttonApply') as HTMLElement;
-    // const buttonCancel = mainBox.querySelector('.buttonCancel') as HTMLElement;
-    // const inputTitle = mainBox.querySelector('.inputTitleChange') as HTMLInputElement;
-    // setTitleOnCloseButton(mainBox.dataset.onclose as string);
-    // buttonApply.style.display = 'none';
-    // buttonCancel.style.display = 'none';
-    // console.log(mainBox.dataset.onclose);
-    // console.log(inputTitle.value);
   };
 
   return (
@@ -239,7 +180,6 @@ export default function Boards() {
                   </Accordion>
                 </Paper>
                 <Button
-                  onClick={buttonSettingsApply}
                   className={'buttonApply'}
                   variant="contained"
                   size="small"
@@ -247,11 +187,10 @@ export default function Boards() {
                   sx={{ mt: '2px', display: 'none' }}
                 ></Button>
                 <Button
-                  onClick={buttonSettingsClose}
                   className={'buttonCancel'}
                   variant="contained"
                   size="small"
-                  startIcon={<DeleteIcon />}
+                  startIcon={<DeleteIcon sx={{ color: 'common.black' }} />}
                   sx={{ mb: '2px', mt: '4px', display: 'none' }}
                 ></Button>
               </Box>
@@ -270,7 +209,12 @@ export default function Boards() {
                   onClick={handleModalWindow}
                 >
                   <Button color="secondary">
-                    <DeleteIcon fontSize="small" color="action" />
+                    <DeleteIcon
+                      fontSize="small"
+                      sx={{
+                        color: theme.palette.mode === 'dark' ? 'common.black' : 'action.active',
+                      }}
+                    />
                   </Button>
                 </Box>
                 <Link component={NavLink} underline="none" color="#397c42" to="/board">
