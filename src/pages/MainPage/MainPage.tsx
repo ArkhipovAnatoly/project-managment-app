@@ -12,8 +12,8 @@ import { NavLink } from 'react-router-dom';
 import Header from '../../app/components/share/Header';
 import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
-import Boards from './Boards';
 import { useTranslation } from 'react-i18next';
+import Boards from '../../app/components/Board/Boards';
 
 export default function MainPage() {
   const { t } = useTranslation('main');
@@ -57,6 +57,7 @@ export default function MainPage() {
     <Box className="app" sx={{ bgcolor: 'background.default' }}>
       <Header />
       <Container
+        maxWidth="xl"
         sx={{
           paddingTop: '80px',
           paddingBottom: '20px',
