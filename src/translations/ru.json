@@ -64,5 +64,27 @@
     "statusErrorBoardUpdate": "Не удалось обновить",
     "statusDeleteOk": "Удаление успешно",
     "question": "Боард будет удалена!"
+  },
+  "boardsPage": {
+    "onMainPage": "На главную",
+    "addNewColumn": "Добавить новую колонку",
+    "addNewTask": "Добавить задачу",
+    "deleteColumn": "Удалить колонку"
+  },
+  "modalWindowBoardsPage": {
+    "addNewColumn": "Добавить колонку",
+    "tittleOfColumn": "Название новой колонки",
+    "addColumnButton": "Добавить",
+    "cancelColumnButton": "Отмена",
+    "addNewTask": "Добавить задачу",
+    "tittleOfTask": "Название задачи",
+    "descriptionOfTask": "Описание задачи",
+    "addTaskButton": "Добавить",
+    "cancelTaskButton": "Отмена",
+    "changeTask": "Изменить задачу",
+    "changeTittleOfTask": "Изменить название этой задачи",
+    "changeDescriptionOfTask": "Изменить описание этой задачи",
+    "editTaskButton": "Изменить",
+    "cancelEditTaskButton": "Отмена"
   }
 }
