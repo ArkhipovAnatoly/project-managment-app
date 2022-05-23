@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core';
 import Box from '@mui/material/Box';
 import { NavLink } from 'react-router-dom';
 import Header from '../../app/components/share/Header';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles({
   container: {
@@ -65,6 +66,7 @@ const useStyles = makeStyles({
 
 function BoardsPage() {
   const classes = useStyles();
+  const { t, i18n } = useTranslation('boardsPage');
 
   return (
     <Box>
@@ -74,7 +76,7 @@ function BoardsPage() {
           <Box sx={{ display: 'flex', alignItems: 'center', m: '20px 0 10px 0' }}>
             <Box className={classes.header}>
               <NavLink to="/main" style={{ textDecoration: 'none' }}>
-                <Button variant="contained">Main Page</Button>
+                <Button variant="contained">{t('onMainPage')}</Button>
               </NavLink>
             </Box>
             <Paper component="form" className={classes.projectNameInput}>
