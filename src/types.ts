@@ -57,12 +57,22 @@ export type EditUserProfileData = {
 };
 
 export type BoardData = {
+  boardId?: string;
   title: string;
 };
 
 export type BoardDataResponse = {
-  id: string;
-  title: string;
+  error?: {
+    data: {
+      message: string;
+      statusCode: number;
+    };
+    status: number;
+  };
+  data?: {
+    id: string;
+    title: string;
+  };
 };
 
 export type EditUserProfileResponse = SignUpResponse;
@@ -76,6 +86,7 @@ export type DeleteUserResponse = {
     status: number;
   };
 };
+export type DeleteBoardResponse = DeleteUserResponse;
 
 export type User = {
   id: string;
@@ -84,3 +95,10 @@ export type User = {
 };
 
 export type GetUserByIdResponse = SignUpResponse;
+
+export enum StatusCode {
+  Unauthorized = 401,
+  Forbidden = 403,
+  NotFound = 404,
+  Conflict = 409,
+}
