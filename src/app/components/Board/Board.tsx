@@ -7,8 +7,8 @@ import {
   ListItemText,
   Typography,
   useTheme,
+  Tooltip,
 } from '@mui/material';
-
 import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useAppDispatch } from '../../hooks';
@@ -44,12 +44,16 @@ export default function Board({ id, title }: BoardProps) {
               aria-label="delete"
               onClick={openModal}
             >
-              <DeleteIcon fontSize="large" />
+              <Tooltip title="Delete Board" arrow>
+                <DeleteIcon fontSize="large" />
+              </Tooltip>
             </IconButton>
           }
         >
           <ListItemAvatar>
-            <FolderIcon color="primary" fontSize="large" />
+            <Tooltip title="Open Board" arrow>
+              <FolderIcon color="primary" fontSize="large" />
+            </Tooltip>
           </ListItemAvatar>
           <ListItemText primary={title} />
         </ListItem>
