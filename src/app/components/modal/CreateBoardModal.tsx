@@ -67,7 +67,7 @@ export default function CreateBoardModal() {
         setMessage('');
         modalClose();
         navigator('/');
-      }, 2000);
+      }, 1500);
       return;
     }
     if (response.error?.status === StatusCode.NotFound) {
