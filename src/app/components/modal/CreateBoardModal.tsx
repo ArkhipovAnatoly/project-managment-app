@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import {
   Backdrop,
   Box,
@@ -8,12 +9,16 @@ import {
   TextField,
   Typography,
   Grid,
-  TextareaAutosize,
   Stack,
+  CircularProgress,
+  FormHelperText,
 } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { createBoardModalSlice } from '../../store/reducers/CreateBoardModalSlice';
 import { useTranslation } from 'react-i18next';
+import { BoardData, BoardDataResponse, StatusCode } from '../../../types';
+import { boardAPI } from '../../../services/BoardService';
+import { useNavigate } from 'react-router-dom';
 
 const style = {
   position: 'absolute',
@@ -28,18 +33,68 @@ const style = {
 };
 
 export default function CreateBoardModal() {
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const { open } = useAppSelector((state) => state.createBoardModalReducer);
   const { showCreateBoardModal } = createBoardModalSlice.actions;
   const [message, setMessage] = useState<string>('');
   const dispatch = useAppDispatch();
   const { t } = useTranslation('board');
+  const [createBoard, { isLoading, isError, isSuccess }] = boardAPI.useCreateBoardMutation();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isValid, isSubmitted, isSubmitSuccessful, touchedFields },
+  } = useForm({
+    mode: 'onSubmit',
+    defaultValues: {
+      title: '',
+    },
+  });
+
+  const navigator = useNavigate();
+
+  useEffect(() => {
+    reset();
+  }, [reset, isSubmitSuccessful]);
+
+  const onSubmit: SubmitHandler<BoardData> = async (formData) => {
+    setMessage('');
+    const response = (await createBoard(formData)) as BoardDataResponse;
+    if (response.error?.status === StatusCode.Unauthorized) {
+      setMessage(t('authError'));
+      setTimeout(() => {
+        setMessage('');
+        modalClose();
+        navigator('/');
+      }, 2000);
+      return;
+    }
+    if (response.error?.status === StatusCode.NotFound) {
+      setMessage(t('statusError'));
+    } else {
+      setMessage(t('statusOk'));
+    }
+  };
+  useEffect(() => {
+    if (!isSubmitted || Object.entries(errors).length) {
+      setIsDisabled(true);
+    } else if (isValid) {
+      setIsDisabled(false);
+    }
+  }, [isSubmitted, isValid, errors]);
+
+  useEffect(() => {
+    if (Object.values(touchedFields).some((v) => v === true) && !isSubmitted) {
+      setIsDisabled(false);
+    }
+  }, [touchedFields.title, touchedFields, isSubmitted]);
 
   const modalClose = () => {
     setMessage('');
     dispatch(showCreateBoardModal(false));
   };
 
-  const createNewBoard = () => {};
   return (
     <Modal
       open={open}
@@ -58,25 +113,59 @@ export default function CreateBoardModal() {
             {t('title')}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}></Typography>
-          <Box component="form" noValidate sx={{ mt: 3 }}>
+          <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 3 }}>
             <Grid container spacing={4}>
               <Grid item xs={12}>
                 <TextField
+                  color="info"
+                  error={errors.title && true}
                   autoComplete="given-title"
                   required
                   fullWidth
-                  id="Title"
+                  id="title"
                   label="Title"
                   autoFocus
                   variant="standard"
+                  {...register('title', { required: true, pattern: /^[A-Za-zА-Яа-я\s]+$/i })}
                 />
+                {errors.title?.type === 'required' && (
+                  <FormHelperText component="span" error>
+                    {t('titleEmpty')}
+                  </FormHelperText>
+                )}
+                {errors.title?.type === 'pattern' && (
+                  <FormHelperText component="span" error>
+                    {t('titlePattern')}
+                  </FormHelperText>
+                )}
               </Grid>
               <Grid item xs={12}>
                 <TextField fullWidth label="Description" variant="standard" multiline />
               </Grid>
             </Grid>
+            <Box
+              sx={{
+                mt: 2,
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              {isLoading && <CircularProgress size={26} color="info" />}
+              {
+                <FormHelperText
+                  error={isError}
+                  component="span"
+                  sx={{
+                    color: { isSuccess } && 'success.main',
+                    fontSize: '18px',
+                  }}
+                >
+                  {message}
+                </FormHelperText>
+              }
+            </Box>
             <Stack marginTop={4} direction="row" spacing={2}>
-              <Button variant="contained" onClick={createNewBoard}>
+              <Button disabled={isDisabled} type="submit" variant="contained">
                 {t('add')}
               </Button>
               <Button variant="outlined" onClick={modalClose}>
