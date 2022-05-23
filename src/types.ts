@@ -57,7 +57,7 @@ export type EditUserProfileData = {
 };
 
 export type BoardData = {
-  boardId?: string;
+  id?: string;
   title: string;
 };
 
