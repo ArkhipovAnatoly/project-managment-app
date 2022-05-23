@@ -66,7 +66,8 @@
     "statusDeleteOk": "Successfully deleted",
     "question": "Board will be deleted!",
     "tooltipDeleteBoard": "Delete Board",
-    "tooltipOpenBoard": "Оpen Board"
+    "tooltipOpenBoard": "Оpen Board",
+    "noBoards": "No data to display"
   },
   "boardsPage": {
     "onMainPage": "Main Page",
