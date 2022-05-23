@@ -24,12 +24,25 @@ export default function Boards() {
 
   return (
     <>
-      {isSuccess && (
+      {isSuccess && boards.length && (
         <List dense>
           {boards?.map((board, i) => {
             return <Board {...board} key={i} />;
           })}
         </List>
+      )}
+      {isSuccess && !boards.length && (
+        <Box
+          sx={{
+            mt: 2,
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <Typography component="h2" variant="h5">
+            {t('noBoards')}
+          </Typography>
+        </Box>
       )}
 
       {isError && (
