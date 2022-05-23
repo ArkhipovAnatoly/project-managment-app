@@ -72,13 +72,13 @@ export default function CreateBoardModal() {
     }
     if (response.error?.status === StatusCode.NotFound) {
       setMessage(t('statusError'));
-    } else {
-      setMessage(t('statusOk'));
-      setTimeout(() => {
-        setMessage('');
-        modalClose();
-      }, 1500);
+      return;
     }
+    setMessage(t('statusOk'));
+    setTimeout(() => {
+      setMessage('');
+      modalClose();
+    }, 1500);
   };
   useEffect(() => {
     if (!isSubmitted || Object.entries(errors).length) {

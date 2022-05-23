@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { userAPI } from '../../../services/UserService';
-import { DeleteBoardResponse, DeleteUserResponse } from '../../../types';
+import { DeleteBoardResponse, DeleteUserResponse, StatusCode } from '../../../types';
 import { userAuthSlice } from '../../store/reducers/UserAuthSlice';
 import { useNavigate } from 'react-router-dom';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
@@ -58,10 +58,10 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
 
   const dispatch = useAppDispatch();
   const navigator = useNavigate();
-  const { t } = useTranslation(['profile', 'board']);
+  const { t } = useTranslation(['profile', 'board', 'account']);
   const theme = useTheme();
 
-  const handleClose = () => {
+  const modalClose = () => {
     setMessage('');
     dispatch(showConfirmModal(false));
   };
@@ -79,8 +79,22 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
       default:
         break;
     }
+    const status = response.error?.status;
+    if (status) {
+      if (status === StatusCode.InternalServerError) {
+        setMessage(t('account:statusServerError'));
+        return;
+      }
+      if (status === StatusCode.Unauthorized) {
+        setMessage(t('board:authError'));
+        setTimeout(() => {
+          setMessage('');
+          modalClose();
+          navigator('/');
+        }, 1500);
+        return;
+      }
 
-    if (response.error?.status) {
       switch (type) {
         case 'profile':
           setMessage(t('profile:statusErrorUserDelete'));
@@ -91,29 +105,29 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
         default:
           break;
       }
-    } else {
-      switch (type) {
-        case 'profile':
-          localStorage.removeItem('userId');
-          localStorage.removeItem('token');
-          dispatch(setUserAuthData({ userId: '', token: '', isAuth: false }));
-          setMessage(t('profile:statusOk'));
-          setTimeout(() => {
-            setMessage('');
-            dispatch(showConfirmModal(false));
-            navigator('/');
-          }, 1500);
-          break;
-        case 'board':
-          setMessage(t('board:statusDeleteOk'));
-          setTimeout(() => {
-            setMessage('');
-            dispatch(showConfirmModal(false));
-          }, 1500);
-          break;
-        default:
-          break;
-      }
+      return;
+    }
+    switch (type) {
+      case 'profile':
+        localStorage.removeItem('userId');
+        localStorage.removeItem('token');
+        dispatch(setUserAuthData({ userId: '', token: '', isAuth: false }));
+        setMessage(t('profile:statusOk'));
+        setTimeout(() => {
+          setMessage('');
+          dispatch(showConfirmModal(false));
+          navigator('/');
+        }, 1500);
+        break;
+      case 'board':
+        setMessage(t('board:statusDeleteOk'));
+        setTimeout(() => {
+          setMessage('');
+          dispatch(showConfirmModal(false));
+        }, 1500);
+        break;
+      default:
+        break;
     }
   };
 
@@ -121,7 +135,7 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
     <>
       <Modal
         open={open}
-        onClose={handleClose}
+        onClose={modalClose}
         aria-labelledby="modal-title"
         BackdropComponent={Backdrop}
         closeAfterTransition
@@ -151,7 +165,7 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
                 mt: 1,
                 color: theme.palette.mode === 'dark' ? 'secondary.main' : 'primary.main',
               }}
-              onClick={handleClose}
+              onClick={modalClose}
             >
               {t('profile:back')}
             </Button>

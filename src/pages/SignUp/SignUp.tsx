@@ -59,15 +59,21 @@ export default function SignUp() {
   const onSubmit: SubmitHandler<UserSignUpData> = async (formData) => {
     setMessage('');
     const response = (await signUpUser(formData)) as SignUpResponse;
-    if (response.error?.status === StatusCode.Conflict) {
+    const status = response.error?.status;
+
+    if (status === StatusCode.Conflict) {
       setMessage(t('statusErrorSignUp'));
-    } else {
-      const userId = response.data?.id as string;
-      localStorage.setItem('userId', userId);
-      dispatch(setUserAuthData({ userId }));
-      setMessage(t('statusOkSignUp'));
-      navigator('/signin');
+      return;
     }
+    if (status === StatusCode.InternalServerError) {
+      setMessage(t('statusServerError'));
+      return;
+    }
+    setMessage(t('statusOkSignUp'));
+    const userId = response.data?.id as string;
+    localStorage.setItem('userId', userId);
+    dispatch(setUserAuthData({ userId }));
+    navigator('/signin');
   };
 
   useEffect(() => {

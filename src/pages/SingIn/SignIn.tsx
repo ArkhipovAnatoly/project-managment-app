@@ -61,17 +61,24 @@ export default function SignIn() {
   const onSubmit: SubmitHandler<UserSignInData> = async (formData) => {
     setMessage('');
     const response = (await signInUser(formData)) as SignInResponse;
-    if (response.error?.status === StatusCode.Forbidden) {
+    const status = response.error?.status;
+
+    if (status === StatusCode.Forbidden) {
       setMessage(t('statusErrorSignIn'));
-    } else {
-      const token = response.data?.token as string;
-      localStorage.setItem('token', token);
-      dispatch(setUserAuthData({ token, isAuth: true }));
-      setMessage(t('statusOkSignIn'));
-      setTimeout(() => {
-        navigator('/main');
-      }, 1500);
+      return;
     }
+    if (status === StatusCode.InternalServerError) {
+      setMessage(t('statusServerError'));
+      return;
+    }
+
+    setMessage(t('statusOkSignIn'));
+    const token = response.data?.token as string;
+    localStorage.setItem('token', token);
+    dispatch(setUserAuthData({ token, isAuth: true }));
+    setTimeout(() => {
+      navigator('/main');
+    }, 1500);
   };
 
   useEffect(() => {
