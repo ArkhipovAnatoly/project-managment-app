@@ -63,7 +63,9 @@
     "statusErrorBoardDelete": "Не удалось удалить",
     "statusErrorBoardUpdate": "Не удалось обновить",
     "statusDeleteOk": "Удаление успешно",
-    "question": "Боард будет удалена!"
+    "question": "Боард будет удалена!",
+    "tooltipDeleteBoard": "Удалить Боард",
+    "tooltipOpenBoard": "Открыть Боард"
   },
   "boardsPage": {
     "onMainPage": "На главную",

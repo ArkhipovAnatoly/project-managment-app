@@ -13,6 +13,7 @@ import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useAppDispatch } from '../../hooks';
 import { confirmModalSlice } from '../../store/reducers/ConfirmModalSlice';
+import { useTranslation } from 'react-i18next';
 
 type BoardProps = {
   id?: string;
@@ -23,6 +24,8 @@ export default function Board({ id, title }: BoardProps) {
   const theme = useTheme();
   const { showConfirmModal } = confirmModalSlice.actions;
   const dispatch = useAppDispatch();
+  const { t } = useTranslation('board');
+
   const openModal = () => {
     localStorage.setItem('boardId', id as string);
     dispatch(showConfirmModal(true));
@@ -44,14 +47,14 @@ export default function Board({ id, title }: BoardProps) {
               aria-label="delete"
               onClick={openModal}
             >
-              <Tooltip title="Delete Board" arrow>
+              <Tooltip title={t('tooltipDeleteBoard')} arrow>
                 <DeleteIcon fontSize="large" />
               </Tooltip>
             </IconButton>
           }
         >
           <ListItemAvatar>
-            <Tooltip title="Open Board" arrow>
+            <Tooltip title={t('tooltipOpenBoard')} arrow>
               <FolderIcon color="primary" fontSize="large" />
             </Tooltip>
           </ListItemAvatar>
