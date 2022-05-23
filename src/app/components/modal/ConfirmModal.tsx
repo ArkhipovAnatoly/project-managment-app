@@ -61,10 +61,6 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
   const { t } = useTranslation(['profile', 'board', 'account']);
   const theme = useTheme();
 
-  const modalClose = () => {
-    dispatch(showConfirmModal(false));
-    setMessage('');
-  };
   const handleConfirm = async () => {
     let response: DeleteUserResponse | DeleteBoardResponse = {};
     setMessage('');
@@ -128,7 +124,10 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
         break;
     }
   };
-
+  const modalClose = () => {
+    dispatch(showConfirmModal(false));
+    setMessage('');
+  };
   return (
     <>
       <Modal
