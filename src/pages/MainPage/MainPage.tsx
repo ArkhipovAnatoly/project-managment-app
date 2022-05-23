@@ -11,11 +11,13 @@ import {
 import { NavLink } from 'react-router-dom';
 import Header from '../../app/components/share/Header';
 import HomeIcon from '@mui/icons-material/Home';
-import { grey } from '@mui/material/colors';
 import SearchIcon from '@mui/icons-material/Search';
-import Boards from './Boards';
+import { useTranslation } from 'react-i18next';
+import Boards from '../../app/components/Board/Boards';
 
 export default function MainPage() {
+  const { t } = useTranslation('main');
+
   const search = () => {
     console.log('search');
   };
@@ -55,6 +57,7 @@ export default function MainPage() {
     <Box className="app" sx={{ bgcolor: 'background.default' }}>
       <Header />
       <Container
+        maxWidth="xl"
         sx={{
           paddingTop: '80px',
           paddingBottom: '20px',
@@ -70,12 +73,11 @@ export default function MainPage() {
             rowGap: '10px',
           }}
         >
-          <NavLink to="/" style={{ textDecoration: 'none' }}>
-            <Button variant="contained">
-              <HomeIcon sx={{ color: grey[50] }} />
-              Welcome Page
+          <Link component={NavLink} to="/" underline="none">
+            <Button color="primary" startIcon={<HomeIcon />} variant="contained">
+              {t('home')}
             </Button>
-          </NavLink>
+          </Link>
           <Paper
             component="form"
             sx={{

@@ -9,15 +9,17 @@ import {
   useTheme,
   Fade,
   Backdrop,
+  Typography,
 } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { userAPI } from '../../../services/UserService';
-import { DeleteUserResponse } from '../../../types';
+import { DeleteBoardResponse, DeleteUserResponse } from '../../../types';
 import { userAuthSlice } from '../../store/reducers/UserAuthSlice';
 import { useNavigate } from 'react-router-dom';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import { useTranslation } from 'react-i18next';
-import { modalSlice } from '../../store/reducers/ModalSlice';
+import { confirmModalSlice } from '../../store/reducers/ConfirmModalSlice';
+import { boardAPI } from '../../../services/BoardService';
 
 const style = {
   position: 'absolute',
@@ -34,38 +36,84 @@ const style = {
   p: 4,
 };
 
-export default function ConfirmModal() {
-  const { open } = useAppSelector((state) => state.modalReducer);
-  const { showModal } = modalSlice.actions;
+type ConfirmModalProps = {
+  title: string;
+  type: 'profile' | 'board';
+};
+
+export default function ConfirmModal({ title, type }: ConfirmModalProps) {
+  const { open } = useAppSelector((state) => state.confirmModalReducer);
+  const { showConfirmModal } = confirmModalSlice.actions;
   const [message, setMessage] = useState<string>('');
-  const [deleteUser, { isLoading: isDeleting, isError, isSuccess }] =
-    userAPI.useUserDeleteMutation();
+  const [
+    deleteUser,
+    { isLoading: isDeletingUser, isError: isErrorUser, isSuccess: isSuccessUser },
+  ] = userAPI.useUserDeleteMutation();
+  const [
+    deleteBoard,
+    { isLoading: isDeletingBoard, isError: isErrorBoard, isSuccess: isSuccessBoard },
+  ] = boardAPI.useDeleteBoardMutation();
   const { auth } = useAppSelector((state) => state.userAuthReducer);
   const { setUserAuthData } = userAuthSlice.actions;
 
   const dispatch = useAppDispatch();
   const navigator = useNavigate();
-  const { t } = useTranslation('profile');
+  const { t } = useTranslation(['profile', 'board']);
   const theme = useTheme();
 
   const handleClose = () => {
     setMessage('');
-    dispatch(showModal(false));
+    dispatch(showConfirmModal(false));
   };
   const handleConfirm = async () => {
+    let response: DeleteUserResponse | DeleteBoardResponse = {};
     setMessage('');
-    const response = (await deleteUser(auth.userId as string)) as DeleteUserResponse;
+    switch (type) {
+      case 'profile':
+        response = (await deleteUser(auth.userId as string)) as DeleteUserResponse;
+        break;
+      case 'board':
+        const id = localStorage.getItem('boardId');
+        response = (await deleteBoard(id as string)) as DeleteBoardResponse;
+        break;
+      default:
+        break;
+    }
+
     if (response.error?.status) {
-      setMessage(t('statusErrorUid'));
+      switch (type) {
+        case 'profile':
+          setMessage(t('profile:statusErrorUserDelete'));
+          break;
+        case 'board':
+          setMessage(t('board:statusErrorBoardDelete'));
+          break;
+        default:
+          break;
+      }
     } else {
-      localStorage.removeItem('userId');
-      localStorage.removeItem('token');
-      dispatch(setUserAuthData({ userId: '', token: '', isAuth: false }));
-      setMessage(t('statusOk'));
-      setTimeout(() => {
-        dispatch(showModal(false));
-        navigator('/');
-      }, 2000);
+      switch (type) {
+        case 'profile':
+          localStorage.removeItem('userId');
+          localStorage.removeItem('token');
+          dispatch(setUserAuthData({ userId: '', token: '', isAuth: false }));
+          setMessage(t('profile:statusOk'));
+          setTimeout(() => {
+            setMessage('');
+            dispatch(showConfirmModal(false));
+            navigator('/');
+          }, 1500);
+          break;
+        case 'board':
+          setMessage(t('board:statusDeleteOk'));
+          setTimeout(() => {
+            setMessage('');
+            dispatch(showConfirmModal(false));
+          }, 1500);
+          break;
+        default:
+          break;
+      }
     }
   };
 
@@ -86,7 +134,9 @@ export default function ConfirmModal() {
             <Avatar sx={{ m: 1, bgcolor: 'error.main' }}>
               <PriorityHighIcon />
             </Avatar>
-            <h3 id="modal-title">{t('message')}</h3>
+            <Typography marginTop={2} component="h3" variant="h6" id="modal-title">
+              {title}
+            </Typography>
             <Button
               sx={{
                 mt: 2,
@@ -94,21 +144,24 @@ export default function ConfirmModal() {
               }}
               onClick={handleConfirm}
             >
-              {t('confirm')}
+              {t('profile:confirm')}
             </Button>
             <Button
-              sx={{ color: theme.palette.mode === 'dark' ? 'secondary.main' : 'primary.main' }}
+              sx={{
+                mt: 1,
+                color: theme.palette.mode === 'dark' ? 'secondary.main' : 'primary.main',
+              }}
               onClick={handleClose}
             >
-              {t('back')}
+              {t('profile:back')}
             </Button>
-            {isDeleting && <CircularProgress size={26} color="error" />}
+            {(isDeletingUser || isDeletingBoard) && <CircularProgress size={26} color="error" />}
             {
               <FormHelperText
-                error={isError}
+                error={isErrorUser || isErrorBoard}
                 component="span"
                 sx={{
-                  color: { isSuccess } && 'success.main',
+                  color: ({ isSuccessBoard } || { isSuccessUser }) && 'success.main',
                   fontSize: '18px',
                 }}
               >

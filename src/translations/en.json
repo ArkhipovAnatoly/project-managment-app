@@ -9,11 +9,12 @@
     "title": "Edit profile",
     "update": "update",
     "delete": "Delete profile",
-    "message": "Your profile will be deleted",
+    "question": "Your profile will be deleted!",
     "confirm": "Confirm",
     "back": "Back",
-    "statusOk": "Successful deleted",
-    "statusErrorUid": "uuid is expected",
+    "statusOk": "Successfully deleted",
+    "statusErrorUserDelete": "Could not delete",
+    "statusErrorUserUpdate": "Could not update",
     "nameError": "Name is required",
     "nameErrorLetters": "Name should include letters only",
     "loginError": "Login is required",
@@ -32,10 +33,10 @@
     "moto": "TEMPER - plan and develop at your pace!"
   },
   "account": {
-    "statusOkSignIn": "Successful signed in",
+    "statusOkSignIn": "Successfully signed in",
     "statusErrorSignIn": "User was not founded!",
     "titleSignIn": "Sign in",
-    "statusOkSignUp": "Successful signed up",
+    "statusOkSignUp": "Successfully signed up",
     "statusErrorSignUp": "User login already exists!",
     "titleSignUp": "Sign up",
     "nameError": "Name is required",
@@ -45,6 +46,24 @@
     "passwordLengthError": "Password length should be at least 8 characters",
     "questionSignIn": "Don't have an account? Sign Up",
     "questionSignUp": " Already have an account? Sign in"
+  },
+  "main": {
+    "home": "Home"
+  },
+  "board": {
+    "title": "Create new board",
+    "add": "Create",
+    "cancel": "Cancel",
+    "statusError": "Board was not founded!",
+    "authError": "Sign in is required",
+    "statusOk": "Successfully created",
+    "titleEmpty": "Field is required",
+    "titlePattern": "Title should include letters only",
+    "errorLoad": "Could not load Boards",
+    "statusErrorBoardDelete": "Could not delete",
+    "statusErrorBoardUpdate": "Could not update",
+    "statusDeleteOk": "Successfully deleted",
+    "question": "Board will be deleted!"
   },
   "boardsPage": {
     "onMainPage": "Main Page",

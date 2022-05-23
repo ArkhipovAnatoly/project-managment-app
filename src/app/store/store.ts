@@ -1,24 +1,29 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { userAPI } from '../../services/UserService';
 import userAuthReducer from './reducers/UserAuthSlice';
-import modalReducer from './reducers/ModalSlice';
+import confirmModalReducer from './reducers/ConfirmModalSlice';
+import createBoardModalReducer from './reducers/CreateBoardModalSlice';
 import themeReducer from './reducers/ThemeSlice';
 import boardsPage from './reducers/useSliceBoardsPage';
 import mainPage from './reducers/useSliceMainPage';
+import { boardAPI } from '../../services/BoardService';
 
 const rootReducer = combineReducers({
   userAuthReducer,
-  modalReducer,
+  confirmModalReducer,
+  createBoardModalReducer,
   themeReducer,
   boardsPage,
   mainPage,
   [userAPI.reducerPath]: userAPI.reducer,
+  [boardAPI.reducerPath]: boardAPI.reducer,
 });
 
 const setupStore = () => {
   return configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(userAPI.middleware),
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat([userAPI.middleware, boardAPI.middleware]),
   });
 };
 export const store = setupStore();

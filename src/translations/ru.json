@@ -9,11 +9,12 @@
     "title": "Настройки профиля",
     "update": "Обновить",
     "delete": "Удалить профиль",
-    "message": "Ваш профиль будет удален",
+    "question": "Ваш профиль будет удален!",
     "confirm": "Подтвердить",
     "back": "Назад",
     "statusOk": "Удаление успешно",
-    "statusErrorUid": "Некорректный uuid",
+    "statusErrorUserDelete": "Не удалось удалить",
+    "statusErrorUserUpdate": "Не удалось обновить",
     "nameError": "Поле name обязательное",
     "nameErrorLetters": "Поле name должно содержать только буквы",
     "loginError": "Поле login обязательное",
@@ -45,6 +46,24 @@
     "passwordLengthError": "Длина должна быть не менее 8 символов",
     "questionSignIn": "Нет аккаунта? Регистрация",
     "questionSignUp": "Уже есть аккаунт? Войти"
+  },
+  "main": {
+    "home": "Домой"
+  },
+  "board": {
+    "title": "Создание боард",
+    "add": "Создать",
+    "cancel": "Отмена",
+    "statusError": "Боард не найден!",
+    "authError": "Требуется повторный вход",
+    "statusOk": "Создание успешно",
+    "titleEmpty": "Поле обязательное",
+    "titlePattern": "Поле должно содержать только буквы",
+    "errorLoad": "Не удалось загрузить Боарды",
+    "statusErrorBoardDelete": "Не удалось удалить",
+    "statusErrorBoardUpdate": "Не удалось обновить",
+    "statusDeleteOk": "Удаление успешно",
+    "question": "Боард будет удалена!"
   },
   "boardsPage": {
     "onMainPage": "На главную",

@@ -8,14 +8,14 @@ const initialState: ModalState = {
   open: false,
 };
 
-export const modalSlice = createSlice({
-  name: 'modal',
+export const createBoardModalSlice = createSlice({
+  name: 'createBoardModal',
   initialState,
   reducers: {
-    showModal(state, action: PayloadAction<boolean>) {
+    showCreateBoardModal(state, action: PayloadAction<boolean>) {
       state.open = action.payload;
     },
   },
 });
 
-export default modalSlice.reducer;
+export default createBoardModalSlice.reducer;
