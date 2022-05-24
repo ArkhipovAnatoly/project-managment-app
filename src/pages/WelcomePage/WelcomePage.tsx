@@ -13,11 +13,10 @@ import MaterialUISwitch from '../../app/components/Switch/MaterialUISwitch';
 const WelcomePage = () => {
   const [checked, setChecked] = useState<boolean>(false);
   const [videoModalActive, setVideomodalactive] = useState(false);
-  const { auth } = useAppSelector((state) => state.userAuthReducer);
   const { t } = useTranslation('welcome');
   const { setTheme } = themeSlice.actions;
   const dispatch = useAppDispatch();
-
+  const token = localStorage.getItem('token');
   useEffect(() => {
     if (localStorage.getItem('theme') === 'dark') {
       setChecked(true);
@@ -63,7 +62,7 @@ const WelcomePage = () => {
               }
               label=""
             />
-            {auth.isAuth ? (
+            {token ? (
               <CustomizedButton innerText={t('toMainPage')} link={'/main'} />
             ) : (
               <div className="button-wrapper">

@@ -100,7 +100,6 @@ export default function SignUp() {
       return;
     }
     if (isSuccessUser) {
-      dispatch(setUserAuthData({ isAuth: true }));
       navigator('/main');
     }
   }, [isSuccessUser, isErrorUser, dispatch, setUserAuthData, navigator]);

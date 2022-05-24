@@ -75,7 +75,7 @@ export default function SignIn() {
     setMessage(t('statusOkSignIn'));
     const token = response.data?.token as string;
     localStorage.setItem('token', token);
-    dispatch(setUserAuthData({ token, isAuth: true }));
+    dispatch(setUserAuthData({ token }));
     setTimeout(() => {
       navigator('/main');
     }, 1500);
@@ -106,7 +106,6 @@ export default function SignIn() {
       return;
     }
     if (isSuccessUser) {
-      dispatch(setUserAuthData({ isAuth: true }));
       navigator('/main');
     }
   }, [isSuccessUser, isErrorUser, dispatch, setUserAuthData, navigator]);

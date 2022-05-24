@@ -107,7 +107,7 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
       case 'profile':
         localStorage.removeItem('userId');
         localStorage.removeItem('token');
-        dispatch(setUserAuthData({ userId: '', token: '', isAuth: false }));
+        dispatch(setUserAuthData({ userId: '', token: '' }));
         setMessage(t('profile:statusOk'));
         setTimeout(() => {
           modalClose();
