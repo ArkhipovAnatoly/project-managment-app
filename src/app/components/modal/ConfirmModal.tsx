@@ -55,6 +55,7 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
   ] = boardAPI.useDeleteBoardMutation();
   const { auth } = useAppSelector((state) => state.userAuthReducer);
   const { setUserAuthData } = userAuthSlice.actions;
+  const { dataBoard } = useAppSelector((state) => state.editBoardReducer);
 
   const dispatch = useAppDispatch();
   const navigator = useNavigate();
@@ -69,8 +70,7 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
         response = (await deleteUser(auth.userId as string)) as DeleteUserResponse;
         break;
       case 'board':
-        const id = localStorage.getItem('boardId');
-        response = (await deleteBoard(id as string)) as DeleteBoardResponse;
+        response = (await deleteBoard(dataBoard.id as string)) as DeleteBoardResponse;
         break;
       default:
         break;
@@ -141,7 +141,7 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
         }}
       >
         <Fade in={open}>
-          <Box sx={{ ...style, padding: { xs: 1, sm: 4 }, width: { xs: 300, sm: 350 } }}>
+          <Box sx={{ ...style, padding: { xs: 1, sm: 4 }, width: { xs: 300, sm: 400 } }}>
             <Avatar sx={{ m: 1, bgcolor: 'error.main' }}>
               <PriorityHighIcon />
             </Avatar>
