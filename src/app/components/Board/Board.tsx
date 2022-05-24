@@ -1,5 +1,4 @@
 import {
-  Grid,
   IconButton,
   ListItem,
   ListItemAvatar,
