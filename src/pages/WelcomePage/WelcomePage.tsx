@@ -4,7 +4,7 @@ import data from '../../services/data';
 import Modal from '@mui/material/Modal';
 import { Box, FormControlLabel, Typography } from '@mui/material';
 import Card from '../../app/components/Card/Card';
-import { useAppDispatch } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import CustomizedButton from '../../app/components/share/Button/CustomizedButton';
 import { useTranslation } from 'react-i18next';
 import { themeSlice } from '../../app/store/reducers/ThemeSlice';
@@ -13,6 +13,7 @@ import { motion } from 'framer-motion';
 
 const WelcomePage = () => {
   const [checked, setChecked] = useState<boolean>(false);
+  const { auth } = useAppSelector((state) => state.userAuthReducer);
   const [videoModalActive, setVideomodalactive] = useState(false);
   const { t } = useTranslation('welcome');
   const { setTheme } = themeSlice.actions;
@@ -88,7 +89,7 @@ const WelcomePage = () => {
               }
               label=""
             />
-            {token ? (
+            {token && auth.isAuth ? (
               <CustomizedButton innerText={t('toMainPage')} link={'/main'} />
             ) : (
               <div className="button-wrapper">

@@ -55,9 +55,8 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
   ] = boardAPI.useDeleteBoardMutation();
   const { auth } = useAppSelector((state) => state.userAuthReducer);
   const { setUserAuthData } = userAuthSlice.actions;
-  const { dataBoard } = useAppSelector((state) => state.editBoardReducer);
-
   const dispatch = useAppDispatch();
+  const { dataBoard } = useAppSelector((state) => state.editBoardReducer);
   const navigator = useNavigate();
   const { t } = useTranslation(['profile', 'board', 'account']);
   const theme = useTheme();
@@ -86,6 +85,8 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
         setTimeout(() => {
           setMessage('');
           modalClose();
+          localStorage.removeItem('token');
+          dispatch(setUserAuthData({ token: '', isAuth: false }));
           navigator('/');
         }, 1500);
         return;
@@ -108,8 +109,9 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
         localStorage.removeItem('userId');
         localStorage.removeItem('token');
         dispatch(setUserAuthData({ userId: '', token: '' }));
-        setMessage(t('profile:statusOk'));
+        setMessage(t('profile:statusDeleteOk'));
         setTimeout(() => {
+          setMessage('');
           modalClose();
           navigator('/');
         }, 1500);
@@ -117,6 +119,7 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
       case 'board':
         setMessage(t('board:statusDeleteOk'));
         setTimeout(() => {
+          setMessage('');
           modalClose();
         }, 1500);
         break;
