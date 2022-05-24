@@ -30,15 +30,17 @@ const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
-  width: 200,
+  width: { xs: 300, sm: 400 },
   transform: 'translate(-50%, -50%)',
+  marginRight: 1,
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   bgcolor: 'background.paper',
   boxShadow:
     '0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%),0px 1px 10px 0px rgb(0 0 0 / 90%)',
-  padding: 3,
+
+  padding: { xs: 1, sm: 3 },
 };
 
 export default function EditProfile() {
@@ -108,18 +110,11 @@ export default function EditProfile() {
       <Box
         className="app"
         sx={{
-          height: '94%',
+          height: '93%',
           bgcolor: 'background.default',
         }}
       >
-        <Box
-          component="section"
-          sx={{
-            ...style,
-            padding: { xs: 1, sm: 3 },
-            width: { xs: 320, sm: 400 },
-          }}
-        >
+        <Box component="section" sx={style}>
           <Link
             sx={{ m: 1, cursor: 'pointer', alignSelf: 'flex-end' }}
             component={NavLink}
@@ -143,7 +138,7 @@ export default function EditProfile() {
           <Typography component="h2" variant="h5">
             {t('title')}
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
+          <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
