@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   Avatar,
@@ -54,6 +54,7 @@ export default function EditProfile() {
   const dispatch = useAppDispatch();
   const { t } = useTranslation('profile');
   const theme = useTheme();
+  const navigator = useNavigate();
   const {
     register,
     handleSubmit,
@@ -89,17 +90,32 @@ export default function EditProfile() {
     setMessage('');
     const updateData = { ...formData, userId: auth.userId };
     const response = (await updateProfile(updateData)) as EditUserProfileResponse;
-    if (response.error?.status !== StatusCode.OK) {
-      setMessage(t('statusErrorUserUpdate'));
-    } else {
-      const userId = response.data?.id as string;
-      localStorage.setItem('userId', userId);
-      dispatch(setUserAuthData({ userId }));
-      setMessage(t('update'));
+    const status = response.error?.status;
+
+    if (status === StatusCode.Unauthorized) {
+      setMessage(t('authError'));
       setTimeout(() => {
+        setMessage('');
+        localStorage.removeItem('token');
+        dispatch(setUserAuthData({ token: '', isAuth: false }));
         dispatch(showConfirmModal(false));
+        navigator('/');
       }, 1500);
+      return;
     }
+    if (status !== StatusCode.OK) {
+      setMessage(t('statusErrorUserUpdate'));
+      return;
+    }
+
+    const userId = response.data?.id as string;
+    localStorage.setItem('userId', userId);
+    dispatch(setUserAuthData({ userId }));
+    setMessage(t('statusUpdateOk'));
+    setTimeout(() => {
+      setMessage('');
+      dispatch(showConfirmModal(false));
+    }, 1500);
   };
   const openModal = () => {
     dispatch(showConfirmModal(true));
