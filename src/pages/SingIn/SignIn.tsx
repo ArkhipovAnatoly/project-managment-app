@@ -146,7 +146,7 @@ export default function SignIn() {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        height: '94%',
+        minHeight: 'calc(100vh - 58px)',
         pl: 1,
         pr: 1,
         bgcolor: 'background.default',
