@@ -243,7 +243,7 @@ export default function EditProfile() {
             </Button>
             <Divider sx={{ my: 0.5 }} />
           </Box>
-          <Button sx={{ mt: 2 }} onClick={openModal} variant="outlined" color="error">
+          <Button sx={{ mt: 2, mb: 2 }} onClick={openModal} variant="outlined" color="error">
             {t('delete')}
           </Button>
           <ConfirmModal title={t('question')} type="profile" />
