@@ -199,7 +199,7 @@ export default function SignIn() {
                   {t('titleSignIn')}
                 </Typography>
 
-                <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
+                <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
                   <TextField
                     color="info"
                     error={errors.login && true}
