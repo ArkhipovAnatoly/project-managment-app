@@ -103,6 +103,10 @@ export default function Header() {
     dispatch(showCreateBoardModal(true));
   };
 
+  const editLink = () => {
+    handleCloseNavMenu();
+    navigator('/edit');
+  };
   return (
     <>
       <AppBar
@@ -199,12 +203,10 @@ export default function Header() {
                   </ListItemIcon>
                   <Typography>{t('newBoard')}</Typography>
                 </MenuItem>
-                <MenuItem>
-                  <Link component={NavLink} underline="none" to="/edit">
-                    <ListItemIcon>
-                      <EditIcon color="warning" fontSize="small" />
-                    </ListItemIcon>
-                  </Link>
+                <MenuItem onClick={editLink}>
+                  <ListItemIcon>
+                    <EditIcon color="warning" fontSize="small" />
+                  </ListItemIcon>
                   <Typography>{t('profile')}</Typography>
                 </MenuItem>
                 <MenuItem onClick={changeLanguage}>
