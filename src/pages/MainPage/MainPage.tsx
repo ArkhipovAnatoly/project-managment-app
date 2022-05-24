@@ -54,56 +54,58 @@ export default function MainPage() {
   }
 
   return (
-    <Box className="app" sx={{ bgcolor: 'background.default' }}>
+    <>
       <Header />
-      <Container
-        maxWidth="xl"
-        sx={{
-          paddingTop: '80px',
-          paddingBottom: '20px',
-          minHeight: 'calc(100vh - 58px)',
-        }}
-      >
-        <Box
+      <Box className="app" sx={{ bgcolor: 'background.default' }}>
+        <Container
+          maxWidth="xl"
           sx={{
-            m: '20px 10px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            rowGap: '10px',
+            paddingTop: '80px',
+            paddingBottom: '20px',
+            minHeight: 'calc(100vh - 58px)',
           }}
         >
-          <Link component={NavLink} to="/" underline="none">
-            <Button color="primary" startIcon={<HomeIcon />} variant="contained">
-              {t('home')}
-            </Button>
-          </Link>
-          <Paper
-            component="form"
+          <Box
             sx={{
+              m: '20px 10px',
               display: 'flex',
-              alignItems: 'center',
-              width: '265px',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              rowGap: '10px',
             }}
           >
-            <InputBase sx={{ ml: 1, flex: 1 }} placeholder="Search..." />
-            <IconButton
-              // type="submit"
-              sx={{ p: '10px' }}
-              aria-label="search"
+            <Link component={NavLink} to="/" underline="none">
+              <Button color="primary" startIcon={<HomeIcon />} variant="contained">
+                {t('home')}
+              </Button>
+            </Link>
+            <Paper
+              component="form"
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                width: '265px',
+              }}
             >
-              <SearchIcon />
-            </IconButton>
-          </Paper>
-        </Box>
-        <Box
-          sx={{
-            textAlign: 'center',
-          }}
-        >
-          <Boards />
-        </Box>
-      </Container>
-    </Box>
+              <InputBase sx={{ ml: 1, flex: 1 }} placeholder="Search..." />
+              <IconButton
+                // type="submit"
+                sx={{ p: '10px' }}
+                aria-label="search"
+              >
+                <SearchIcon />
+              </IconButton>
+            </Paper>
+          </Box>
+          <Box
+            sx={{
+              textAlign: 'center',
+            }}
+          >
+            <Boards />
+          </Box>
+        </Container>
+      </Box>
+    </>
   );
 }
