@@ -38,6 +38,7 @@ export const boardAPI = createApi({
           body,
         };
       },
+      invalidatesTags: ['Board'],
     }),
     createBoard: build.mutation<BoardDataResponse, BoardData>({
       query(boardData) {

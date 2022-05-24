@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { userAPI } from '../../../services/UserService';
-import { DeleteBoardResponse, DeleteUserResponse } from '../../../types';
+import { DeleteBoardResponse, DeleteUserResponse, StatusCode } from '../../../types';
 import { userAuthSlice } from '../../store/reducers/UserAuthSlice';
 import { useNavigate } from 'react-router-dom';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
@@ -55,16 +55,13 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
   ] = boardAPI.useDeleteBoardMutation();
   const { auth } = useAppSelector((state) => state.userAuthReducer);
   const { setUserAuthData } = userAuthSlice.actions;
+  const { dataBoard } = useAppSelector((state) => state.editBoardReducer);
 
   const dispatch = useAppDispatch();
   const navigator = useNavigate();
-  const { t } = useTranslation(['profile', 'board']);
+  const { t } = useTranslation(['profile', 'board', 'account']);
   const theme = useTheme();
 
-  const handleClose = () => {
-    setMessage('');
-    dispatch(showConfirmModal(false));
-  };
   const handleConfirm = async () => {
     let response: DeleteUserResponse | DeleteBoardResponse = {};
     setMessage('');
@@ -73,14 +70,27 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
         response = (await deleteUser(auth.userId as string)) as DeleteUserResponse;
         break;
       case 'board':
-        const id = localStorage.getItem('boardId');
-        response = (await deleteBoard(id as string)) as DeleteBoardResponse;
+        response = (await deleteBoard(dataBoard.id as string)) as DeleteBoardResponse;
         break;
       default:
         break;
     }
+    const status = response.error?.status;
+    if (status) {
+      if (status === StatusCode.InternalServerError) {
+        setMessage(t('account:statusServerError'));
+        return;
+      }
+      if (status === StatusCode.Unauthorized) {
+        setMessage(t('board:authError'));
+        setTimeout(() => {
+          setMessage('');
+          modalClose();
+          navigator('/');
+        }, 1500);
+        return;
+      }
 
-    if (response.error?.status) {
       switch (type) {
         case 'profile':
           setMessage(t('profile:statusErrorUserDelete'));
@@ -91,37 +101,38 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
         default:
           break;
       }
-    } else {
-      switch (type) {
-        case 'profile':
-          localStorage.removeItem('userId');
-          localStorage.removeItem('token');
-          dispatch(setUserAuthData({ userId: '', token: '', isAuth: false }));
-          setMessage(t('profile:statusOk'));
-          setTimeout(() => {
-            setMessage('');
-            dispatch(showConfirmModal(false));
-            navigator('/');
-          }, 1500);
-          break;
-        case 'board':
-          setMessage(t('board:statusDeleteOk'));
-          setTimeout(() => {
-            setMessage('');
-            dispatch(showConfirmModal(false));
-          }, 1500);
-          break;
-        default:
-          break;
-      }
+      return;
+    }
+    switch (type) {
+      case 'profile':
+        localStorage.removeItem('userId');
+        localStorage.removeItem('token');
+        dispatch(setUserAuthData({ userId: '', token: '', isAuth: false }));
+        setMessage(t('profile:statusOk'));
+        setTimeout(() => {
+          modalClose();
+          navigator('/');
+        }, 1500);
+        break;
+      case 'board':
+        setMessage(t('board:statusDeleteOk'));
+        setTimeout(() => {
+          modalClose();
+        }, 1500);
+        break;
+      default:
+        break;
     }
   };
-
+  const modalClose = () => {
+    dispatch(showConfirmModal(false));
+    setMessage('');
+  };
   return (
     <>
       <Modal
         open={open}
-        onClose={handleClose}
+        onClose={modalClose}
         aria-labelledby="modal-title"
         BackdropComponent={Backdrop}
         closeAfterTransition
@@ -130,7 +141,7 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
         }}
       >
         <Fade in={open}>
-          <Box sx={{ ...style, padding: { xs: 1, sm: 4 }, width: { xs: 300, sm: 350 } }}>
+          <Box sx={{ ...style, padding: { xs: 1, sm: 4 }, width: { xs: 300, sm: 400 } }}>
             <Avatar sx={{ m: 1, bgcolor: 'error.main' }}>
               <PriorityHighIcon />
             </Avatar>
@@ -151,7 +162,7 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
                 mt: 1,
                 color: theme.palette.mode === 'dark' ? 'secondary.main' : 'primary.main',
               }}
-              onClick={handleClose}
+              onClick={modalClose}
             >
               {t('profile:back')}
             </Button>

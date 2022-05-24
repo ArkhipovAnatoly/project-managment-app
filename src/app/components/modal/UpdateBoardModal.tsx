@@ -14,11 +14,11 @@ import {
   FormHelperText,
 } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { createBoardModalSlice } from '../../store/reducers/CreateBoardModalSlice';
 import { useTranslation } from 'react-i18next';
 import { BoardData, BoardDataResponse, StatusCode } from '../../../types';
 import { boardAPI } from '../../../services/BoardService';
 import { useNavigate } from 'react-router-dom';
+import { updateBoardModalSlice } from '../../store/reducers/UpdateBoardModalSlice';
 
 const style = {
   position: 'absolute',
@@ -34,13 +34,14 @@ const style = {
 
 export default function CreateBoardModal() {
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
-  const { open } = useAppSelector((state) => state.createBoardModalReducer);
-  const { showCreateBoardModal } = createBoardModalSlice.actions;
-
+  const { open } = useAppSelector((state) => state.updateBoardModalReducer);
   const [message, setMessage] = useState<string>('');
   const dispatch = useAppDispatch();
   const { t } = useTranslation('board');
-  const [createBoard, { isLoading, isError, isSuccess }] = boardAPI.useCreateBoardMutation();
+  const [updateBoard, { isLoading: isUpdating, isError, isSuccess }] =
+    boardAPI.useUpdateBoardMutation();
+  const { showUpdateBoardModal } = updateBoardModalSlice.actions;
+  const { dataBoard } = useAppSelector((state) => state.editBoardReducer);
   const {
     register,
     handleSubmit,
@@ -61,7 +62,8 @@ export default function CreateBoardModal() {
 
   const onSubmit: SubmitHandler<BoardData> = async (formData) => {
     setMessage('');
-    const response = (await createBoard(formData)) as BoardDataResponse;
+    const updateData = { ...formData, id: dataBoard.id };
+    const response = (await updateBoard(updateData)) as BoardDataResponse;
     const status = response.error?.status;
     if (status === StatusCode.Unauthorized) {
       setMessage(t('authError'));
@@ -76,7 +78,7 @@ export default function CreateBoardModal() {
       setMessage(t('statusError'));
       return;
     }
-    setMessage(t('statusOk'));
+    setMessage(t('statusUpdateOk'));
     setTimeout(() => {
       setMessage('');
       modalClose();
@@ -98,7 +100,7 @@ export default function CreateBoardModal() {
 
   const modalClose = () => {
     setMessage('');
-    dispatch(showCreateBoardModal(false));
+    dispatch(showUpdateBoardModal(false));
   };
 
   return (
@@ -116,7 +118,7 @@ export default function CreateBoardModal() {
       <Fade in={open}>
         <Box sx={style}>
           <Typography padding={0} id="modal-modal-title" variant="h6" component="h2">
-            {t('title')}
+            {t('titleEdit')}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}></Typography>
           <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 3 }}>
@@ -129,7 +131,7 @@ export default function CreateBoardModal() {
                   required
                   fullWidth
                   id="title"
-                  label="Title"
+                  label="New Title"
                   autoFocus
                   variant="standard"
                   {...register('title', { required: true, pattern: /^[A-Za-zА-Яа-я\s]+$/i })}
@@ -156,7 +158,7 @@ export default function CreateBoardModal() {
                 justifyContent: 'center',
               }}
             >
-              {isLoading && <CircularProgress size={26} color="info" />}
+              {isUpdating && <CircularProgress size={26} color="info" />}
               {
                 <FormHelperText
                   error={isError}
@@ -172,7 +174,7 @@ export default function CreateBoardModal() {
             </Box>
             <Stack marginTop={4} direction="row" spacing={2}>
               <Button disabled={isDisabled} type="submit" variant="contained">
-                {t('add')}
+                {t('update')}
               </Button>
               <Button variant="contained" onClick={modalClose}>
                 {t('cancel')}

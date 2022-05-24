@@ -22,7 +22,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { userAPI } from '../../services/UserService';
 import { userAuthSlice } from '../../app/store/reducers/UserAuthSlice';
-import { EditUserProfileData, EditUserProfileResponse } from '../../types';
+import { EditUserProfileData, EditUserProfileResponse, StatusCode } from '../../types';
 import { confirmModalSlice } from '../../app/store/reducers/ConfirmModalSlice';
 import ConfirmModal from '../../app/components/modal/ConfirmModal';
 
@@ -87,7 +87,7 @@ export default function EditProfile() {
     setMessage('');
     const updateData = { ...formData, userId: auth.userId };
     const response = (await updateProfile(updateData)) as EditUserProfileResponse;
-    if (response.error?.status) {
+    if (response.error?.status !== StatusCode.OK) {
       setMessage(t('statusErrorUserUpdate'));
     } else {
       const userId = response.data?.id as string;
