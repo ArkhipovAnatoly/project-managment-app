@@ -25,15 +25,18 @@ export default function Boards() {
     );
   }
 
+  if (isSuccess && boards.length) {
+    return (
+      <List dense>
+        {boards?.map((board, i) => {
+          return <Board {...board} key={i} />;
+        })}
+      </List>
+    );
+  }
+
   return (
     <>
-      {isSuccess && boards.length && (
-        <List dense>
-          {boards?.map((board, i) => {
-            return <Board {...board} key={i} />;
-          })}
-        </List>
-      )}
       {isSuccess && !boards.length && (
         <Box
           sx={{
@@ -61,6 +64,7 @@ export default function Boards() {
           </Typography>
         </Box>
       )}
+
       <ConfirmModal title={`'${dataBoard.title}' ${t('question')}`} type="board" />
       <UpdateBoardModal />
     </>
