@@ -58,7 +58,7 @@ export default function MainPage() {
       <Header />
       <Box className="app" sx={{ bgcolor: 'background.default' }}>
         <Container
-          maxWidth="xl"
+          maxWidth="lg"
           sx={{
             paddingTop: '80px',
             paddingBottom: '20px',
