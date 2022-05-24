@@ -110,7 +110,7 @@ export default function EditProfile() {
       <Box
         className="app"
         sx={{
-          height: '93%',
+          minHeight: 'calc(100vh - 58px)',
           bgcolor: 'background.default',
         }}
       >
