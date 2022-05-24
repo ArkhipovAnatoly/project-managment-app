@@ -82,7 +82,7 @@ export default function Header() {
   const signOutHandle = () => {
     handleCloseNavMenu();
     localStorage.removeItem('token');
-    dispatch(setUserAuthData({ token: '', isAuth: false }));
+    dispatch(setUserAuthData({ token: '' }));
     navigator('/');
   };
 

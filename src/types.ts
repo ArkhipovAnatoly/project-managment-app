@@ -7,7 +7,6 @@ export type CardProps = {
 export type UserAuthData = {
   userId?: string;
   token?: string;
-  isAuth?: boolean;
 };
 
 export type UserSignInData = {
