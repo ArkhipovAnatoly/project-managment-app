@@ -133,7 +133,7 @@ export default function Header() {
             }}
             variant="dense"
           >
-            <Typography component="h1" variant="h6">
+            <Typography component="h1" variant="h5">
               <Link component={NavLink} underline="none" color={'text.primary'} to="/">
                 TEMPER
               </Link>
