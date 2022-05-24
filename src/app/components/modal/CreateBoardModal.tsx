@@ -36,6 +36,7 @@ export default function CreateBoardModal() {
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const { open } = useAppSelector((state) => state.createBoardModalReducer);
   const { showCreateBoardModal } = createBoardModalSlice.actions;
+
   const [message, setMessage] = useState<string>('');
   const dispatch = useAppDispatch();
   const { t } = useTranslation('board');
@@ -61,7 +62,8 @@ export default function CreateBoardModal() {
   const onSubmit: SubmitHandler<BoardData> = async (formData) => {
     setMessage('');
     const response = (await createBoard(formData)) as BoardDataResponse;
-    if (response.error?.status === StatusCode.Unauthorized) {
+    const status = response.error?.status;
+    if (status === StatusCode.Unauthorized) {
       setMessage(t('authError'));
       setTimeout(() => {
         setMessage('');
@@ -70,7 +72,7 @@ export default function CreateBoardModal() {
       }, 1500);
       return;
     }
-    if (response.error?.status === StatusCode.NotFound) {
+    if (status === StatusCode.NotFound) {
       setMessage(t('statusError'));
       return;
     }
