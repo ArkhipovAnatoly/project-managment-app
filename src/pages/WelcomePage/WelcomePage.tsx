@@ -4,7 +4,7 @@ import data from '../../services/data';
 import Modal from '@mui/material/Modal';
 import { Box, FormControlLabel, Typography } from '@mui/material';
 import Card from '../../app/components/Card/Card';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useAppDispatch } from '../../app/hooks';
 import CustomizedButton from '../../app/components/share/Button/CustomizedButton';
 import { useTranslation } from 'react-i18next';
 import { themeSlice } from '../../app/store/reducers/ThemeSlice';
