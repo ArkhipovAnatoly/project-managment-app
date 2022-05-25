@@ -1,26 +1,12 @@
-import {
-  Container,
-  Box,
-  Link,
-  Typography,
-  Button,
-  InputBase,
-  Paper,
-  IconButton,
-} from '@mui/material';
+import { Container, Box, Link, Typography, Button } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import Header from '../../app/components/share/Header';
 import HomeIcon from '@mui/icons-material/Home';
-import SearchIcon from '@mui/icons-material/Search';
 import { useTranslation } from 'react-i18next';
 import Boards from '../../app/components/Board/Boards';
 
 export default function MainPage() {
   const { t } = useTranslation('main');
-
-  const search = () => {
-    console.log('search');
-  };
 
   if (!localStorage.getItem('token')) {
     return (
@@ -78,23 +64,6 @@ export default function MainPage() {
               {t('home')}
             </Button>
           </Link>
-          <Paper
-            component="form"
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              width: '265px',
-            }}
-          >
-            <InputBase sx={{ ml: 1, flex: 1 }} placeholder="Search..." />
-            <IconButton
-              // type="submit"
-              sx={{ p: '10px' }}
-              aria-label="search"
-            >
-              <SearchIcon />
-            </IconButton>
-          </Paper>
         </Box>
         <Box
           sx={{
