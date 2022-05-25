@@ -57,7 +57,7 @@ const Footer = () => {
             bottom: 0,
             position: 'absolute',
           }}
-          icon={<GitHubIcon />}
+          icon={<GitHubIcon fontSize="large" />}
           onClose={handleClose}
           onOpen={handleOpen}
           open={open}
