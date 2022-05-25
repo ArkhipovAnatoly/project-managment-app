@@ -17,7 +17,7 @@ export default function Boards() {
 
   useEffect(() => {
     isSuccess && dispatch(setUserAuthData({ isAuth: true }));
-  }, [isSuccess]);
+  }, [isSuccess, dispatch, setUserAuthData]);
 
   if (isLoading) {
     return (
