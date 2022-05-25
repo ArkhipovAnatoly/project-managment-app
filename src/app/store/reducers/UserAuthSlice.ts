@@ -9,7 +9,6 @@ const initialState: UserAuth = {
   auth: {
     userId: '',
     token: '',
-    isAuth: false,
   },
 };
 

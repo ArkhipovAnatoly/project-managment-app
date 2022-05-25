@@ -1,70 +1,131 @@
 import './WelcomePage.css';
+import { useState, MouseEvent, useEffect, ChangeEvent } from 'react';
 import data from '../../services/data';
-import { useState } from 'react';
 import Modal from '@mui/material/Modal';
 import { Box, FormControlLabel, Typography } from '@mui/material';
 import Card from '../../app/components/Card/Card';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import CustomizedButton from '../../app/components/share/Button/CustomizedButton';
 import { useTranslation } from 'react-i18next';
+import { themeSlice } from '../../app/store/reducers/ThemeSlice';
 import MaterialUISwitch from '../../app/components/switch/MaterialUISwitch';
+import { motion } from 'framer-motion';
+import { Hidden } from '@material-ui/core';
 
 const WelcomePage = () => {
+  const [checked, setChecked] = useState<boolean>(false);
   const [videoModalActive, setVideomodalactive] = useState(false);
-  const { auth } = useAppSelector((state) => state.userAuthReducer);
   const { t } = useTranslation('welcome');
-  const [isBackgroundBlack, setIsBackgroundBlack] = useState(false);
+  const { setTheme } = themeSlice.actions;
+  const dispatch = useAppDispatch();
+  const token = localStorage.getItem('token');
 
-  const openModal = (e: React.MouseEvent) => {
+  useEffect(() => {
+    if (localStorage.getItem('theme') === 'dark') {
+      setChecked(true);
+    }
+  }, []);
+
+  const textAnimation = {
+    hidden: {
+      x: -100,
+      opacity: 0,
+    },
+    visible: (custom) => ({
+      x: 0,
+      opacity: 1,
+      transition: { delay: custom * 0.2 },
+    }),
+  };
+
+  const textAnimation2 = {
+    hidden: {
+      y: 100,
+      opacity: 0,
+    },
+    visible: (custom) => ({
+      y: 0,
+      opacity: 1,
+      transition: { delay: custom * 0.2 },
+    }),
+  };
+
+  const onEntry = (entry) => {
+    entry.forEach((change) => {
+      if (change.isIntersecting) {
+        change.target.classList.add('elementShow');
+      }
+    });
+  };
+
+  const options = { threshold: [0.5] };
+  const observer = new IntersectionObserver(onEntry, options);
+  const elements = document.querySelectorAll('.elementAnimation');
+  for (const elem of elements) {
+    observer.observe(elem);
+  }
+
+  const changeTheme = (event: ChangeEvent<HTMLInputElement>) => {
+    const { checked } = event.target as HTMLInputElement;
+    checked ? localStorage.setItem('theme', 'dark') : localStorage.setItem('theme', 'light');
+    setChecked(event.target.checked);
+    dispatch(setTheme());
+  };
+
+  const openModal = (e: MouseEvent) => {
     e.preventDefault();
     setVideomodalactive(true);
   };
 
-  const closeModal = (e: React.MouseEvent) => {
+  const closeModal = (e: MouseEvent) => {
     e.preventDefault();
     setVideomodalactive(false);
   };
 
-  const renkDegis = () => {
-    if (isBackgroundBlack == true) {
-      setIsBackgroundBlack(false);
-    } else {
-      setIsBackgroundBlack(true);
-    }
-  };
-
   return (
-    <>
-      <main
-        className="main"
-        style={{
-          backgroundColor: isBackgroundBlack ? '#fff' : '#151719',
+    <motion.section initial="hidden" whileInView="visible">
+      <Box
+        component="main"
+        className="main app"
+        sx={{
+          bgcolor: 'background.default',
         }}
       >
         <div className="wrapper">
-          {auth.isAuth ? (
-            <div className="autorizationBtns">
-              <FormControlLabel
-                control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked onClick={renkDegis} />}
-                label=""
-              />
-              <CustomizedButton innerText={t('toManPage')} link={'/main'} />
-            </div>
-          ) : (
-            <div className="autorizationBtns">
-              <FormControlLabel
-                control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked onClick={renkDegis} />}
-                label=""
-              />
-              <CustomizedButton innerText={t('signIn')} link={'/signin'} />
-              <CustomizedButton innerText={t('signUp')} link={'/signup'} />
-            </div>
-          )}
+          <div className="autorizationBtns">
+            <FormControlLabel
+              control={
+                <MaterialUISwitch
+                  sx={{ m: 1 }}
+                  onChange={changeTheme}
+                  checked={checked}
+                  inputProps={{ 'aria-label': 'controlled' }}
+                />
+              }
+              label=""
+            />
+            {token ? (
+              <CustomizedButton innerText={t('toMainPage')} link={'/main'} />
+            ) : (
+              <div className="button-wrapper">
+                <CustomizedButton innerText={t('signIn')} link={'/signin'} />
+                <CustomizedButton innerText={t('signUp')} link={'/signup'} />
+              </div>
+            )}
+          </div>
           <div className="aboutTheProject">
-            <h1>
+            <motion.h1 initial="hidden" whileInView="visible" custom={1} variants={textAnimation}>
               {t('aboutProject')} <span className="titleProject">TEMPER</span>
-            </h1>
-            <p className="title">Видео обзор приложения</p>
+            </motion.h1>
+            <motion.p
+              initial="hidden"
+              whileInView="visible"
+              custom={2}
+              variants={textAnimation}
+              className="title"
+            >
+              {t('videoReview')}
+            </motion.p>
           </div>
           <div className="videoPlaceholder">
             <a
@@ -105,24 +166,52 @@ const WelcomePage = () => {
               </Typography>
             </Box>
           </Modal>
-          <div className="titleContainer">
+          <motion.div
+            custom={1}
+            variants={textAnimation2}
+            viewport={{ amount: 0.2 }}
+            initial="hidden"
+            whileInView="visible"
+            className="titleContainer elementAnimation"
+          >
             <p className="title">{t('whatAllows')}</p>
             <div className="imgTitle">
               <img src={'assets/img/board.png'} alt="board" />
             </div>
-          </div>
-          <div className="titleContainer2">
+          </motion.div>
+          <motion.div
+            custom={2}
+            variants={textAnimation2}
+            viewport={{ amount: 0.2 }}
+            initial="hidden"
+            whileInView="visible"
+            className="titleContainer2 elementAnimation"
+          >
             <p className="title">{t('advantage')}</p>
-          </div>
-          <div className="titleContainer3">
+          </motion.div>
+          <motion.div
+            custom={3}
+            variants={textAnimation2}
+            viewport={{ amount: 0.2 }}
+            initial="hidden"
+            whileInView="visible"
+            className="titleContainer3 elementAnimation"
+          >
             <div className="imgTitle">
               <img src={'assets/img/giphy.gif'} className="imgBoard" alt="boardGif" />
             </div>
-            <p className="title">{t('moto')}</p>
-          </div>
+            <p className="title title-center">{t('moto')}</p>
+          </motion.div>
           <div className="aboutTheComand">
             <h2> {t('teamInfo')} </h2>
-            <div className="cards">
+            <motion.div
+              custom={3}
+              variants={textAnimation}
+              viewport={{ amount: 0.2 }}
+              initial="hidden"
+              whileInView="visible"
+              className="cards"
+            >
               {data.map((item, index) => (
                 <Card
                   key={index}
@@ -131,11 +220,11 @@ const WelcomePage = () => {
                   description={item.description}
                 />
               ))}
-            </div>
+            </motion.div>
           </div>
         </div>
-      </main>
-    </>
+      </Box>
+    </motion.section>
   );
 };
 

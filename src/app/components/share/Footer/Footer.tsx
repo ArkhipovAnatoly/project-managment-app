@@ -14,15 +14,9 @@ const Footer = () => {
         </a>
       </div>
       <div className="githab">
-        <a href="https://github.com/ArkhipovAnatoly" target="_blank" rel="noopener noreferrer">
-          Анатолий
-        </a>
-        <a href="https://github.com/Marina2609" target="_blank" rel="noopener noreferrer">
-          Марина
-        </a>
-        <a href="https://github.com/Fespis" target="_blank" rel="noopener noreferrer">
-          Никита
-        </a>
+        <a href="https://github.com/ArkhipovAnatoly" target="_blank" rel="noopener noreferrer"></a>
+        <a href="https://github.com/Marina2609" target="_blank" rel="noopener noreferrer"></a>
+        <a href="https://github.com/Fespis" target="_blank" rel="noopener noreferrer"></a>
       </div>
       {/* </div> */}
     </footer>

@@ -9,16 +9,23 @@
     "title": "Настройки профиля",
     "update": "Обновить",
     "delete": "Удалить профиль",
-    "deleteBtn": "Удалить",
-    "message": "Ваш профиль будет удален",
+    "question": "Ваш профиль будет удален!",
     "confirm": "Подтвердить",
     "back": "Назад",
-    "status": "Удаление успешно"
+    "statusOk": "Удаление успешно",
+    "statusErrorUserDelete": "Не удалось удалить",
+    "statusErrorUserUpdate": "Не удалось обновить",
+    "nameError": "Поле name обязательное",
+    "nameErrorLetters": "Поле name должно содержать только буквы",
+    "loginError": "Поле login обязательное",
+    "passwordError": "Поле password обязательное",
+    "passwordLengthError": "Длина должна быть не менее 8 символов"
   },
   "welcome": {
+    "videoReview": "Видеобзор приложения",
     "signIn": "Войти",
     "signUp": "Регистрация",
-    "toManPage": "На главную",
+    "toMainPage": "На главную",
     "aboutProject": "Система управления проектами",
     "whatAllows": "Позволяет эффективно организовывать работу по японской методологии канбан-досок.",
     "advantage": "Вы сами выбираете, по какому принципу организовывать карточки на досках.",
@@ -31,6 +38,7 @@
     "titleSignIn": "Войти",
     "statusOkSignUp": "Успешная регистрация",
     "statusErrorSignUp": "Такой логин уже есть!",
+    "statusServerError": "Внутренняя ошибка сервера",
     "titleSignUp": "Регистрация",
     "nameError": "Поле name обязательное",
     "nameErrorLetters": "Поле name должно содержать только буквы",
@@ -39,5 +47,52 @@
     "passwordLengthError": "Длина должна быть не менее 8 символов",
     "questionSignIn": "Нет аккаунта? Регистрация",
     "questionSignUp": "Уже есть аккаунт? Войти"
+  },
+  "main": {
+    "home": "Домой"
+  },
+  "board": {
+    "title": "Создание боард",
+    "titleEdit": "Редактирование боард",
+    "add": "Создать",
+    "update": "Обновить",
+    "cancel": "Отмена",
+    "statusError": "Боард не найден!",
+    "authError": "Требуется повторный вход",
+    "statusOk": "Создание успешно",
+    "statusUpdateOk": "Обновлено успешно",
+    "titleEmpty": "Поле обязательное",
+    "titlePattern": "Поле должно содержать только буквы",
+    "errorLoad": "Не удалось загрузить Боарды",
+    "statusErrorBoardDelete": "Не удалось удалить",
+    "statusErrorBoardUpdate": "Не удалось обновить",
+    "statusDeleteOk": "Удаление успешно",
+    "question": "будет удалена!",
+    "tooltipDeleteBoard": "Удалить Боард",
+    "tooltipOpenBoard": "Открыть Боард",
+    "tooltipEditBoard": "Редактировать Боард",
+    "noBoards": "Нет данных для отображения"
+  },
+  "boardsPage": {
+    "onMainPage": "На главную",
+    "addNewColumn": "Добавить новую колонку",
+    "addNewTask": "Добавить задачу",
+    "deleteColumn": "Удалить колонку"
+  },
+  "modalWindowBoardsPage": {
+    "addNewColumn": "Добавить колонку",
+    "tittleOfColumn": "Название новой колонки",
+    "addColumnButton": "Добавить",
+    "cancelColumnButton": "Отмена",
+    "addNewTask": "Добавить задачу",
+    "tittleOfTask": "Название задачи",
+    "descriptionOfTask": "Описание задачи",
+    "addTaskButton": "Добавить",
+    "cancelTaskButton": "Отмена",
+    "changeTask": "Изменить задачу",
+    "changeTittleOfTask": "Изменить название этой задачи",
+    "changeDescriptionOfTask": "Изменить описание этой задачи",
+    "editTaskButton": "Изменить",
+    "cancelEditTaskButton": "Отмена"
   }
 }

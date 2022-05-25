@@ -1,6 +1,3 @@
-import { CombinedState, Store } from '@reduxjs/toolkit';
-import { AppStore, RootState, store } from './app/store/store';
-
 export type CardProps = {
   imgSrc: string;
   name: string;
@@ -10,7 +7,6 @@ export type CardProps = {
 export type UserAuthData = {
   userId?: string;
   token?: string;
-  isAuth?: boolean;
 };
 
 export type UserSignInData = {
@@ -59,6 +55,25 @@ export type EditUserProfileData = {
   password: string;
 };
 
+export type BoardData = {
+  id?: string;
+  title: string;
+};
+
+export type BoardDataResponse = {
+  error?: {
+    data: {
+      message: string;
+      statusCode: number;
+    };
+    status: number;
+  };
+  data?: {
+    id: string;
+    title: string;
+  };
+};
+
 export type EditUserProfileResponse = SignUpResponse;
 
 export type DeleteUserResponse = {
@@ -70,6 +85,7 @@ export type DeleteUserResponse = {
     status: number;
   };
 };
+export type DeleteBoardResponse = DeleteUserResponse;
 
 export type User = {
   id: string;
@@ -79,6 +95,11 @@ export type User = {
 
 export type GetUserByIdResponse = SignUpResponse;
 
-/* export type HeaderParams = {
-  getState: AppStore;
-}; */
+export enum StatusCode {
+  OK = 200,
+  Unauthorized = 401,
+  Forbidden = 403,
+  NotFound = 404,
+  Conflict = 409,
+  InternalServerError = 500,
+}

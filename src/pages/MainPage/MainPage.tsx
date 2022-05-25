@@ -10,28 +10,24 @@ import {
 } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import Header from '../../app/components/share/Header';
-import { useAppSelector } from '../../app/hooks';
 import HomeIcon from '@mui/icons-material/Home';
-import { grey } from '@mui/material/colors';
 import SearchIcon from '@mui/icons-material/Search';
-import Boards from './Boards';
+import { useTranslation } from 'react-i18next';
+import Boards from '../../app/components/Board/Boards';
 
 export default function MainPage() {
-  const { auth } = useAppSelector((state) => state.userAuthReducer);
+  const { t } = useTranslation('main');
 
   const search = () => {
     console.log('search');
   };
 
-  if (!auth.isAuth) {
+  if (!localStorage.getItem('token')) {
     return (
-      <>
-        <Header />
+      <Box className="app" sx={{ bgcolor: 'background.default' }}>
         <Container
           sx={{
-            paddingTop: '80px',
-            paddingBottom: '20px',
-            minHeight: 'calc(100vh - 50px)',
+            minHeight: 'calc(100vh - 58px)',
           }}
         >
           <Box
@@ -42,10 +38,10 @@ export default function MainPage() {
               color: 'white',
             }}
           >
-            <Typography component="h1" variant="h3">
+            <Typography padding={1} component="h2" variant="h3">
               Access denied
             </Typography>
-            <Typography component="h2" variant="h4">
+            <Typography padding={1} component="h2" variant="h4">
               Sign in is required
             </Typography>
             <Link component={NavLink} to="/" variant="body1">
@@ -53,18 +49,19 @@ export default function MainPage() {
             </Link>
           </Box>
         </Container>
-      </>
+      </Box>
     );
   }
 
   return (
-    <>
+    <Box className="app" sx={{ bgcolor: 'background.default' }}>
       <Header />
       <Container
+        maxWidth="xl"
         sx={{
           paddingTop: '80px',
           paddingBottom: '20px',
-          minHeight: 'calc(100vh - 50px)',
+          minHeight: 'calc(100vh - 58px)',
         }}
       >
         <Box
@@ -76,12 +73,11 @@ export default function MainPage() {
             rowGap: '10px',
           }}
         >
-          <NavLink to="/" style={{ textDecoration: 'none' }}>
-            <Button variant="contained">
-              <HomeIcon sx={{ color: grey[50] }} />
-              Welcome Page
+          <Link component={NavLink} to="/" underline="none">
+            <Button color="primary" startIcon={<HomeIcon />} variant="contained">
+              {t('home')}
             </Button>
-          </NavLink>
+          </Link>
           <Paper
             component="form"
             sx={{
@@ -108,6 +104,6 @@ export default function MainPage() {
           <Boards />
         </Box>
       </Container>
-    </>
+    </Box>
   );
 }

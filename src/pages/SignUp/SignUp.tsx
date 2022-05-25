@@ -15,10 +15,12 @@ import {
   FormHelperText,
   CircularProgress,
   Grow,
+  useTheme,
+  alpha,
 } from '@mui/material';
 
 import Copyright from '../../app/components/share/Copyright';
-import { SignUpResponse, UserSignUpData } from '../../types';
+import { SignUpResponse, StatusCode, UserSignUpData } from '../../types';
 import { userAPI } from '../../services/UserService';
 import { userAuthSlice } from '../../app/store/reducers/UserAuthSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -39,6 +41,7 @@ export default function SignUp() {
   const { setUserAuthData } = userAuthSlice.actions;
   const dispatch = useAppDispatch();
   const navigator = useNavigate();
+  const theme = useTheme();
   const {
     register,
     handleSubmit,
@@ -56,17 +59,21 @@ export default function SignUp() {
   const onSubmit: SubmitHandler<UserSignUpData> = async (formData) => {
     setMessage('');
     const response = (await signUpUser(formData)) as SignUpResponse;
-    if (response.error?.status) {
+    const status = response.error?.status;
+
+    if (status === StatusCode.Conflict) {
       setMessage(t('statusErrorSignUp'));
-    } else {
-      const userId = response.data?.id as string;
-      localStorage.setItem('userId', userId);
-      dispatch(setUserAuthData({ userId }));
-      setMessage(t('statusOkSignUp'));
-      setTimeout(() => {
-        navigator('/signin');
-      }, 1500);
+      return;
     }
+    if (status === StatusCode.InternalServerError) {
+      setMessage(t('statusServerError'));
+      return;
+    }
+    setMessage(t('statusOkSignUp'));
+    const userId = response.data?.id as string;
+    localStorage.setItem('userId', userId);
+    dispatch(setUserAuthData({ userId }));
+    navigator('/signin');
   };
 
   useEffect(() => {
@@ -93,7 +100,6 @@ export default function SignUp() {
       return;
     }
     if (isSuccessUser) {
-      dispatch(setUserAuthData({ isAuth: true }));
       navigator('/main');
     }
   }, [isSuccessUser, isErrorUser, dispatch, setUserAuthData, navigator]);
@@ -101,13 +107,20 @@ export default function SignUp() {
   if (isChecking) {
     return (
       <Box
+        className="app"
         component="section"
-        sx={{ display: 'flex', flexDirection: 'column', height: '94%', pl: 1, pr: 1 }}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: '94%',
+          pl: 1,
+          pr: 1,
+          bgcolor: 'background.default',
+        }}
       >
-        <Container maxWidth="xs">
+        <Container sx={{ mt: 8 }} maxWidth="xs">
           <Box
             sx={{
-              marginTop: 8,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -120,20 +133,32 @@ export default function SignUp() {
     );
   }
 
-  const clickHandler = () => {
-    navigator('/');
-  };
   return (
     <Box
+      className="app"
       component="section"
-      sx={{ display: 'flex', flexDirection: 'column', height: '94%', pl: 1, pr: 1 }}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '94%',
+        pl: 1,
+        pr: 1,
+        bgcolor: 'background.default',
+      }}
     >
       <Grow
         style={{ transformOrigin: '0 0 0' }}
         in={isShowForm}
         {...(isShowForm ? { timeout: 1000 } : {})}
       >
-        <Container sx={{ backgroundColor: 'white', marginTop: 8 }} maxWidth="xs">
+        <Container
+          sx={{
+            mt: 8,
+            boxShadow:
+              '0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%),0px 1px 10px 0px rgb(0 0 0 / 90%)',
+          }}
+          maxWidth="xs"
+        >
           {isShowForm && (
             <>
               <Box
@@ -143,12 +168,24 @@ export default function SignUp() {
                   alignItems: 'center',
                 }}
               >
-                <CloseIcon
-                  sx={{ m: 1, marginLeft: 'auto', cursor: 'pointer' }}
-                  onClick={clickHandler}
-                  color="primary"
-                />
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                <Link
+                  sx={{ m: 1, cursor: 'pointer', alignSelf: 'flex-end' }}
+                  component={NavLink}
+                  to="/"
+                  underline="none"
+                >
+                  <CloseIcon
+                    sx={{
+                      color: theme.palette.mode == 'dark' ? 'common.white' : 'primary.main',
+                    }}
+                  />
+                </Link>
+                <Avatar
+                  sx={{
+                    m: 1,
+                    bgcolor: theme.palette.mode === 'dark' ? 'warning.main' : 'primary.main',
+                  }}
+                >
                   <PersonAddAltIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
@@ -159,14 +196,15 @@ export default function SignUp() {
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
                       <TextField
+                        color="info"
                         error={errors.name && true}
                         autoComplete="given-name"
                         required
                         fullWidth
-                        id="Name"
+                        id="name"
                         label="Name"
                         autoFocus
-                        {...register('name', { required: true, pattern: /^[A-Za-zА-Яа-я]+$/i })}
+                        {...register('name', { required: true, pattern: /^[A-Za-zА-Яа-я\s]+$/i })}
                       />
                       {errors.name?.type === 'required' && (
                         <FormHelperText component="span" error>
@@ -182,6 +220,7 @@ export default function SignUp() {
 
                     <Grid item xs={12}>
                       <TextField
+                        color="info"
                         error={errors.login && true}
                         required
                         fullWidth
@@ -200,6 +239,7 @@ export default function SignUp() {
                     </Grid>
                     <Grid item xs={12}>
                       <TextField
+                        color="info"
                         error={errors.password && true}
                         required
                         fullWidth
@@ -235,7 +275,7 @@ export default function SignUp() {
                         error={isError}
                         component="span"
                         sx={{
-                          color: { isSuccess } && '#00FF00',
+                          color: { isSuccess } && 'success.main',
                           fontSize: '18px',
                         }}
                       >
@@ -255,7 +295,14 @@ export default function SignUp() {
                   </Button>
                   <Grid container justifyContent="flex-end">
                     <Grid item>
-                      <Link component={NavLink} to="/signin" variant="body2">
+                      <Link
+                        sx={{
+                          color: theme.palette.mode === 'dark' ? `${alpha('#fff', 0.7)}` : '',
+                        }}
+                        component={NavLink}
+                        to="/signin"
+                        variant="body2"
+                      >
                         {t('questionSignUp')}
                       </Link>
                     </Grid>

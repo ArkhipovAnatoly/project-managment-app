@@ -1,14 +1,10 @@
 body {
-  margin: 0 auto;
   color: #9ca9b3;
   font-size: 18px;
 }
 
 .main {
   min-height: calc(100vh - 116px);
-  background-image: url(../../../public/assets/img/illustration.svg);
-  background-position: top center;
-  background-repeat: no-repeat;
 }
 
 .wrapper {
@@ -22,9 +18,15 @@ body {
 
 .autorizationBtns {
   display: flex;
-  justify-content: right;
+  justify-content: space-between;
+  align-items: center;
   gap: 1em;
   padding: 1em 0;
+}
+
+.button-wrapper {
+  display: flex;
+  gap: 12px;
 }
 
 h1 {
@@ -47,13 +49,18 @@ h2 {
   font-size: 40px;
   margin: 0 auto;
 }
-
+.title-center {
+  display: flex;
+  align-items: center;
+}
 .titleContainer,
 .titleContainer2,
 .titleContainer3 {
   display: flex;
   padding-top: 40px;
   gap: 40px;
+  /* opacity: 0;
+  transform: translateY(70%); */
 }
 
 .videoPlaceholder {
@@ -81,12 +88,15 @@ h2 {
 .nav {
   text-decoration: none;
 }
-
-@media screen and (min-width: 180px) and (max-width: 1000px) {
-  .wrapper {
-    padding: 0 20px;
-  }
+/* 
+.elementShow {
+  transition: all 1s;
+  transform: translateY(0%);
 }
+
+.elementAnimation {
+  opacity: 1;
+} */
 
 @media screen and (min-width: 180px) and (max-width: 1300px) {
   .titleContainer,
@@ -95,6 +105,31 @@ h2 {
     flex-wrap: wrap;
     text-align: center;
     justify-content: center;
+  }
+}
+
+@media screen and (min-width: 180px) and (max-width: 1200px) {
+  .videoBox {
+    top: 25%;
+    left: 25%;
+  }
+}
+
+@media screen and (min-width: 180px) and (max-width: 1000px) {
+  .wrapper {
+    padding: 0 20px;
+  }
+
+  .videoBox {
+    top: 20%;
+    left: 20%;
+  }
+}
+
+@media screen and (min-width: 180px) and (max-width: 800px) {
+  .videoBox {
+    top: 13%;
+    left: 13%;
   }
 }
 
@@ -108,7 +143,23 @@ h2 {
     font-size: 20px;
   }
 
+  iframe {
+    width: 300px;
+    height: 250px;
+  }
+
   .imgBoard {
     width: 100%;
+  }
+}
+
+@media screen and (min-width: 180px) and (max-width: 400px) {
+  .autorizationBtns {
+    flex-wrap: wrap;
+  }
+
+  iframe {
+    width: 250px;
+    height: 150px;
   }
 }

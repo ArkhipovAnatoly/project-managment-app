@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useSliceBoardsPage } from '../../app/store/reducers/useSliceBoardsPage';
 import DialogContent from '@mui/material/DialogContent';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles({
   firstModalWindowForNewColumn: {
@@ -66,6 +67,7 @@ const useStyles = makeStyles({
 
 function ModalWindow() {
   const classes = useStyles();
+  const { t, i18n } = useTranslation('modalWindowBoardsPage');
 
   const { titleOfCurrentTask, DescriptionOfCurrentTask } = useAppSelector(
     (state) => state.boardsPage
@@ -162,12 +164,12 @@ function ModalWindow() {
             <Box className={classes.secondModalWindowForNewColumn}>
               <Stack direction="column" spacing={5}>
                 <Typography gutterBottom variant="h5">
-                  Add new column
+                  {t('addNewColumn')}
                 </Typography>
                 <Stack direction="column" spacing={2}>
                   <TextField
                     id="filled-basic"
-                    label="Tittle of new column"
+                    label={t('tittleOfColumn')}
                     variant="filled"
                     onChange={handleTitle}
                     inputProps={{ maxLength: 20 }}
@@ -175,10 +177,10 @@ function ModalWindow() {
                 </Stack>
                 <Stack direction="row" spacing={2}>
                   <Button variant="contained" onClick={addNewColumn}>
-                    Add column
+                    {t('addColumnButton')}
                   </Button>
                   <Button variant="outlined" onClick={closeModalWindow}>
-                    Cancel
+                    {t('cancelColumnButton')}
                   </Button>
                 </Stack>
               </Stack>
@@ -212,18 +214,18 @@ function ModalWindow() {
             <Box className={classes.secondModalWindowForTask}>
               <Stack direction="column" spacing={3}>
                 <Typography gutterBottom variant="h5">
-                  Add new task
+                  {t('addNewTask')}
                 </Typography>
                 <Stack direction="column" spacing={2}>
                   <TextField
                     id="filled-basic"
-                    label="Tittle of new task"
+                    label={t('tittleOfTask')}
                     variant="filled"
                     onChange={handleTitle}
                   />
                   <TextField
                     id="filled-basic"
-                    label="Description of new task"
+                    label={t('descriptionOfTask')}
                     variant="filled"
                     multiline
                     rows={4}
@@ -232,10 +234,10 @@ function ModalWindow() {
                 </Stack>
                 <Stack direction="row" spacing={2}>
                   <Button variant="contained" onClick={addNewTask}>
-                    Add task
+                    {t('addTaskButton')}
                   </Button>
                   <Button variant="outlined" onClick={closeModalWindow}>
-                    Cancel
+                    {t('cancelTaskButton')}
                   </Button>
                 </Stack>
               </Stack>
@@ -269,19 +271,19 @@ function ModalWindow() {
             <Box className={classes.secondModalWindowForTask}>
               <Stack direction="column" spacing={3}>
                 <Typography gutterBottom variant="h5">
-                  Edit your task
+                  {t('changeTask')}
                 </Typography>
                 <Stack direction="column" spacing={2}>
                   <TextField
                     id="filled-basic"
-                    label="Change tittle of this task"
+                    label={t('changeTittleOfTask')}
                     variant="filled"
                     onChange={handleTitle}
                     defaultValue={titleOfCurrentTask}
                   />
                   <TextField
                     id="filled-basic"
-                    label="Change description of this task"
+                    label={t('changeDescriptionOfTask')}
                     variant="filled"
                     multiline
                     rows={4}
@@ -291,10 +293,10 @@ function ModalWindow() {
                 </Stack>
                 <Stack direction="row" spacing={2}>
                   <Button variant="contained" onClick={changeCurrentTask}>
-                    Edit task
+                    {t('editTaskButton')}
                   </Button>
                   <Button variant="outlined" onClick={closeModalWindow}>
-                    Cancel
+                    {t('cancelEditTaskButton')}
                   </Button>
                 </Stack>
               </Stack>

@@ -1,7 +1,7 @@
 .footer {
   background-color: #151719;
   color: #fff;
-  padding: 10px 0;
+  padding: 13px 0;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -32,6 +32,10 @@
   position: relative;
   width: 111px;
 }
+.rss:hover {
+  filter: brightness(0) saturate(100%) invert(90%) sepia(50%) saturate(7493%) hue-rotate(1deg)
+    brightness(105%) contrast(103%);
+}
 
 .rssYear {
   color: #fff;
@@ -43,11 +47,11 @@
 .githab {
   display: flex;
   flex-wrap: wrap;
-  gap: 50px;
+  gap: 25px;
 }
 
 .githab a {
-  padding: 10px 0px 0px 40px;
+  padding: 10px 0px 0px 30px;
   background-image: url('../../../../../public/assets/img/git.png');
   background-size: contain;
   background-repeat: no-repeat;
@@ -59,8 +63,8 @@
   color: gold;
 }
 
-@media screen and (min-width: 180px) and (max-width: 600px) {
+/* @media screen and (min-width: 180px) and (max-width: 600px) {
   .githab {
     padding: 10px 20px;
   }
-}
+} */
