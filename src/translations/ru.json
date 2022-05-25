@@ -1,6 +1,6 @@
 {
   "header": {
-    "newBoard": "Cоздать новый боард",
+    "newBoard": "Cоздать новую доску",
     "profile": "Профиль",
     "out": "Выйти",
     "lng": "Язык"
@@ -54,8 +54,8 @@
     "home": "Домой"
   },
   "board": {
-    "title": "Создание боард",
-    "titleEdit": "Редактирование боард",
+    "title": "Создание доски",
+    "titleEdit": "Редактирование доски",
     "add": "Создать",
     "update": "Обновить",
     "cancel": "Отмена",
@@ -65,14 +65,14 @@
     "statusUpdateOk": "Обновлено успешно",
     "titleEmpty": "Поле обязательное",
     "titlePattern": "Поле должно содержать только буквы",
-    "errorLoad": "Не удалось загрузить Боарды",
+    "errorLoad": "Не удалось загрузить доски",
     "statusErrorBoardDelete": "Не удалось удалить",
     "statusErrorBoardUpdate": "Не удалось обновить",
     "statusDeleteOk": "Удаление успешно",
     "question": "будет удалена!",
-    "tooltipDeleteBoard": "Удалить Боард",
-    "tooltipOpenBoard": "Открыть Боард",
-    "tooltipEditBoard": "Редактировать Боард",
+    "tooltipDeleteBoard": "Удалить доску",
+    "tooltipOpenBoard": "Открыть доску",
+    "tooltipEditBoard": "Редактировать доску",
     "noBoards": "Нет данных для отображения"
   },
   "boardsPage": {

@@ -65,14 +65,14 @@
     "statusUpdateOk": "Successfully updated",
     "titleEmpty": "Field is required",
     "titlePattern": "Title should include letters only",
-    "errorLoad": "Could not load Boards",
+    "errorLoad": "Could not load boards",
     "statusErrorBoardDelete": "Could not delete",
     "statusErrorBoardUpdate": "Could not update",
     "statusDeleteOk": "Successfully deleted",
     "question": "will be deleted!",
-    "tooltipDeleteBoard": "Delete Board",
-    "tooltipEditBoard": "Edit Board",
-    "tooltipOpenBoard": "Оpen Board",
+    "tooltipDeleteBoard": "Delete board",
+    "tooltipEditBoard": "Edit board",
+    "tooltipOpenBoard": "Оpen board",
     "noBoards": "No data to display"
   },
   "boardsPage": {
