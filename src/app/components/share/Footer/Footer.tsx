@@ -1,31 +1,32 @@
 import './Footer.css';
-import * as React from 'react';
-import { Backdrop, Box, SpeedDial, SpeedDialIcon, SpeedDialAction, Avatar } from '@mui/material';
+import { MouseEvent, useState } from 'react';
+import { Backdrop, Box, SpeedDial, SpeedDialIcon, SpeedDialAction } from '@mui/material';
+import GitHubIcon from '@mui/icons-material/GitHub';
 
 const actions = [
   {
-    icon: <Avatar alt="Никита" src="/public/assets/img/git.png" />,
+    icon: <GitHubIcon />,
     name: 'Никита',
     operation: 'Никита',
   },
   {
-    icon: <Avatar alt="Марина" src="/public/assets/img/git.png" />,
+    icon: <GitHubIcon />,
     name: 'Марина',
     operation: 'Марина',
   },
   {
-    icon: <Avatar alt="Анатолий" src="/public/assets/img/git.png" />,
+    icon: <GitHubIcon />,
     name: 'Анатолий',
     operation: 'Анатолий',
   },
 ];
 
 const Footer = () => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleClick = (e, operation) => {
+  const handleClick = (e: MouseEvent, operation: string) => {
     e.preventDefault();
     if (operation == 'Никита') {
       window.open('https://github.com/Fespis', '_blank');
@@ -49,12 +50,14 @@ const Footer = () => {
           <span className="rssYear">`22</span>{' '}
         </a>
       </div>
-      <Box sx={{ height: 30, transform: 'translateZ(0px)' }}>
-        <Backdrop open={open} />
+      <Box sx={{ position: 'relative', height: '58px', transform: 'translateZ(0px)' }}>
         <SpeedDial
-          ariaLabel="SpeedDial tooltip example"
-          sx={{ position: 'absolute', width: 10, height: 10, bottom: 1, right: 16 }}
-          icon={<SpeedDialIcon />}
+          ariaLabel="SpeedDial tooltip"
+          sx={{
+            bottom: 0,
+            position: 'absolute',
+          }}
+          icon={<GitHubIcon />}
           onClose={handleClose}
           onOpen={handleOpen}
           open={open}
