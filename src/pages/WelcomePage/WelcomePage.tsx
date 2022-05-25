@@ -10,7 +10,6 @@ import { useTranslation } from 'react-i18next';
 import { themeSlice } from '../../app/store/reducers/ThemeSlice';
 import MaterialUISwitch from '../../app/components/switch/MaterialUISwitch';
 import { motion } from 'framer-motion';
-import { Hidden } from '@material-ui/core';
 
 const WelcomePage = () => {
   const [checked, setChecked] = useState<boolean>(false);
@@ -49,21 +48,6 @@ const WelcomePage = () => {
       transition: { delay: custom * 0.2 },
     }),
   };
-
-  const onEntry = (entry) => {
-    entry.forEach((change) => {
-      if (change.isIntersecting) {
-        change.target.classList.add('elementShow');
-      }
-    });
-  };
-
-  const options = { threshold: [0.5] };
-  const observer = new IntersectionObserver(onEntry, options);
-  const elements = document.querySelectorAll('.elementAnimation');
-  for (const elem of elements) {
-    observer.observe(elem);
-  }
 
   const changeTheme = (event: ChangeEvent<HTMLInputElement>) => {
     const { checked } = event.target as HTMLInputElement;
@@ -172,7 +156,7 @@ const WelcomePage = () => {
             viewport={{ amount: 0.2 }}
             initial="hidden"
             whileInView="visible"
-            className="titleContainer elementAnimation"
+            className="titleContainer"
           >
             <p className="title">{t('whatAllows')}</p>
             <div className="imgTitle">
@@ -185,7 +169,7 @@ const WelcomePage = () => {
             viewport={{ amount: 0.2 }}
             initial="hidden"
             whileInView="visible"
-            className="titleContainer2 elementAnimation"
+            className="titleContainer2"
           >
             <p className="title">{t('advantage')}</p>
           </motion.div>
@@ -195,7 +179,7 @@ const WelcomePage = () => {
             viewport={{ amount: 0.2 }}
             initial="hidden"
             whileInView="visible"
-            className="titleContainer3 elementAnimation"
+            className="titleContainer3"
           >
             <div className="imgTitle">
               <img src={'assets/img/giphy.gif'} className="imgBoard" alt="boardGif" />

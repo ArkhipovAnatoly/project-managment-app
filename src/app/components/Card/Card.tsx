@@ -14,7 +14,7 @@ export default function ActionAreaCard(props: CardProps) {
         padding: '20px',
         objectFit: 'contain',
         color: '#9ca9b3',
-        bgcolor: theme.palette.mode === 'dark' ? 'common.white' : '#25282c',
+        bgcolor: theme.palette.mode === 'dark' ? '#25282c' : 'common.white',
         boxShadow: 'rgb(21 23 25 / 64%) 0px 2px 34px;',
       }}
     >

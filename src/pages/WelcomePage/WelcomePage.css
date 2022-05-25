@@ -59,8 +59,6 @@ h2 {
   display: flex;
   padding-top: 40px;
   gap: 40px;
-  /* opacity: 0;
-  transform: translateY(70%); */
 }
 
 .videoPlaceholder {
@@ -88,15 +86,6 @@ h2 {
 .nav {
   text-decoration: none;
 }
-/* 
-.elementShow {
-  transition: all 1s;
-  transform: translateY(0%);
-}
-
-.elementAnimation {
-  opacity: 1;
-} */
 
 @media screen and (min-width: 180px) and (max-width: 1300px) {
   .titleContainer,
