@@ -42,7 +42,7 @@ export default function Board({ id, title }: BoardProps) {
 
   return (
     <>
-      <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
+      <Typography sx={{ mt: 4, mb: 2, textAlign: 'center' }} variant="h6" component="div">
         {title}
       </Typography>
 

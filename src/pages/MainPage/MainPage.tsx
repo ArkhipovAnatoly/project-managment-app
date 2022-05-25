@@ -46,8 +46,8 @@ export default function MainPage() {
         <Container
           maxWidth="lg"
           sx={{
-            paddingTop: '80px',
-            paddingBottom: '20px',
+            paddingTop: 15,
+            paddingBottom: 3,
             minHeight: 'calc(100vh - 58px)',
           }}
         >
@@ -56,15 +56,10 @@ export default function MainPage() {
               {t('home')}
             </Button>
           </Link>
-        </Box>
-        <Box
-          sx={{
-            textAlign: 'center',
-          }}
-        >
+
           <Boards />
-        </Box>
-      </Container>
-    </Box>
+        </Container>
+      </Box>
+    </>
   );
 }
