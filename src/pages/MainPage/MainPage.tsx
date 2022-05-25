@@ -13,7 +13,7 @@ export default function MainPage() {
       <Box className="app" sx={{ bgcolor: 'background.default' }}>
         <Container
           sx={{
-            minHeight: 'calc(100vh - 58px)',
+            minHeight: 'calc(100vh - 78px)',
           }}
         >
           <Box
@@ -48,7 +48,7 @@ export default function MainPage() {
           sx={{
             paddingTop: 15,
             paddingBottom: 3,
-            minHeight: 'calc(100vh - 58px)',
+            minHeight: 'calc(100vh - 78px)',
           }}
         >
           <Link component={NavLink} to="/" underline="none">

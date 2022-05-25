@@ -1,6 +1,6 @@
 import './Footer.css';
 import { MouseEvent, useState } from 'react';
-import { Backdrop, Box, SpeedDial, SpeedDialIcon, SpeedDialAction } from '@mui/material';
+import { Box, SpeedDial, SpeedDialAction } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 
 const actions = [
