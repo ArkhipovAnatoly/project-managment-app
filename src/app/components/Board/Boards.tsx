@@ -1,7 +1,9 @@
 import { Box, CircularProgress, Typography, List } from '@mui/material';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { boardAPI } from '../../../services/BoardService';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { userAuthSlice } from '../../store/reducers/UserAuthSlice';
 import ConfirmModal from '../modal/ConfirmModal';
 import UpdateBoardModal from '../modal/UpdateBoardModal';
 import Board from './Board';
@@ -9,7 +11,13 @@ import Board from './Board';
 export default function Boards() {
   const { data: boards, isLoading, isError, isSuccess } = boardAPI.useGetAllBoardsQuery('');
   const { dataBoard } = useAppSelector((state) => state.editBoardReducer);
+  const { setUserAuthData } = userAuthSlice.actions;
+  const dispatch = useAppDispatch();
   const { t } = useTranslation('board');
+
+  useEffect(() => {
+    isSuccess && dispatch(setUserAuthData({ isAuth: true }));
+  }, [isSuccess]);
 
   if (isLoading) {
     return (

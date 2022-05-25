@@ -19,17 +19,18 @@ import { useTranslation } from 'react-i18next';
 import { BoardData, BoardDataResponse, StatusCode } from '../../../types';
 import { boardAPI } from '../../../services/BoardService';
 import { useNavigate } from 'react-router-dom';
+import { userAuthSlice } from '../../store/reducers/UserAuthSlice';
 
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: { xs: 310, sm: 400 },
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
-  p: 4,
+  p: 3,
 };
 
 export default function CreateBoardModal() {
@@ -39,6 +40,7 @@ export default function CreateBoardModal() {
 
   const [message, setMessage] = useState<string>('');
   const dispatch = useAppDispatch();
+  const { setUserAuthData } = userAuthSlice.actions;
   const { t } = useTranslation('board');
   const [createBoard, { isLoading, isError, isSuccess }] = boardAPI.useCreateBoardMutation();
   const {
@@ -68,6 +70,8 @@ export default function CreateBoardModal() {
       setTimeout(() => {
         setMessage('');
         modalClose();
+        localStorage.removeItem('token');
+        dispatch(setUserAuthData({ token: '', isAuth: false }));
         navigator('/');
       }, 1500);
       return;

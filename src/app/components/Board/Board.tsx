@@ -1,6 +1,4 @@
 import {
-  Divider,
-  Grid,
   IconButton,
   ListItem,
   ListItemAvatar,
@@ -44,47 +42,45 @@ export default function Board({ id, title }: BoardProps) {
 
   return (
     <>
-      <Grid item xs={12} md={6}>
-        <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
-          {title}
-        </Typography>
+      <Typography sx={{ mt: 4, mb: 2, textAlign: 'center' }} variant="h6" component="div">
+        {title}
+      </Typography>
 
-        <ListItem
-          sx={{ cursor: 'pointer' }}
-          divider
-          secondaryAction={
-            <Stack direction="row" gap={1}>
-              <IconButton
-                sx={{ color: theme.palette.mode === 'dark' ? 'common.white' : 'primary.main' }}
-                edge="end"
-                aria-label="edit"
-                onClick={openUpdateBoardModal}
-              >
-                <Tooltip title={t('tooltipEditBoard')} arrow>
-                  <EditIcon fontSize="medium" />
-                </Tooltip>
-              </IconButton>
-              <IconButton
-                sx={{ color: theme.palette.mode === 'dark' ? 'common.white' : 'primary.main' }}
-                edge="end"
-                aria-label="delete"
-                onClick={openModal}
-              >
-                <Tooltip title={t('tooltipDeleteBoard')} arrow>
-                  <DeleteIcon fontSize="medium" />
-                </Tooltip>
-              </IconButton>
-            </Stack>
-          }
-        >
-          <ListItemAvatar>
-            <Tooltip title={t('tooltipOpenBoard')} arrow>
-              <FolderIcon color="primary" fontSize="medium" />
-            </Tooltip>
-          </ListItemAvatar>
-          <ListItemText primary={title} />
-        </ListItem>
-      </Grid>
+      <ListItem
+        sx={{ cursor: 'pointer' }}
+        divider
+        secondaryAction={
+          <Stack direction="row" gap={1}>
+            <IconButton
+              sx={{ color: theme.palette.mode === 'dark' ? 'common.white' : 'primary.main' }}
+              edge="end"
+              aria-label="edit"
+              onClick={openUpdateBoardModal}
+            >
+              <Tooltip title={t('tooltipEditBoard')} arrow>
+                <EditIcon fontSize="medium" />
+              </Tooltip>
+            </IconButton>
+            <IconButton
+              sx={{ color: theme.palette.mode === 'dark' ? 'common.white' : 'primary.main' }}
+              edge="end"
+              aria-label="delete"
+              onClick={openModal}
+            >
+              <Tooltip title={t('tooltipDeleteBoard')} arrow>
+                <DeleteIcon fontSize="medium" />
+              </Tooltip>
+            </IconButton>
+          </Stack>
+        }
+      >
+        <ListItemAvatar>
+          <Tooltip title={t('tooltipOpenBoard')} arrow>
+            <FolderIcon color="primary" fontSize="medium" />
+          </Tooltip>
+        </ListItemAvatar>
+        <ListItemText primary={title} />
+      </ListItem>
     </>
   );
 }

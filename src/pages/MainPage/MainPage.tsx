@@ -40,23 +40,15 @@ export default function MainPage() {
   }
 
   return (
-    <Box className="app" sx={{ bgcolor: 'background.default' }}>
+    <>
       <Header />
-      <Container
-        maxWidth="xl"
-        sx={{
-          paddingTop: '80px',
-          paddingBottom: '20px',
-          minHeight: 'calc(100vh - 58px)',
-        }}
-      >
-        <Box
+      <Box className="app" sx={{ bgcolor: 'background.default' }}>
+        <Container
+          maxWidth="lg"
           sx={{
-            m: '20px 10px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            rowGap: '10px',
+            paddingTop: 15,
+            paddingBottom: 3,
+            minHeight: 'calc(100vh - 58px)',
           }}
         >
           <Link component={NavLink} to="/" underline="none">
@@ -64,15 +56,10 @@ export default function MainPage() {
               {t('home')}
             </Button>
           </Link>
-        </Box>
-        <Box
-          sx={{
-            textAlign: 'center',
-          }}
-        >
+
           <Boards />
-        </Box>
-      </Container>
-    </Box>
+        </Container>
+      </Box>
+    </>
   );
 }
