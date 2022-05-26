@@ -15,6 +15,13 @@ import { useTranslation } from 'react-i18next';
 // import { getBoards } from '../../../app/store/actionsCreate/getAllBoards';
 import { columnAPI } from '../../../services/ColumnService';
 
+export type ColumnsData = {
+  idBoard?: string;
+  id?: string;
+  title: string;
+  order: number;
+};
+
 const useStyles = makeStyles({
   columns: {
     display: 'flex',
@@ -113,14 +120,11 @@ function BoardColumns() {
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
   const { t, i18n } = useTranslation('boardsPage');
-  const {
-    data: allColumns,
-    isLoading,
-    isError,
-  } = columnAPI.useFetchColumnsQuery(`${localStorage.getItem('idBoard')}`);
+  const { data: allColumns } = columnAPI.useFetchColumnsQuery(`${localStorage.getItem('idBoard')}`);
 
   const openModalWindowAddTask = (targetButtonModal: HTMLElement) => {
     const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
+    console.log(currentIndexColumn);
     dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
   };
 
@@ -199,7 +203,17 @@ function BoardColumns() {
     }
   };
 
-  console.log(allColumns);
+  const sortColumnByOrder = (columns: ColumnsData[]) => {
+    return columns.sort((a, b) => {
+      if (a.order > b.order) {
+        return 1;
+      }
+      if (a.order < b.order) {
+        return -1;
+      }
+      return 0;
+    });
+  };
 
   return (
     <Box className={classes.columns}>
@@ -214,9 +228,9 @@ function BoardColumns() {
               ref={provided.innerRef}
             >
               {allColumns !== undefined ? (
-                allColumns.map((column, indexColumn) => {
+                sortColumnByOrder([...allColumns]).map((column, indexColumn) => {
                   return (
-                    <Draggable key={column.id} draggableId={column.id} index={indexColumn}>
+                    <Draggable key={column.id} draggableId={column.id} index={column.order}>
                       {(provided: DroppableProvided, snapshot: DraggableStateSnapshot) => (
                         <Box
                           sx={{ opacity: snapshot.isDragging ? '0.8' : '' }}
@@ -228,14 +242,15 @@ function BoardColumns() {
                         >
                           <Box className={`${classes.columnOptions} mainDragAndDropBox`}>
                             <ColumnTitle
-                              indexColumn={indexColumn}
+                              columnId={column.id}
                               columnTittle={column.title}
+                              columnOrder={column.order}
                             ></ColumnTitle>
-                            {/* <ColumnTasks indexColumn={indexColumn} column={column} /> */}
+                            <ColumnTasks columnId={column.id} />
                             <Box className={classes.columnSettings}>
                               <Box
                                 data-modalname="addTask"
-                                data-columnindex={indexColumn}
+                                data-columnindex={column.id}
                                 onClick={handleModalWindow}
                                 className={`${classes.columnAdd} buttonModal`}
                               >
@@ -245,7 +260,7 @@ function BoardColumns() {
                               <Box
                                 className={`buttonModal`}
                                 data-modalname="deleteColumn"
-                                data-columnindex={indexColumn}
+                                data-columnindex={column.id}
                               >
                                 <Tooltip title={t('deleteColumn')} onClick={handleModalWindow}>
                                   <IconButton>

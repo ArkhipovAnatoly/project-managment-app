@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 import { RootState } from '../app/store/store';
-import { ColumnsData, BoardDataResponse, DeleteColumn, DeleteColumnResponse } from '../types';
+import { ColumnsData, DeleteColumn, DeleteColumnResponse, UpdateColumnResponse } from '../types';
 
 export const columnAPI = createApi({
   reducerPath: 'columnAPI',
@@ -24,11 +24,21 @@ export const columnAPI = createApi({
       }),
       providesTags: () => ['Columns'],
     }),
+    updateColumn: build.mutation<UpdateColumnResponse, ColumnsData>({
+      query(columnData) {
+        return {
+          url: `${columnData.idBoard}/columns/${columnData.id}`,
+          method: 'PUT',
+          body: { title: columnData.title, order: columnData.order },
+        };
+      },
+      invalidatesTags: ['Columns'],
+    }),
     createColumn: build.mutation<ColumnsData[], ColumnsData>({
-      query: (post) => ({
-        url: `${post.id}/columns`,
+      query: (columnData) => ({
+        url: `${columnData.idBoard}/columns`,
         method: 'POST',
-        body: { title: post.title, order: post.order },
+        body: { title: columnData.title, order: columnData.order },
       }),
       invalidatesTags: ['Columns'],
     }),

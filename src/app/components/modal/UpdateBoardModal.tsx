@@ -19,17 +19,18 @@ import { BoardData, BoardDataResponse, StatusCode } from '../../../types';
 import { boardAPI } from '../../../services/BoardService';
 import { useNavigate } from 'react-router-dom';
 import { updateBoardModalSlice } from '../../store/reducers/UpdateBoardModalSlice';
+import { userAuthSlice } from '../../store/reducers/UserAuthSlice';
 
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: { xs: 310, sm: 400 },
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
-  p: 4,
+  p: 3,
 };
 
 export default function CreateBoardModal() {
@@ -37,6 +38,7 @@ export default function CreateBoardModal() {
   const { open } = useAppSelector((state) => state.updateBoardModalReducer);
   const [message, setMessage] = useState<string>('');
   const dispatch = useAppDispatch();
+  const { setUserAuthData } = userAuthSlice.actions;
   const { t } = useTranslation('board');
   const [updateBoard, { isLoading: isUpdating, isError, isSuccess }] =
     boardAPI.useUpdateBoardMutation();
@@ -70,12 +72,14 @@ export default function CreateBoardModal() {
       setTimeout(() => {
         setMessage('');
         modalClose();
+        localStorage.removeItem('token');
+        dispatch(setUserAuthData({ token: '', isAuth: false }));
         navigator('/');
       }, 1500);
       return;
     }
-    if (status === StatusCode.NotFound) {
-      setMessage(t('statusError'));
+    if (status !== StatusCode.OK) {
+      setMessage(t('statusErrorBoardUpdate'));
       return;
     }
     setMessage(t('statusUpdateOk'));

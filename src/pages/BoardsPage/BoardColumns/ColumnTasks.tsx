@@ -19,6 +19,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import CreateIcon from '@mui/icons-material/Create';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import type { DroppableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
+import { taskAPI } from '../../../services/TaskService';
 
 const useStyles = makeStyles({
   columnTasks: {
@@ -57,24 +58,27 @@ const useStyles = makeStyles({
 });
 
 interface ColumnTasks {
-  column?: BoardsPageState;
-  indexColumn?: number;
+  columnId?: string;
 }
 
 function ColumnTasks(props: ColumnTasks) {
   const classes = useStyles();
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
+  const { data: allTasks } = taskAPI.useFetchTasksQuery({
+    idBoard: `${localStorage.getItem('idBoard')}`,
+    idColumn: props.columnId as string,
+  });
 
   const openModalWindowDeleteTask = (targetButtonModal: HTMLElement) => {
-    const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
+    const currentIndexColumn = String(targetButtonModal?.dataset.columnid);
     const currentIndexTask = String(targetButtonModal?.dataset.taskindex);
     dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
     dispatch(reducers.changeIndexOfCurrentTask(currentIndexTask));
   };
 
   const openModalWindowEditTask = (targetButtonModal: HTMLElement) => {
-    const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
+    const currentIndexColumn = String(targetButtonModal?.dataset.columnid);
     const currentIndexTask = String(targetButtonModal?.dataset.taskindex);
     dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
     dispatch(reducers.changeIndexOfCurrentTask(currentIndexTask));
@@ -101,7 +105,7 @@ function ColumnTasks(props: ColumnTasks) {
 
   return (
     <>
-      <Droppable droppableId={props.column?.id} type="task">
+      <Droppable droppableId={props.columnId} type="task">
         {(provided: DroppableProvided) => (
           <Stack
             direction="column"
@@ -112,16 +116,16 @@ function ColumnTasks(props: ColumnTasks) {
             {...provided.droppableProps}
             ref={provided.innerRef}
           >
-            {props.column?.tasks?.map((tasks, indexTask) => {
+            {allTasks?.tasks?.map((task, indexTask) => {
               return (
-                <Draggable key={tasks.id} draggableId={tasks.id} index={indexTask}>
+                <Draggable key={task.id} draggableId={task.id} index={indexTask}>
                   {(provided: DroppableProvided, snapshot: DraggableStateSnapshot) => (
                     <Paper
                       sx={{
                         maxWidth: snapshot.isDragging ? '100px' : '',
                         opacity: snapshot.isDragging ? '0.8' : '',
                       }}
-                      key={`${tasks.taskTittle} ${indexTask}`}
+                      key={task.id}
                       className={classes.columnTask}
                       elevation={3}
                       ref={provided.innerRef}
@@ -132,7 +136,7 @@ function ColumnTasks(props: ColumnTasks) {
                         <Box
                           className="buttonModal"
                           data-modalname="deleteTask"
-                          data-columnindex={props.indexColumn}
+                          data-columnid={props.columnId}
                           data-taskindex={indexTask}
                           onClick={handleModalWindow}
                         >
@@ -143,7 +147,7 @@ function ColumnTasks(props: ColumnTasks) {
                         <Box
                           className="buttonModal"
                           data-modalname="editTask"
-                          data-columnindex={props.indexColumn}
+                          data-columnid={props.columnId}
                           data-taskindex={indexTask}
                           onClick={handleModalWindow}
                         >
@@ -155,7 +159,7 @@ function ColumnTasks(props: ColumnTasks) {
                       <Accordion elevation={0}>
                         <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
                           <Typography sx={{ mt: '4px', display: 'flex', flexWrap: 'wrap' }}>
-                            {tasks.taskTittle}
+                            {task.title}
                           </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
@@ -164,7 +168,7 @@ function ColumnTasks(props: ColumnTasks) {
                             color="text.secondary"
                             sx={{ mt: '4px', display: 'flex', flexWrap: 'wrap' }}
                           >
-                            {tasks.taskOption}
+                            {task.title}
                           </Typography>
                         </AccordionDetails>
                       </Accordion>

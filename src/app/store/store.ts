@@ -10,6 +10,7 @@ import mainPage from './reducers/useSliceMainPage';
 import editBoardReducer from './reducers/EditBoardSlice';
 import { boardAPI } from '../../services/BoardService';
 import { columnAPI } from '../../services/ColumnService';
+import { taskAPI } from '../../services/TaskService';
 
 const rootReducer = combineReducers({
   userAuthReducer,
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   [userAPI.reducerPath]: userAPI.reducer,
   [boardAPI.reducerPath]: boardAPI.reducer,
   [columnAPI.reducerPath]: columnAPI.reducer,
+  [taskAPI.reducerPath]: taskAPI.reducer,
 });
 
 const setupStore = () => {
@@ -33,6 +35,7 @@ const setupStore = () => {
         userAPI.middleware,
         boardAPI.middleware,
         columnAPI.middleware,
+        taskAPI.middleware,
       ]),
   });
 };

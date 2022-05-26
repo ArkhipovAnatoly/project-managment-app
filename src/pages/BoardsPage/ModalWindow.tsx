@@ -17,6 +17,7 @@ import { useSliceBoardsPage } from '../../app/store/reducers/useSliceBoardsPage'
 import DialogContent from '@mui/material/DialogContent';
 import { useTranslation } from 'react-i18next';
 import { columnAPI } from '../.././services/ColumnService';
+import { taskAPI } from '../.././services/TaskService';
 
 const useStyles = makeStyles({
   firstModalWindowForNewColumn: {
@@ -83,7 +84,8 @@ function ModalWindow() {
   const dispatch = useAppDispatch();
   const { data: allColumns } = columnAPI.useFetchColumnsQuery(`${localStorage.getItem('idBoard')}`);
   const [createColumn, { data: createColumnData }] = columnAPI.useCreateColumnMutation();
-  const [deleteColumn, { data: deletelumnData }] = columnAPI.useDeleteColumnMutation();
+  const [deleteColumn, { data: deleteColumnnData }] = columnAPI.useDeleteColumnMutation();
+  const [createTask, { data: createTaskData }] = taskAPI.useCreateTaskMutation();
 
   const clearTextModal = () => {
     setTitle('');
@@ -107,9 +109,7 @@ function ModalWindow() {
 
   const addNewColumn = async () => {
     if (title.trim()) {
-      dispatch(reducers.addNewColumn(title));
-      closeModalWindow();
-      clearTextModal();
+      // dispatch(reducers.addNewColumn(title));
       if (allColumns !== undefined) {
         let biggestOrder = -1;
         allColumns.map((item) => {
@@ -118,34 +118,44 @@ function ModalWindow() {
         const newOrderForNewColumn = biggestOrder + 1;
         if (newOrderForNewColumn >= 0) {
           await createColumn({
-            id: `${localStorage.getItem('idBoard')}`,
+            idBoard: `${localStorage.getItem('idBoard')}`,
             title: title,
             order: newOrderForNewColumn,
           });
         }
       }
+      closeModalWindow();
+      clearTextModal();
     }
   };
 
   const deleteCurrentColumn = async () => {
-    dispatch(reducers.deleteColumn(Number(indexOfCurrentColumn)));
-    closeModalWindow();
-    clearTextModal();
+    // dispatch(reducers.deleteColumn(Number(indexOfCurrentColumn)));
     await deleteColumn({
       boardId: `${localStorage.getItem('idBoard')}`,
-      deleteColumnId: allColumns !== undefined ? allColumns[Number(indexOfCurrentColumn)].id : '',
+      deleteColumnId: indexOfCurrentColumn,
     });
+    closeModalWindow();
+    clearTextModal();
   };
 
-  const addNewTask = () => {
+  const addNewTask = async () => {
     if (title.trim()) {
-      dispatch(
-        reducers.addNewTask({
-          index: indexOfCurrentColumn,
-          taskTittle: title,
-          taskOption: description,
-        })
-      );
+      // dispatch(
+      //   reducers.addNewTask({
+      //     index: indexOfCurrentColumn,
+      //     taskTittle: title,
+      //     taskOption: description,
+      //   })
+      // );
+      await createTask({
+        boardId: `${localStorage.getItem('idBoard')}`,
+        columnId: indexOfCurrentColumn,
+        title: title,
+        order: tasksDataPost.order,
+        description: description,
+        userId: `${localStorage.getItem('userId')}`,
+      });
       closeModalWindow();
       clearTextModal();
     }
