@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useSliceBoardsPage } from '../../app/store/reducers/useSliceBoardsPage';
 import DialogContent from '@mui/material/DialogContent';
 import { useTranslation } from 'react-i18next';
+import { columnAPI } from '../.././services/ColumnService';
 
 const useStyles = makeStyles({
   firstModalWindowForNewColumn: {
@@ -80,6 +81,9 @@ function ModalWindow() {
   const { indexOfCurrentTask } = useAppSelector((state) => state.boardsPage);
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
+  const { data: allColumns } = columnAPI.useFetchColumnsQuery(`${localStorage.getItem('idBoard')}`);
+  const [createColumn, { data: createColumnData }] = columnAPI.useCreateColumnMutation();
+  const [deleteColumn, { data: deletelumnData }] = columnAPI.useDeleteColumnMutation();
 
   const clearTextModal = () => {
     setTitle('');
@@ -101,18 +105,36 @@ function ModalWindow() {
     setDescription(target.value as string);
   };
 
-  const addNewColumn = () => {
+  const addNewColumn = async () => {
     if (title.trim()) {
       dispatch(reducers.addNewColumn(title));
       closeModalWindow();
       clearTextModal();
+      if (allColumns !== undefined) {
+        let biggestOrder = -1;
+        allColumns.map((item) => {
+          if (item.order > biggestOrder) biggestOrder = item.order;
+        });
+        const newOrderForNewColumn = biggestOrder + 1;
+        if (newOrderForNewColumn >= 0) {
+          await createColumn({
+            id: `${localStorage.getItem('idBoard')}`,
+            title: title,
+            order: newOrderForNewColumn,
+          });
+        }
+      }
     }
   };
 
-  const deleteColumn = () => {
+  const deleteCurrentColumn = async () => {
     dispatch(reducers.deleteColumn(Number(indexOfCurrentColumn)));
     closeModalWindow();
     clearTextModal();
+    await deleteColumn({
+      boardId: `${localStorage.getItem('idBoard')}`,
+      deleteColumnId: allColumns !== undefined ? allColumns[Number(indexOfCurrentColumn)].id : '',
+    });
   };
 
   const addNewTask = () => {
@@ -201,7 +223,7 @@ function ModalWindow() {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={deleteColumn}>Delete Column</Button>
+            <Button onClick={deleteCurrentColumn}>Delete Column</Button>
             <Button variant="contained" onClick={closeModalWindow}>
               Cancel
             </Button>

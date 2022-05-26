@@ -8,10 +8,12 @@ import { makeStyles } from '@material-ui/core';
 import ModalWindow from '../ModalWindow';
 import ColumnTitle from './ColumnTitle';
 import ColumnTasks from './ColumnTasks';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import type { DroppableProvided, DropResult, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
+// import { getBoards } from '../../../app/store/actionsCreate/getAllBoards';
+import { columnAPI } from '../../../services/ColumnService';
 
 const useStyles = makeStyles({
   columns: {
@@ -107,9 +109,15 @@ const useStyles = makeStyles({
 function BoardColumns() {
   const classes = useStyles();
   const { dataBoardsPage } = useAppSelector((state) => state.boardsPage);
+  const { indexOfCurrentBoard } = useAppSelector((state) => state.boardsPage);
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
   const { t, i18n } = useTranslation('boardsPage');
+  const {
+    data: allColumns,
+    isLoading,
+    isError,
+  } = columnAPI.useFetchColumnsQuery(`${localStorage.getItem('idBoard')}`);
 
   const openModalWindowAddTask = (targetButtonModal: HTMLElement) => {
     const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
@@ -191,6 +199,8 @@ function BoardColumns() {
     }
   };
 
+  console.log(allColumns);
+
   return (
     <Box className={classes.columns}>
       <DragDropContext onDragEnd={dragEndHandler}>
@@ -203,52 +213,56 @@ function BoardColumns() {
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
-              {dataBoardsPage.map((column, indexColumn) => {
-                return (
-                  <Draggable key={column.id} draggableId={column.id} index={indexColumn}>
-                    {(provided: DroppableProvided, snapshot: DraggableStateSnapshot) => (
-                      <Box
-                        sx={{ opacity: snapshot.isDragging ? '0.8' : '' }}
-                        key={column.id}
-                        className={`${classes.column}`}
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        <Box className={`${classes.columnOptions} mainDragAndDropBox`}>
-                          <ColumnTitle
-                            indexColumn={indexColumn}
-                            columnTittle={column.tittle}
-                          ></ColumnTitle>
-                          <ColumnTasks indexColumn={indexColumn} column={column} />
-                          <Box className={classes.columnSettings}>
-                            <Box
-                              data-modalname="addTask"
-                              data-columnindex={indexColumn}
-                              onClick={handleModalWindow}
-                              className={`${classes.columnAdd} buttonModal`}
-                            >
-                              <AddIcon color="action" />
-                              <Typography color="text.secondary">{t('addNewTask')}</Typography>
-                            </Box>
-                            <Box
-                              className={`buttonModal`}
-                              data-modalname="deleteColumn"
-                              data-columnindex={indexColumn}
-                            >
-                              <Tooltip title={t('deleteColumn')} onClick={handleModalWindow}>
-                                <IconButton>
-                                  <DeleteIcon color="action" />
-                                </IconButton>
-                              </Tooltip>
+              {allColumns !== undefined ? (
+                allColumns.map((column, indexColumn) => {
+                  return (
+                    <Draggable key={column.id} draggableId={column.id} index={indexColumn}>
+                      {(provided: DroppableProvided, snapshot: DraggableStateSnapshot) => (
+                        <Box
+                          sx={{ opacity: snapshot.isDragging ? '0.8' : '' }}
+                          key={column.id}
+                          className={`${classes.column}`}
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <Box className={`${classes.columnOptions} mainDragAndDropBox`}>
+                            <ColumnTitle
+                              indexColumn={indexColumn}
+                              columnTittle={column.title}
+                            ></ColumnTitle>
+                            {/* <ColumnTasks indexColumn={indexColumn} column={column} /> */}
+                            <Box className={classes.columnSettings}>
+                              <Box
+                                data-modalname="addTask"
+                                data-columnindex={indexColumn}
+                                onClick={handleModalWindow}
+                                className={`${classes.columnAdd} buttonModal`}
+                              >
+                                <AddIcon color="action" />
+                                <Typography color="text.secondary">{t('addNewTask')}</Typography>
+                              </Box>
+                              <Box
+                                className={`buttonModal`}
+                                data-modalname="deleteColumn"
+                                data-columnindex={indexColumn}
+                              >
+                                <Tooltip title={t('deleteColumn')} onClick={handleModalWindow}>
+                                  <IconButton>
+                                    <DeleteIcon color="action" />
+                                  </IconButton>
+                                </Tooltip>
+                              </Box>
                             </Box>
                           </Box>
                         </Box>
-                      </Box>
-                    )}
-                  </Draggable>
-                );
-              })}
+                      )}
+                    </Draggable>
+                  );
+                })
+              ) : (
+                <Box></Box>
+              )}
               {provided.placeholder}
             </Box>
           )}

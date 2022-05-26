@@ -9,6 +9,7 @@ import CustomizedButton from '../../app/components/share/Button/CustomizedButton
 import { useTranslation } from 'react-i18next';
 import { themeSlice } from '../../app/store/reducers/ThemeSlice';
 import MaterialUISwitch from '../../app/components/Switch/MaterialUISwitch';
+import { easings } from 'react-animation';
 
 const WelcomePage = () => {
   const [checked, setChecked] = useState<boolean>(false);

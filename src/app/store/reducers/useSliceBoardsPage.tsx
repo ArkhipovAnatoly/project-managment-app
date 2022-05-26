@@ -4,6 +4,7 @@ interface States {
   dataBoardsPage: Array<BoardsPageState> | never;
   openModalWindow: boolean;
   nameModalWindow: string;
+  indexOfCurrentBoard: string;
   indexOfCurrentColumn: string;
   indexOfCurrentTask: string;
   titleOfCurrentTask?: string;
@@ -101,6 +102,7 @@ const initialState: States = {
   dataBoardsPage: dataBoards,
   openModalWindow: false,
   nameModalWindow: '',
+  indexOfCurrentBoard: localStorage.getItem('idBoard') || '',
   indexOfCurrentColumn: '',
   indexOfCurrentTask: '',
   titleOfCurrentTask: '',
@@ -111,6 +113,10 @@ export const useSliceBoardsPage = createSlice({
   name: 'BoardsPage',
   initialState,
   reducers: {
+    changeIndexOfCurrentBoard: (state, action: PayloadAction<string>) => {
+      state.indexOfCurrentBoard = action.payload;
+    },
+
     changeIndexOfCurrentColumn: (state, action: PayloadAction<string>) => {
       state.indexOfCurrentColumn = action.payload;
     },

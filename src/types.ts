@@ -103,3 +103,15 @@ export enum StatusCode {
   Conflict = 409,
   InternalServerError = 500,
 }
+
+export type ColumnsData = {
+  id: string;
+  title: string;
+  order: number;
+};
+
+export type DeleteColumn = {
+  boardId: string;
+  deleteColumnId: string;
+};
+export type DeleteColumnResponse = DeleteUserResponse;
