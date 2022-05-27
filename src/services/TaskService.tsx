@@ -1,6 +1,14 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 import { RootState } from '../app/store/store';
-import { TaskData, TaskDataGet, TaskDataPost, TaskDataPostResponse } from '../types';
+import {
+  TaskData,
+  TaskDataGet,
+  TaskDataPost,
+  TaskDataPostResponse,
+  DeleteTask,
+  DeleteTaskResponse,
+  UpdateTaskResponse,
+} from '../types';
 
 export const taskAPI = createApi({
   reducerPath: 'taskAPI',
@@ -24,16 +32,23 @@ export const taskAPI = createApi({
       }),
       providesTags: () => ['Tasks'],
     }),
-    // updateColumn: build.mutation<UpdateColumnResponse, ColumnsData>({
-    //   query(columnData) {
-    //     return {
-    //       url: `${columnData.idBoard}/columns/${columnData.id}`,
-    //       method: 'PUT',
-    //       body: { title: columnData.title, order: columnData.order },
-    //     };
-    //   },
-    //   invalidatesTags: ['Tasks'],
-    // }),
+    updateTask: build.mutation<UpdateTaskResponse, TaskDataPost>({
+      query(tasksDataUpdate) {
+        return {
+          url: `${tasksDataUpdate.boardId}/columns/${tasksDataUpdate.columnId}/tasks/${tasksDataUpdate.taskId}`,
+          method: 'PUT',
+          body: {
+            title: tasksDataUpdate.title,
+            order: tasksDataUpdate.order,
+            description: tasksDataUpdate.description,
+            userId: tasksDataUpdate.userId,
+            boardId: tasksDataUpdate.boardId,
+            columnId: tasksDataUpdate.columnId,
+          },
+        };
+      },
+      invalidatesTags: ['Tasks'],
+    }),
     createTask: build.mutation<TaskDataPostResponse, TaskDataPost>({
       query: (tasksDataPost) => ({
         url: `${tasksDataPost.boardId}/columns/${tasksDataPost.columnId}/tasks`,
@@ -47,12 +62,12 @@ export const taskAPI = createApi({
       }),
       invalidatesTags: ['Tasks'],
     }),
-    // deleteColumn: build.mutation<DeleteColumnResponse, DeleteColumn>({
-    //   query: (post) => ({
-    //     url: `${post.boardId}/columns/${post.deleteColumnId}`,
-    //     method: 'DELETE',
-    //   }),
-    //   invalidatesTags: ['Tasks'],
-    // }),
+    deleteTask: build.mutation<DeleteTaskResponse, DeleteTask>({
+      query: (tasksDataDelete) => ({
+        url: `${tasksDataDelete.boardId}/columns/${tasksDataDelete.deleteColumnId}/tasks/${tasksDataDelete.deleteTaskId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Tasks'],
+    }),
   }),
 });

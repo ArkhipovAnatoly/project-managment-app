@@ -8,19 +8,13 @@ import { makeStyles } from '@material-ui/core';
 import ModalWindow from '../ModalWindow';
 import ColumnTitle from './ColumnTitle';
 import ColumnTasks from './ColumnTasks';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import type { DroppableProvided, DropResult, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
 // import { getBoards } from '../../../app/store/actionsCreate/getAllBoards';
 import { columnAPI } from '../../../services/ColumnService';
-
-export type ColumnsData = {
-  idBoard?: string;
-  id?: string;
-  title: string;
-  order: number;
-};
+import { ColumnsData } from '../../../types';
 
 const useStyles = makeStyles({
   columns: {
@@ -128,21 +122,6 @@ function BoardColumns() {
     dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
   };
 
-  const openModalWindowDeleteTask = (targetButtonModal: HTMLElement) => {
-    const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
-    const currentIndexTask = String(targetButtonModal?.dataset.taskindex);
-    dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
-    dispatch(reducers.changeIndexOfCurrentTask(currentIndexTask));
-  };
-
-  const openModalWindowEditTask = (targetButtonModal: HTMLElement) => {
-    const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
-    const currentIndexTask = String(targetButtonModal?.dataset.taskindex);
-    dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
-    dispatch(reducers.changeIndexOfCurrentTask(currentIndexTask));
-    dispatch(reducers.changeTitleOfCurrentTask());
-  };
-
   const openModalWindowDeleteColumn = (targetButtonModal: HTMLElement) => {
     const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
     dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
@@ -159,14 +138,6 @@ function BoardColumns() {
     switch (nameForModalWindow) {
       case 'addTask':
         openModalWindowAddTask(targetButtonModal);
-        break;
-
-      case 'deleteTask':
-        openModalWindowDeleteTask(targetButtonModal);
-        break;
-
-      case 'editTask':
-        openModalWindowEditTask(targetButtonModal);
         break;
 
       case 'deleteColumn':

@@ -11,7 +11,7 @@ import {
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { makeStyles } from '@material-ui/core';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useSliceBoardsPage } from '../../app/store/reducers/useSliceBoardsPage';
 import DialogContent from '@mui/material/DialogContent';
@@ -71,9 +71,6 @@ function ModalWindow() {
   const classes = useStyles();
   const { t, i18n } = useTranslation('modalWindowBoardsPage');
 
-  const { titleOfCurrentTask, DescriptionOfCurrentTask } = useAppSelector(
-    (state) => state.boardsPage
-  );
   const { nameModalWindow } = useAppSelector((state) => state.boardsPage);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -83,8 +80,8 @@ function ModalWindow() {
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
   const { data: allColumns } = columnAPI.useFetchColumnsQuery(`${localStorage.getItem('idBoard')}`);
-  const [createColumn, { data: createColumnData }] = columnAPI.useCreateColumnMutation();
-  const [deleteColumn, { data: deleteColumnnData }] = columnAPI.useDeleteColumnMutation();
+  const [createColumn] = columnAPI.useCreateColumnMutation();
+  const [deleteColumn] = columnAPI.useDeleteColumnMutation();
   const { data: allTasks } = taskAPI.useFetchTasksQuery(
     {
       idBoard: `${localStorage.getItem('idBoard')}`,
@@ -94,7 +91,9 @@ function ModalWindow() {
       skip: indexOfCurrentColumn === 'addColumn' ? true : false,
     }
   );
-  const [createTask, { data: createTaskData }] = taskAPI.useCreateTaskMutation();
+  const [createTask] = taskAPI.useCreateTaskMutation();
+  const [deleteTask] = taskAPI.useDeleteTaskMutation();
+  const [updateTask] = taskAPI.useUpdateTaskMutation();
 
   const clearTextModal = () => {
     setTitle('');
@@ -119,7 +118,6 @@ function ModalWindow() {
 
   const addNewColumn = async () => {
     if (title.trim()) {
-      // dispatch(reducers.addNewColumn(title));
       if (allColumns !== undefined) {
         let biggestOrder = -1;
         allColumns.map((item) => {
@@ -140,7 +138,6 @@ function ModalWindow() {
   };
 
   const deleteCurrentColumn = async () => {
-    // dispatch(reducers.deleteColumn(Number(indexOfCurrentColumn)));
     await deleteColumn({
       boardId: `${localStorage.getItem('idBoard')}`,
       deleteColumnId: indexOfCurrentColumn,
@@ -151,13 +148,6 @@ function ModalWindow() {
 
   const addNewTask = async () => {
     if (title.trim() && description.trim()) {
-      // dispatch(
-      //   reducers.addNewTask({
-      //     index: indexOfCurrentColumn,
-      //     taskTittle: title,
-      //     taskOption: description,
-      //   })
-      // );
       if (allTasks !== undefined) {
         let biggestOrder = -1;
         allTasks.map((item) => {
@@ -180,28 +170,27 @@ function ModalWindow() {
     }
   };
 
-  const deleteTask = () => {
-    const deleteTaskIndex = {
-      indexColumn: indexOfCurrentColumn,
-      indexTask: indexOfCurrentTask,
-    };
-    dispatch(reducers.deleteTask(deleteTaskIndex));
+  const deleteCurrentTask = async () => {
+    await deleteTask({
+      boardId: `${localStorage.getItem('idBoard')}`,
+      deleteColumnId: indexOfCurrentColumn,
+      deleteTaskId: indexOfCurrentTask,
+    });
     closeModalWindow();
     clearTextModal();
   };
 
-  const changeCurrentTask = () => {
-    const newTitle = title === '' ? titleOfCurrentTask : title;
-    const newDescription = description === '' ? DescriptionOfCurrentTask : description;
-    if (newTitle?.trim() || newDescription?.trim()) {
-      dispatch(
-        reducers.changeTask({
-          indexColumn: indexOfCurrentColumn,
-          indexTask: indexOfCurrentTask,
-          taskTittle: newTitle,
-          taskOption: newDescription,
-        })
-      );
+  const changeCurrentTask = async () => {
+    if (title?.trim() && description?.trim()) {
+      await updateTask({
+        userId: `${localStorage.getItem('userId')}`,
+        boardId: `${localStorage.getItem('idBoard')}`,
+        columnId: indexOfCurrentColumn,
+        taskId: indexOfCurrentTask,
+        title: title,
+        description: description,
+        order: allTasks?.find((item) => item.id === indexOfCurrentTask)?.order,
+      });
       closeModalWindow();
       clearTextModal();
     }
@@ -309,7 +298,7 @@ function ModalWindow() {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={deleteTask}>Delete Task</Button>
+            <Button onClick={deleteCurrentTask}>Delete Task</Button>
             <Button variant="contained" onClick={closeModalWindow}>
               Cancel
             </Button>
@@ -330,7 +319,6 @@ function ModalWindow() {
                     label={t('changeTittleOfTask')}
                     variant="filled"
                     onChange={handleTitle}
-                    defaultValue={titleOfCurrentTask}
                   />
                   <TextField
                     id="filled-basic"
@@ -339,7 +327,6 @@ function ModalWindow() {
                     multiline
                     rows={4}
                     onChange={handleDescription}
-                    defaultValue={DescriptionOfCurrentTask}
                   />
                 </Stack>
                 <Stack direction="row" spacing={2}>

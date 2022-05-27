@@ -175,16 +175,6 @@ export const useSliceBoardsPage = createSlice({
       );
     },
 
-    changeTitleOfCurrentTask: (state) => {
-      const column = Number(state.indexOfCurrentColumn);
-      const task = Number(state.indexOfCurrentTask);
-      const allTasksOfThisColumn = state.dataBoardsPage[column].tasks;
-      state.titleOfCurrentTask =
-        allTasksOfThisColumn !== undefined ? allTasksOfThisColumn[task].taskTittle : '';
-      state.DescriptionOfCurrentTask =
-        allTasksOfThisColumn !== undefined ? allTasksOfThisColumn[task].taskOption : '';
-    },
-
     openModalWindow: (state, action: PayloadAction<boolean>) => {
       state.openModalWindow = action.payload;
     },

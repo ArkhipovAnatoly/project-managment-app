@@ -145,14 +145,16 @@ export type TaskData = {
 export type DeleteTask = {
   boardId?: string;
   deleteColumnId?: string;
+  deleteTaskId?: string;
 };
 
 export type TaskDataPost = {
   boardId?: string;
   columnId?: string;
   userId?: string;
+  taskId?: string;
   title: string;
-  order: number;
+  order?: number;
   description?: string;
 };
 export type TaskDataPostResponse = {

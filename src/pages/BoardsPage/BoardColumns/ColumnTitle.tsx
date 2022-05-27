@@ -1,5 +1,3 @@
-import { useAppDispatch } from '../../../app/hooks';
-import { useSliceBoardsPage } from '../../../app/store/reducers/useSliceBoardsPage';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Button, Paper, Typography, InputBase } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -34,8 +32,6 @@ interface ColumnTitle {
 
 function ColumnTitle(props: ColumnTitle) {
   const classes = useStyles();
-  // const reducers = useSliceBoardsPage.actions;
-  // const dispatch = useAppDispatch();
   const [updateColumn, { data: updateColumnData }] = columnAPI.useUpdateColumnMutation();
 
   const showAllSettingsColumnTitle = (event: React.MouseEvent) => {
@@ -77,12 +73,6 @@ function ColumnTitle(props: ColumnTitle) {
       buttonsForTitle.style.display = 'none';
       inputTitleChange.style.display = 'none';
       someBoardTitleText.style.display = 'block';
-      // dispatch(
-      //   reducers.changeTitleOfCurrentColumn({
-      //     indexColumn: mainBox.dataset.columnindex as string,
-      //     columnTittle: mainBox.dataset.onopen as string,
-      //   })
-      // );
       await updateColumn({
         idBoard: `${localStorage.getItem('idBoard')}`,
         id: props.columnId,
@@ -99,12 +89,6 @@ function ColumnTitle(props: ColumnTitle) {
     buttonsForTitle.style.display = 'none';
     inputTitleChange.style.display = 'none';
     someBoardTitleText.style.display = 'block';
-    // dispatch(
-    //   reducers.changeTitleOfCurrentColumn({
-    //     indexColumn: mainBox.dataset.columnindex as string,
-    //     columnTittle: mainBox.dataset.onclose as string,
-    //   })
-    // );
   };
 
   return (
