@@ -104,3 +104,68 @@ export enum StatusCode {
   Conflict = 409,
   InternalServerError = 500,
 }
+
+export type ColumnsData = {
+  idBoard?: string;
+  id?: string;
+  title: string;
+  order: number;
+};
+
+export type DeleteColumn = {
+  boardId?: string;
+  deleteColumnId?: string;
+};
+export type DeleteColumnResponse = DeleteUserResponse;
+export type UpdateColumnResponse = DeleteUserResponse;
+
+export type TaskDataGet = {
+  idBoard: string;
+  idColumn: string;
+};
+
+export type TasksData = {
+  idBoard?: string;
+  id?: string;
+  title: string;
+  order: number;
+  tasks: TaskData[];
+};
+
+export type TaskData = {
+  id: string;
+  title: string;
+  order: number;
+  description: string;
+  userId: string;
+  boardId: string;
+  columnId: string;
+};
+
+export type DeleteTask = {
+  boardId?: string;
+  deleteColumnId?: string;
+  deleteTaskId?: string;
+};
+
+export type TaskDataPost = {
+  boardId?: string;
+  columnId?: string;
+  userId?: string;
+  taskId?: string;
+  title: string;
+  order?: number;
+  description?: string;
+};
+export type TaskDataPostResponse = {
+  id: string;
+  title: string;
+  order: number;
+  description: string;
+  userId: string;
+  boardId: string;
+  columnId: string;
+};
+
+export type DeleteTaskResponse = DeleteUserResponse;
+export type UpdateTaskResponse = DeleteUserResponse;

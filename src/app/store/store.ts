@@ -9,6 +9,8 @@ import boardsPage from './reducers/useSliceBoardsPage';
 import mainPage from './reducers/useSliceMainPage';
 import editBoardReducer from './reducers/EditBoardSlice';
 import { boardAPI } from '../../services/BoardService';
+import { columnAPI } from '../../services/ColumnService';
+import { taskAPI } from '../../services/TaskService';
 
 const rootReducer = combineReducers({
   userAuthReducer,
@@ -21,13 +23,20 @@ const rootReducer = combineReducers({
   mainPage,
   [userAPI.reducerPath]: userAPI.reducer,
   [boardAPI.reducerPath]: boardAPI.reducer,
+  [columnAPI.reducerPath]: columnAPI.reducer,
+  [taskAPI.reducerPath]: taskAPI.reducer,
 });
 
 const setupStore = () => {
   return configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat([userAPI.middleware, boardAPI.middleware]),
+      getDefaultMiddleware().concat([
+        userAPI.middleware,
+        boardAPI.middleware,
+        columnAPI.middleware,
+        taskAPI.middleware,
+      ]),
   });
 };
 export const store = setupStore();

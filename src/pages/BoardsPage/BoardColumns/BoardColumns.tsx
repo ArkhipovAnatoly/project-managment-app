@@ -12,6 +12,8 @@ import React from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import type { DroppableProvided, DropResult, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
+import { columnAPI } from '../../../services/ColumnService';
+import { ColumnsData } from '../../../types';
 
 const useStyles = makeStyles({
   columns: {
@@ -106,29 +108,15 @@ const useStyles = makeStyles({
 
 function BoardColumns() {
   const classes = useStyles();
-  const { dataBoardsPage } = useAppSelector((state) => state.boardsPage);
+  const { indexOfCurrentColumn } = useAppSelector((state) => state.boardsPage);
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
   const { t, i18n } = useTranslation('boardsPage');
+  const { data: allColumns } = columnAPI.useFetchColumnsQuery(`${localStorage.getItem('idBoard')}`);
 
   const openModalWindowAddTask = (targetButtonModal: HTMLElement) => {
     const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
     dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
-  };
-
-  const openModalWindowDeleteTask = (targetButtonModal: HTMLElement) => {
-    const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
-    const currentIndexTask = String(targetButtonModal?.dataset.taskindex);
-    dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
-    dispatch(reducers.changeIndexOfCurrentTask(currentIndexTask));
-  };
-
-  const openModalWindowEditTask = (targetButtonModal: HTMLElement) => {
-    const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
-    const currentIndexTask = String(targetButtonModal?.dataset.taskindex);
-    dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
-    dispatch(reducers.changeIndexOfCurrentTask(currentIndexTask));
-    dispatch(reducers.changeTitleOfCurrentTask());
   };
 
   const openModalWindowDeleteColumn = (targetButtonModal: HTMLElement) => {
@@ -142,18 +130,11 @@ function BoardColumns() {
     const nameForModalWindow = String(targetButtonModal?.dataset.modalname);
     dispatch(reducers.openModalWindow(true));
     dispatch(reducers.addNameForModalWindow(nameForModalWindow));
+    dispatch(reducers.changeIndexOfCurrentColumn('addColumn'));
 
     switch (nameForModalWindow) {
       case 'addTask':
         openModalWindowAddTask(targetButtonModal);
-        break;
-
-      case 'deleteTask':
-        openModalWindowDeleteTask(targetButtonModal);
-        break;
-
-      case 'editTask':
-        openModalWindowEditTask(targetButtonModal);
         break;
 
       case 'deleteColumn':
@@ -191,6 +172,18 @@ function BoardColumns() {
     }
   };
 
+  const sortColumnByOrder = (columns: ColumnsData[]) => {
+    return columns.sort((a, b) => {
+      if (a.order > b.order) {
+        return 1;
+      }
+      if (a.order < b.order) {
+        return -1;
+      }
+      return 0;
+    });
+  };
+
   return (
     <Box className={classes.columns}>
       <DragDropContext onDragEnd={dragEndHandler}>
@@ -203,52 +196,57 @@ function BoardColumns() {
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
-              {dataBoardsPage.map((column, indexColumn) => {
-                return (
-                  <Draggable key={column.id} draggableId={column.id} index={indexColumn}>
-                    {(provided: DroppableProvided, snapshot: DraggableStateSnapshot) => (
-                      <Box
-                        sx={{ opacity: snapshot.isDragging ? '0.8' : '' }}
-                        key={column.id}
-                        className={`${classes.column}`}
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        <Box className={`${classes.columnOptions} mainDragAndDropBox`}>
-                          <ColumnTitle
-                            indexColumn={indexColumn}
-                            columnTittle={column.tittle}
-                          ></ColumnTitle>
-                          <ColumnTasks indexColumn={indexColumn} column={column} />
-                          <Box className={classes.columnSettings}>
-                            <Box
-                              data-modalname="addTask"
-                              data-columnindex={indexColumn}
-                              onClick={handleModalWindow}
-                              className={`${classes.columnAdd} buttonModal`}
-                            >
-                              <AddIcon color="action" />
-                              <Typography color="text.secondary">{t('addNewTask')}</Typography>
-                            </Box>
-                            <Box
-                              className={`buttonModal`}
-                              data-modalname="deleteColumn"
-                              data-columnindex={indexColumn}
-                            >
-                              <Tooltip title={t('deleteColumn')} onClick={handleModalWindow}>
-                                <IconButton>
-                                  <DeleteIcon color="action" />
-                                </IconButton>
-                              </Tooltip>
+              {allColumns !== undefined ? (
+                sortColumnByOrder([...allColumns]).map((column, indexColumn) => {
+                  return (
+                    <Draggable key={column.id} draggableId={column.id} index={column.order}>
+                      {(provided: DroppableProvided, snapshot: DraggableStateSnapshot) => (
+                        <Box
+                          sx={{ opacity: snapshot.isDragging ? '0.8' : '' }}
+                          key={column.id}
+                          className={`${classes.column}`}
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <Box className={`${classes.columnOptions} mainDragAndDropBox`}>
+                            <ColumnTitle
+                              columnId={column.id}
+                              columnTittle={column.title}
+                              columnOrder={column.order}
+                            ></ColumnTitle>
+                            <ColumnTasks columnId={column.id} />
+                            <Box className={classes.columnSettings}>
+                              <Box
+                                data-modalname="addTask"
+                                data-columnindex={column.id}
+                                onClick={handleModalWindow}
+                                className={`${classes.columnAdd} buttonModal`}
+                              >
+                                <AddIcon color="action" />
+                                <Typography color="text.secondary">{t('addNewTask')}</Typography>
+                              </Box>
+                              <Box
+                                className={`buttonModal`}
+                                data-modalname="deleteColumn"
+                                data-columnindex={column.id}
+                              >
+                                <Tooltip title={t('deleteColumn')} onClick={handleModalWindow}>
+                                  <IconButton>
+                                    <DeleteIcon color="action" />
+                                  </IconButton>
+                                </Tooltip>
+                              </Box>
                             </Box>
                           </Box>
                         </Box>
-                      </Box>
-                    )}
-                  </Draggable>
-                );
-              })}
+                      )}
+                    </Draggable>
+                  );
+                })
+              ) : (
+                <Box></Box>
+              )}
               {provided.placeholder}
             </Box>
           )}
@@ -266,7 +264,7 @@ function BoardColumns() {
           </Box>
         </Box>
       </Box>
-      <ModalWindow />
+      {indexOfCurrentColumn !== '' ? <ModalWindow /> : <></>}
     </Box>
   );
 }
