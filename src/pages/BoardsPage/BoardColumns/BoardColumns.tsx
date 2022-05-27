@@ -12,7 +12,6 @@ import React from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import type { DroppableProvided, DropResult, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
-// import { getBoards } from '../../../app/store/actionsCreate/getAllBoards';
 import { columnAPI } from '../../../services/ColumnService';
 import { ColumnsData } from '../../../types';
 
@@ -109,8 +108,6 @@ const useStyles = makeStyles({
 
 function BoardColumns() {
   const classes = useStyles();
-  const { dataBoardsPage } = useAppSelector((state) => state.boardsPage);
-  const { indexOfCurrentBoard } = useAppSelector((state) => state.boardsPage);
   const { indexOfCurrentColumn } = useAppSelector((state) => state.boardsPage);
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
