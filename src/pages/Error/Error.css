@@ -7,6 +7,11 @@
   color: #813434;
 }
 
-.errorImg {
+.errorContainer {
   width: 100%;
+  height: calc(100% - 78px);
+  background-image: url('../../../public/assets/img/error.gif');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
