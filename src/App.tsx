@@ -51,8 +51,8 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/edit" element={<EditProfile />} />
             <Route path="/board" element={<BoardsPage />} />
-            <Route path="*" element={<Error />} />
           </Route>
+          <Route path="*" element={<Error />} />
         </Routes>
       </Router>
     </ThemeProvider>
