@@ -116,7 +116,7 @@ function ColumnTasks(props: ColumnTasks) {
             {...provided.droppableProps}
             ref={provided.innerRef}
           >
-            {allTasks?.tasks?.map((task, indexTask) => {
+            {allTasks?.map((task, indexTask) => {
               return (
                 <Draggable key={task.id} draggableId={task.id} index={indexTask}>
                   {(provided: DroppableProvided, snapshot: DraggableStateSnapshot) => (
@@ -168,7 +168,7 @@ function ColumnTasks(props: ColumnTasks) {
                             color="text.secondary"
                             sx={{ mt: '4px', display: 'flex', flexWrap: 'wrap' }}
                           >
-                            {task.title}
+                            {task.description}
                           </Typography>
                         </AccordionDetails>
                       </Accordion>

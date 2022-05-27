@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 import { RootState } from '../app/store/store';
-import { TasksData, TaskDataGet, TaskDataPost, TaskDataPostResponse } from '../types';
+import { TaskData, TaskDataGet, TaskDataPost, TaskDataPostResponse } from '../types';
 
 export const taskAPI = createApi({
   reducerPath: 'taskAPI',
@@ -18,9 +18,9 @@ export const taskAPI = createApi({
   }),
   tagTypes: ['Tasks'],
   endpoints: (build) => ({
-    fetchTasks: build.query<TasksData, TaskDataGet>({
+    fetchTasks: build.query<TaskData[], TaskDataGet>({
       query: (tasksDataGet) => ({
-        url: `${tasksDataGet.idBoard}/columns/${tasksDataGet.idColumn}`,
+        url: `${tasksDataGet.idBoard}/columns/${tasksDataGet.idColumn}/tasks`,
       }),
       providesTags: () => ['Tasks'],
     }),
@@ -36,7 +36,7 @@ export const taskAPI = createApi({
     // }),
     createTask: build.mutation<TaskDataPostResponse, TaskDataPost>({
       query: (tasksDataPost) => ({
-        url: `${tasksDataPost.boardId}/columns/${tasksDataPost.columnId}`,
+        url: `${tasksDataPost.boardId}/columns/${tasksDataPost.columnId}/tasks`,
         method: 'POST',
         body: {
           title: tasksDataPost.title,

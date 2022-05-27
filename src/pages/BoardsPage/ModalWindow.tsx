@@ -11,7 +11,7 @@ import {
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { makeStyles } from '@material-ui/core';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useSliceBoardsPage } from '../../app/store/reducers/useSliceBoardsPage';
 import DialogContent from '@mui/material/DialogContent';
@@ -85,11 +85,21 @@ function ModalWindow() {
   const { data: allColumns } = columnAPI.useFetchColumnsQuery(`${localStorage.getItem('idBoard')}`);
   const [createColumn, { data: createColumnData }] = columnAPI.useCreateColumnMutation();
   const [deleteColumn, { data: deleteColumnnData }] = columnAPI.useDeleteColumnMutation();
+  const { data: allTasks } = taskAPI.useFetchTasksQuery(
+    {
+      idBoard: `${localStorage.getItem('idBoard')}`,
+      idColumn: indexOfCurrentColumn as string,
+    },
+    {
+      skip: indexOfCurrentColumn === 'addColumn' ? true : false,
+    }
+  );
   const [createTask, { data: createTaskData }] = taskAPI.useCreateTaskMutation();
 
   const clearTextModal = () => {
     setTitle('');
     setDescription('');
+    dispatch(reducers.changeIndexOfCurrentColumn(''));
   };
 
   const closeModalWindow = () => {
@@ -140,7 +150,7 @@ function ModalWindow() {
   };
 
   const addNewTask = async () => {
-    if (title.trim()) {
+    if (title.trim() && description.trim()) {
       // dispatch(
       //   reducers.addNewTask({
       //     index: indexOfCurrentColumn,
@@ -148,14 +158,23 @@ function ModalWindow() {
       //     taskOption: description,
       //   })
       // );
-      await createTask({
-        boardId: `${localStorage.getItem('idBoard')}`,
-        columnId: indexOfCurrentColumn,
-        title: title,
-        order: tasksDataPost.order,
-        description: description,
-        userId: `${localStorage.getItem('userId')}`,
-      });
+      if (allTasks !== undefined) {
+        let biggestOrder = -1;
+        allTasks.map((item) => {
+          if (item.order > biggestOrder) biggestOrder = item.order;
+        });
+        const newOrderForNewTask = biggestOrder + 1;
+        if (newOrderForNewTask >= 0) {
+          await createTask({
+            boardId: `${localStorage.getItem('idBoard')}`,
+            columnId: indexOfCurrentColumn,
+            title: title,
+            order: newOrderForNewTask,
+            description: description,
+            userId: `${localStorage.getItem('userId')}`,
+          });
+        }
+      }
       closeModalWindow();
       clearTextModal();
     }

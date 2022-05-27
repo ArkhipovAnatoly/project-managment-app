@@ -153,7 +153,7 @@ export type TaskDataPost = {
   userId?: string;
   title: string;
   order: number;
-  description: string;
+  description?: string;
 };
 export type TaskDataPostResponse = {
   id: string;

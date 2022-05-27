@@ -117,6 +117,7 @@ function BoardColumns() {
   const classes = useStyles();
   const { dataBoardsPage } = useAppSelector((state) => state.boardsPage);
   const { indexOfCurrentBoard } = useAppSelector((state) => state.boardsPage);
+  const { indexOfCurrentColumn } = useAppSelector((state) => state.boardsPage);
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
   const { t, i18n } = useTranslation('boardsPage');
@@ -124,7 +125,6 @@ function BoardColumns() {
 
   const openModalWindowAddTask = (targetButtonModal: HTMLElement) => {
     const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
-    console.log(currentIndexColumn);
     dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
   };
 
@@ -154,6 +154,7 @@ function BoardColumns() {
     const nameForModalWindow = String(targetButtonModal?.dataset.modalname);
     dispatch(reducers.openModalWindow(true));
     dispatch(reducers.addNameForModalWindow(nameForModalWindow));
+    dispatch(reducers.changeIndexOfCurrentColumn('addColumn'));
 
     switch (nameForModalWindow) {
       case 'addTask':
@@ -295,7 +296,7 @@ function BoardColumns() {
           </Box>
         </Box>
       </Box>
-      <ModalWindow />
+      {indexOfCurrentColumn !== '' ? <ModalWindow /> : <></>}
     </Box>
   );
 }
