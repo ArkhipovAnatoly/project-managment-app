@@ -136,16 +136,11 @@ export default function CreateBoardModal() {
                   label="New Title"
                   autoFocus
                   variant="standard"
-                  {...register('title', { required: true, pattern: /^[A-Za-zА-Яа-я\s]+$/i })}
+                  {...register('title', { required: true })}
                 />
                 {errors.title?.type === 'required' && (
                   <FormHelperText component="span" error>
                     {t('titleEmpty')}
-                  </FormHelperText>
-                )}
-                {errors.title?.type === 'pattern' && (
-                  <FormHelperText component="span" error>
-                    {t('titlePattern')}
                   </FormHelperText>
                 )}
               </Grid>
