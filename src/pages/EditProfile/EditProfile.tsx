@@ -126,7 +126,7 @@ export default function EditProfile() {
       <Box
         className="app"
         sx={{
-          minHeight: 'calc(100vh - 58px)',
+          minHeight: 'calc(100vh - 78px)',
           bgcolor: 'background.default',
         }}
       >
