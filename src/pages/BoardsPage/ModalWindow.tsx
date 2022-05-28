@@ -16,8 +16,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useSliceBoardsPage } from '../../app/store/reducers/useSliceBoardsPage';
 import DialogContent from '@mui/material/DialogContent';
 import { useTranslation } from 'react-i18next';
-import { columnAPI } from '../.././services/ColumnService';
-import { taskAPI } from '../.././services/TaskService';
+import { boardAPI } from '../.././services/BoardService';
 
 const useStyles = makeStyles({
   firstModalWindowForNewColumn: {
@@ -79,10 +78,10 @@ function ModalWindow() {
   const { indexOfCurrentTask } = useAppSelector((state) => state.boardsPage);
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
-  const { data: allColumns } = columnAPI.useFetchColumnsQuery(`${localStorage.getItem('idBoard')}`);
-  const [createColumn] = columnAPI.useCreateColumnMutation();
-  const [deleteColumn] = columnAPI.useDeleteColumnMutation();
-  const { data: allTasks } = taskAPI.useFetchTasksQuery(
+  const { data: allColumns } = boardAPI.useFetchColumnsQuery(`${localStorage.getItem('idBoard')}`);
+  const [createColumn] = boardAPI.useCreateColumnMutation();
+  const [deleteColumn] = boardAPI.useDeleteColumnMutation();
+  const { data: allTasks } = boardAPI.useFetchTasksQuery(
     {
       idBoard: `${localStorage.getItem('idBoard')}`,
       idColumn: indexOfCurrentColumn as string,
@@ -91,9 +90,9 @@ function ModalWindow() {
       skip: indexOfCurrentColumn === 'addColumn' ? true : false,
     }
   );
-  const [createTask] = taskAPI.useCreateTaskMutation();
-  const [deleteTask] = taskAPI.useDeleteTaskMutation();
-  const [updateTask] = taskAPI.useUpdateTaskMutation();
+  const [createTask] = boardAPI.useCreateTaskMutation();
+  const [deleteTask] = boardAPI.useDeleteTaskMutation();
+  const [updateTask] = boardAPI.useUpdateTaskMutation();
 
   const clearTextModal = () => {
     setTitle('');

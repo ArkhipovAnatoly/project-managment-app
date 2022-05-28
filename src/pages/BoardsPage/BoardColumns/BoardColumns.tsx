@@ -12,8 +12,9 @@ import React from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import type { DroppableProvided, DropResult, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
-import { columnAPI } from '../../../services/ColumnService';
+import { boardAPI } from '../../../services/BoardService';
 import { ColumnsData } from '../../../types';
+import { GetColumnForDND } from '../../../types';
 
 const useStyles = makeStyles({
   columns: {
@@ -112,7 +113,10 @@ function BoardColumns() {
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
   const { t, i18n } = useTranslation('boardsPage');
-  const { data: allColumns } = columnAPI.useFetchColumnsQuery(`${localStorage.getItem('idBoard')}`);
+  const { data: allColumns } = boardAPI.useFetchColumnsQuery(`${localStorage.getItem('idBoard')}`);
+  const { data: currentBoard } = boardAPI.useGetBoardQuery(`${localStorage.getItem('idBoard')}`);
+  const [updateColumn] = boardAPI.useUpdateColumnMutation();
+  const [updateTask] = boardAPI.useUpdateTaskMutation();
 
   const openModalWindowAddTask = (targetButtonModal: HTMLElement) => {
     const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
@@ -143,7 +147,43 @@ function BoardColumns() {
     }
   };
 
-  const dragEndHandler = (result: DropResult) => {
+  const dragDropForTaskInOneColumn = async (result: DropResult) => {
+    const { destination, source } = result;
+    const columnDestination = currentBoard?.columns.find((column) => {
+      return column.id === destination.droppableId;
+    });
+    const columnSource = currentBoard?.columns.find((column) => {
+      return column.id === source.droppableId;
+    });
+    const destinationTaskData = columnDestination?.tasks.find((task) => {
+      return task.order === destination.index;
+    });
+    const sourceTaskData = columnSource?.tasks.find((task) => {
+      return task.order === source.index;
+    });
+    if (sourceTaskData !== undefined && destinationTaskData !== undefined) {
+      await updateTask({
+        userId: sourceTaskData?.userId,
+        boardId: `${localStorage.getItem('idBoard')}`,
+        columnId: columnSource?.id,
+        taskId: sourceTaskData?.id,
+        title: destinationTaskData?.title as string,
+        description: destinationTaskData?.description,
+        order: sourceTaskData.order,
+      });
+      await updateTask({
+        userId: destinationTaskData?.userId,
+        boardId: `${localStorage.getItem('idBoard')}`,
+        columnId: columnDestination?.id,
+        taskId: destinationTaskData?.id,
+        title: sourceTaskData?.title as string,
+        description: sourceTaskData?.description,
+        order: destinationTaskData.order,
+      });
+    }
+  };
+
+  const dragEndHandler = async (result: DropResult) => {
     const { destination, source, type } = result;
 
     if (!destination) return;
@@ -152,23 +192,34 @@ function BoardColumns() {
       return;
 
     if (type === 'column') {
-      dispatch(
-        reducers.dragAndDropColumn({
-          indexDestinationColumn: destination.index,
-          indexSourceColumn: source.index,
-        })
-      );
+      // console.log(allColumns?.find((item) => item.order === destination.index));
+      // console.log(allColumns?.find((item) => item.order === source.index));
+      // const destinationColumnData = allColumns?.find((item) => item.order === destination.index);
+      // const sourceColumnData = allColumns?.find((item) => item.order === source.index);
+      // await updateColumn({
+      //   idBoard: `${localStorage.getItem('idBoard')}`,
+      //   id: destinationColumnData?.id,
+      //   title: destinationColumnData?.title as string,
+      //   order: sourceColumnData?.order as number,
+      // });
+      // await updateColumn({
+      //   idBoard: `${localStorage.getItem('idBoard')}`,
+      //   id: sourceColumnData?.id,
+      //   title: sourceColumnData?.title as string,
+      //   order: destinationColumnData?.order as number,
+      // });
+      // dispatch(
+      //   reducers.dragAndDropColumn({
+      //     indexDestinationColumn: destination.index,
+      //     indexSourceColumn: source.index,
+      //   })
+      // );
     }
 
     if (type === 'task') {
-      dispatch(
-        reducers.dragAndDropTask({
-          destinationColumn: destination.droppableId,
-          sourceColumn: source.droppableId,
-          indexDestinationTask: destination.index,
-          indexSourceTask: source.index,
-        })
-      );
+      if (destination.droppableId === source.droppableId) {
+        dragDropForTaskInOneColumn(result);
+      }
     }
   };
 
@@ -196,7 +247,7 @@ function BoardColumns() {
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
-              {allColumns !== undefined ? (
+              {allColumns !== undefined &&
                 sortColumnByOrder([...allColumns]).map((column, indexColumn) => {
                   return (
                     <Draggable key={column.id} draggableId={column.id} index={column.order}>
@@ -243,10 +294,7 @@ function BoardColumns() {
                       )}
                     </Draggable>
                   );
-                })
-              ) : (
-                <Box></Box>
-              )}
+                })}
               {provided.placeholder}
             </Box>
           )}

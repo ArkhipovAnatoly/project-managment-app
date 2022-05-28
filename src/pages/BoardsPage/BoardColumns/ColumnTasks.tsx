@@ -16,7 +16,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import CreateIcon from '@mui/icons-material/Create';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import type { DroppableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
-import { taskAPI } from '../../../services/TaskService';
+import { boardAPI } from '../../../services/BoardService';
 import { TaskData } from '../../../types';
 
 const useStyles = makeStyles({
@@ -63,7 +63,7 @@ function ColumnTasks(props: ColumnTasks) {
   const classes = useStyles();
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
-  const { data: allTasks } = taskAPI.useFetchTasksQuery({
+  const { data: allTasks } = boardAPI.useFetchTasksQuery({
     idBoard: `${localStorage.getItem('idBoard')}`,
     idColumn: props.columnId as string,
   });
@@ -128,7 +128,7 @@ function ColumnTasks(props: ColumnTasks) {
             {allTasks !== undefined ? (
               sortTasksByOrder([...allTasks]).map((task, indexTask) => {
                 return (
-                  <Draggable key={task.id} draggableId={task.id} index={indexTask}>
+                  <Draggable key={task.id} draggableId={task.id} index={task.order}>
                     {(provided: DroppableProvided, snapshot: DraggableStateSnapshot) => (
                       <Paper
                         sx={{
