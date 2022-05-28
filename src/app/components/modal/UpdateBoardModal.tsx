@@ -79,10 +79,7 @@ export default function CreateBoardModal() {
       }, 1500);
       return;
     }
-    if (status !== StatusCode.OK) {
-      setMessage(t('statusErrorBoardUpdate'));
-      return;
-    }
+
     setMessage(t('statusUpdateOk'));
     setTimeout(() => {
       setMessage('');
@@ -154,13 +151,22 @@ export default function CreateBoardModal() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  color="info"
+                  error={errors.description && true}
                   fullWidth
-                  label="Description"
+                  label="New Description"
                   id="description"
                   variant="standard"
                   multiline
-                  {...register('description')}
+                  {...register('description', {
+                    required: true,
+                  })}
                 />
+                {errors.description?.type === 'required' && (
+                  <FormHelperText component="span" error>
+                    {t('descriptionEmpty')}
+                  </FormHelperText>
+                )}
               </Grid>
             </Grid>
             <Box
