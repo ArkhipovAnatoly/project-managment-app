@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     paddingTop: '80px',
     paddingBottom: '10px',
-    minHeight: 'calc(100vh - 52px)',
+    minHeight: 'calc(100vh - 78px)',
     overflowY: 'hidden',
     // ['@media (max-width:800px)']: { paddingTop: '1000px' },
   },

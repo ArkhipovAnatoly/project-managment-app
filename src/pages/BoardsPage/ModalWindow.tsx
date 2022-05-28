@@ -233,16 +233,16 @@ function ModalWindow() {
           onClose={closeModalWindow}
           aria-describedby="alert-dialog-slide-description"
         >
-          <DialogTitle>{'Are you sure want to delete this column?'}</DialogTitle>
+          <DialogTitle>{t('deleteColumnQuest')}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
-              All tasks that were inside of this column are permanently deleted along with it.
+              {t('deleteColumnText')}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={deleteCurrentColumn}>Delete Column</Button>
+            <Button onClick={deleteCurrentColumn}>{t('deleteColumnButton')}</Button>
             <Button variant="contained" onClick={closeModalWindow}>
-              Cancel
+              {t('cancelColumnButton')}
             </Button>
           </DialogActions>
         </Dialog>
@@ -290,16 +290,16 @@ function ModalWindow() {
           onClose={closeModalWindow}
           aria-describedby="alert-dialog-slide-description"
         >
-          <DialogTitle>{'Are you sure want to delete this task?'}</DialogTitle>
+          <DialogTitle>{t('deleteTaskQuest')}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
-              The description that was inside this task will be permanently deleted along with it.
+              {t('deleteTaskText')}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={deleteCurrentTask}>Delete Task</Button>
+            <Button onClick={deleteCurrentTask}>{t('deleteColumnButton')}</Button>
             <Button variant="contained" onClick={closeModalWindow}>
-              Cancel
+              {t('cancelTaskButton')}
             </Button>
           </DialogActions>
         </Dialog>

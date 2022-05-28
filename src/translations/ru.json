@@ -95,6 +95,11 @@
     "changeTittleOfTask": "Изменить название этой задачи",
     "changeDescriptionOfTask": "Изменить описание этой задачи",
     "editTaskButton": "Изменить",
-    "cancelEditTaskButton": "Отмена"
+    "cancelEditTaskButton": "Отмена",
+    "deleteColumnQuest": "Вы действительно хотите удалить эту колонку?",
+    "deleteColumnText": "Все задачи, которые находятся внутри колонки также удалятся!",
+    "deleteColumnButton": "Удалить",
+    "deleteTaskQuest": "Вы действительно хотите удалить данную задачу?",
+    "deleteTaskText": " Описание задачи также будет удалено!"
   }
 }
