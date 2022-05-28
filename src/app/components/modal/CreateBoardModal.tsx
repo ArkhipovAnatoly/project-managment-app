@@ -52,6 +52,7 @@ export default function CreateBoardModal() {
     mode: 'onSubmit',
     defaultValues: {
       title: '',
+      description: '',
     },
   });
 
@@ -150,7 +151,14 @@ export default function CreateBoardModal() {
                 )}
               </Grid>
               <Grid item xs={12}>
-                <TextField fullWidth label="Description" variant="standard" multiline />
+                <TextField
+                  fullWidth
+                  label="Description"
+                  id="description"
+                  variant="standard"
+                  multiline
+                  {...register('description')}
+                />
               </Grid>
             </Grid>
             <Box

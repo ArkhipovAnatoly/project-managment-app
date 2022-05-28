@@ -59,6 +59,7 @@ export type EditUserProfileData = {
 export type BoardData = {
   id?: string;
   title: string;
+  description?: string;
 };
 
 export type BoardDataResponse = {
