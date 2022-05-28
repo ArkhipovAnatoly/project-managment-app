@@ -52,7 +52,7 @@ export default function MainPage() {
           }}
         >
           <Link component={NavLink} to="/" underline="none">
-            <Button color="primary" startIcon={<HomeIcon />} variant="contained">
+            <Button startIcon={<HomeIcon />} variant="contained">
               {t('home')}
             </Button>
           </Link>

@@ -249,21 +249,11 @@ export default function Header() {
               >
                 {t('newBoard')}
               </Button>
-              <Button
-                color="primary"
-                variant="contained"
-                endIcon={<ModeEditIcon />}
-                onClick={editProfile}
-              >
+              <Button variant="contained" endIcon={<ModeEditIcon />} onClick={editProfile}>
                 {t('profile')}
               </Button>
 
-              <Button
-                color="primary"
-                onClick={signOutHandle}
-                variant="contained"
-                endIcon={<LogoutIcon />}
-              >
+              <Button onClick={signOutHandle} variant="contained" endIcon={<LogoutIcon />}>
                 {t('out')}
               </Button>
             </Stack>
