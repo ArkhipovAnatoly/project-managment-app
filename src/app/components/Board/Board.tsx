@@ -81,7 +81,10 @@ export default function Board({ id, title, description }: BoardData) {
         <NavLink to="/board">
           <ListItemAvatar onClick={updateCurrentIndexBoard}>
             <Tooltip title={t('tooltipOpenBoard')} arrow>
-              <FolderIcon color="primary" fontSize="medium" />
+              <FolderIcon
+                color={theme.palette.mode === 'dark' ? 'secondary' : 'primary'}
+                fontSize="medium"
+              />
             </Tooltip>
           </ListItemAvatar>
         </NavLink>
