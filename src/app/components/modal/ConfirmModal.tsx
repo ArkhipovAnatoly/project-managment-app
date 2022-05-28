@@ -152,18 +152,18 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
               {title}
             </Typography>
             <Button
+              color={theme.palette.mode === 'dark' ? 'secondary' : 'primary'}
               sx={{
                 mt: 2,
-                color: theme.palette.mode === 'dark' ? 'secondary.main' : 'primary.main',
               }}
               onClick={handleConfirm}
             >
               {t('profile:confirm')}
             </Button>
             <Button
+              color={theme.palette.mode === 'dark' ? 'secondary' : 'primary'}
               sx={{
-                mt: 1,
-                color: theme.palette.mode === 'dark' ? 'secondary.main' : 'primary.main',
+                mt: 2,
               }}
               onClick={modalClose}
             >
