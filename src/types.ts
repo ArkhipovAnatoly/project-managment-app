@@ -156,6 +156,7 @@ export type DeleteTask = {
 export type TaskDataPost = {
   boardId?: string;
   columnId?: string;
+  currentColumn?: string;
   userId?: string;
   taskId?: string;
   title: string;

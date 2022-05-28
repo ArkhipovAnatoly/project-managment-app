@@ -101,7 +101,8 @@ export const boardAPI = createApi({
       query: (columnData) => ({
         url: `/boards/${columnData.idBoard}/columns`,
         method: 'POST',
-        body: { title: columnData.title, order: columnData.order },
+        // , order: columnData.order
+        body: { title: columnData.title },
       }),
       invalidatesTags: ['Columns'],
     }),
@@ -121,7 +122,7 @@ export const boardAPI = createApi({
     updateTask: build.mutation<UpdateTaskResponse, TaskDataPost>({
       query(tasksDataUpdate) {
         return {
-          url: `/boards/${tasksDataUpdate.boardId}/columns/${tasksDataUpdate.columnId}/tasks/${tasksDataUpdate.taskId}`,
+          url: `/boards/${tasksDataUpdate.boardId}/columns/${tasksDataUpdate.currentColumn}/tasks/${tasksDataUpdate.taskId}`,
           method: 'PUT',
           body: {
             title: tasksDataUpdate.title,
@@ -139,9 +140,9 @@ export const boardAPI = createApi({
       query: (tasksDataPost) => ({
         url: `/boards/${tasksDataPost.boardId}/columns/${tasksDataPost.columnId}/tasks`,
         method: 'POST',
+        // order: tasksDataPost.order,
         body: {
           title: tasksDataPost.title,
-          order: tasksDataPost.order,
           description: tasksDataPost.description,
           userId: tasksDataPost.userId,
         },

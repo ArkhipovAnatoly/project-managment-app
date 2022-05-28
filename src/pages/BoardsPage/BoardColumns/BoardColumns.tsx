@@ -147,6 +147,18 @@ function BoardColumns() {
     }
   };
 
+  const dragDropColumns = async (result: DropResult) => {
+    const { destination, source } = result;
+    const destinationColumnData = allColumns?.find((item) => item.order === destination.index);
+    const sourceColumnData = allColumns?.find((item) => item.order === source.index);
+    await updateColumn({
+      idBoard: `${localStorage.getItem('idBoard')}`,
+      id: sourceColumnData?.id,
+      title: sourceColumnData?.title as string,
+      order: destinationColumnData?.order as number,
+    });
+  };
+
   const dragDropForTaskInOneColumn = async (result: DropResult) => {
     const { destination, source } = result;
     const columnDestination = currentBoard?.columns.find((column) => {
@@ -162,23 +174,48 @@ function BoardColumns() {
       return task.order === source.index;
     });
     if (sourceTaskData !== undefined && destinationTaskData !== undefined) {
+      console.log(result);
       await updateTask({
         userId: sourceTaskData?.userId,
         boardId: `${localStorage.getItem('idBoard')}`,
         columnId: columnSource?.id,
         taskId: sourceTaskData?.id,
-        title: destinationTaskData?.title as string,
-        description: destinationTaskData?.description,
-        order: sourceTaskData.order,
-      });
-      await updateTask({
-        userId: destinationTaskData?.userId,
-        boardId: `${localStorage.getItem('idBoard')}`,
-        columnId: columnDestination?.id,
-        taskId: destinationTaskData?.id,
         title: sourceTaskData?.title as string,
         description: sourceTaskData?.description,
         order: destinationTaskData.order,
+      });
+    }
+  };
+
+  const dragDropForTaskInDifferentColumns = async (result: DropResult) => {
+    const { destination, source } = result;
+    const columnDestination = currentBoard?.columns.find((column) => {
+      return destination.droppableId === 0 ? true : column.id === destination.droppableId;
+    });
+    const columnSource = currentBoard?.columns.find((column) => {
+      return column.id === source.droppableId;
+    });
+    const destinationTaskData = columnDestination?.tasks.find((task) => {
+      return destination.index === 0 ? true : task.order === destination.index;
+    });
+    const sourceTaskData = columnSource?.tasks.find((task) => {
+      return task.order === source.index;
+    });
+
+    if (
+      (sourceTaskData !== undefined && destinationTaskData !== undefined) ||
+      destination.index === 0
+    ) {
+      console.log(1);
+      await updateTask({
+        userId: sourceTaskData?.userId,
+        boardId: `${localStorage.getItem('idBoard')}`,
+        columnId: columnDestination?.id,
+        currentColumn: columnSource?.id,
+        taskId: sourceTaskData?.id,
+        title: sourceTaskData?.title as string,
+        description: sourceTaskData?.description,
+        order: destination.index === 0 ? 1 : destinationTaskData?.order,
       });
     }
   };
@@ -192,33 +229,14 @@ function BoardColumns() {
       return;
 
     if (type === 'column') {
-      // console.log(allColumns?.find((item) => item.order === destination.index));
-      // console.log(allColumns?.find((item) => item.order === source.index));
-      // const destinationColumnData = allColumns?.find((item) => item.order === destination.index);
-      // const sourceColumnData = allColumns?.find((item) => item.order === source.index);
-      // await updateColumn({
-      //   idBoard: `${localStorage.getItem('idBoard')}`,
-      //   id: destinationColumnData?.id,
-      //   title: destinationColumnData?.title as string,
-      //   order: sourceColumnData?.order as number,
-      // });
-      // await updateColumn({
-      //   idBoard: `${localStorage.getItem('idBoard')}`,
-      //   id: sourceColumnData?.id,
-      //   title: sourceColumnData?.title as string,
-      //   order: destinationColumnData?.order as number,
-      // });
-      // dispatch(
-      //   reducers.dragAndDropColumn({
-      //     indexDestinationColumn: destination.index,
-      //     indexSourceColumn: source.index,
-      //   })
-      // );
+      dragDropColumns(result);
     }
 
     if (type === 'task') {
       if (destination.droppableId === source.droppableId) {
         dragDropForTaskInOneColumn(result);
+      } else {
+        dragDropForTaskInDifferentColumns(result);
       }
     }
   };
