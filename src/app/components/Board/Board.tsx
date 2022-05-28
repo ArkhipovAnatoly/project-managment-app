@@ -22,9 +22,10 @@ import { useSliceBoardsPage } from '../../../app/store/reducers/useSliceBoardsPa
 type BoardProps = {
   id?: string;
   title: string;
+  description?: string;
 };
 
-export default function Board({ id, title }: BoardProps) {
+export default function Board({ id, title, description }: BoardProps) {
   const theme = useTheme();
   const { showConfirmModal } = confirmModalSlice.actions;
   const { setBoardData } = editBoardSlice.actions;
@@ -89,7 +90,7 @@ export default function Board({ id, title }: BoardProps) {
             </Tooltip>
           </ListItemAvatar>
         </NavLink>
-        <ListItemText primary={title} />
+        <ListItemText primary={description ? t('descriptionEmpty') : description} />
       </ListItem>
     </>
   );
