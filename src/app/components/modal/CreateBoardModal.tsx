@@ -99,10 +99,11 @@ export default function CreateBoardModal() {
     if (Object.values(touchedFields).some((v) => v === true) && !isSubmitted) {
       setIsDisabled(false);
     }
-  }, [touchedFields.title, touchedFields, isSubmitted]);
+  }, [touchedFields.title, touchedFields.description, touchedFields, isSubmitted]);
 
   const modalClose = () => {
     setMessage('');
+    reset();
     dispatch(showCreateBoardModal(false));
   };
 
