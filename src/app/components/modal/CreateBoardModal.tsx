@@ -152,13 +152,21 @@ export default function CreateBoardModal() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  color="info"
+                  error={errors.description && true}
                   fullWidth
+                  required
                   label="Description"
                   id="description"
                   variant="standard"
                   multiline
-                  {...register('description')}
+                  {...register('description', { required: true })}
                 />
+                {errors.description?.type === 'required' && (
+                  <FormHelperText component="span" error>
+                    {t('descriptionEmpty')}
+                  </FormHelperText>
+                )}
               </Grid>
             </Grid>
             <Box
