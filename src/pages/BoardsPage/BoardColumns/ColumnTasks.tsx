@@ -16,8 +16,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import CreateIcon from '@mui/icons-material/Create';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import type { DroppableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
-import { taskAPI } from '../../../services/TaskService';
-import { TaskData } from '../../../types';
+import { Column, task } from '../../../types';
 
 const useStyles = makeStyles({
   columnTasks: {
@@ -56,17 +55,13 @@ const useStyles = makeStyles({
 });
 
 interface ColumnTasks {
-  columnId?: string;
+  column?: Column;
 }
 
 function ColumnTasks(props: ColumnTasks) {
   const classes = useStyles();
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
-  const { data: allTasks } = taskAPI.useFetchTasksQuery({
-    idBoard: `${localStorage.getItem('idBoard')}`,
-    idColumn: props.columnId as string,
-  });
 
   const openModalWindowDeleteTask = (targetButtonModal: HTMLElement) => {
     const currentIndexColumn = String(targetButtonModal?.dataset.columnid);
@@ -100,7 +95,7 @@ function ColumnTasks(props: ColumnTasks) {
     }
   };
 
-  const sortTasksByOrder = (tasks: TaskData[]) => {
+  const sortTasksByOrder = (tasks: task[]) => {
     return tasks.sort((a, b) => {
       if (a.order > b.order) {
         return 1;
@@ -114,7 +109,7 @@ function ColumnTasks(props: ColumnTasks) {
 
   return (
     <>
-      <Droppable droppableId={props.columnId} type="task">
+      <Droppable droppableId={props.column?.id} type="task">
         {(provided: DroppableProvided) => (
           <Stack
             direction="column"
@@ -125,10 +120,10 @@ function ColumnTasks(props: ColumnTasks) {
             {...provided.droppableProps}
             ref={provided.innerRef}
           >
-            {allTasks !== undefined ? (
-              sortTasksByOrder([...allTasks]).map((task, indexTask) => {
+            {props.column !== undefined ? (
+              sortTasksByOrder([...props.column.tasks]).map((task) => {
                 return (
-                  <Draggable key={task.id} draggableId={task.id} index={indexTask}>
+                  <Draggable key={task.id} draggableId={task.id} index={task.order}>
                     {(provided: DroppableProvided, snapshot: DraggableStateSnapshot) => (
                       <Paper
                         sx={{
@@ -146,7 +141,7 @@ function ColumnTasks(props: ColumnTasks) {
                           <Box
                             className="buttonModal"
                             data-modalname="deleteTask"
-                            data-columnid={props.columnId}
+                            data-columnid={props.column?.id}
                             data-taskindex={task.id}
                             onClick={handleModalWindow}
                           >
@@ -157,7 +152,7 @@ function ColumnTasks(props: ColumnTasks) {
                           <Box
                             className="buttonModal"
                             data-modalname="editTask"
-                            data-columnid={props.columnId}
+                            data-columnid={props.column?.id}
                             data-taskindex={task.id}
                             onClick={handleModalWindow}
                           >

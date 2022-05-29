@@ -6,20 +6,6 @@ interface States {
   indexOfCurrentBoard: string;
   indexOfCurrentColumn: string;
   indexOfCurrentTask: string;
-  titleOfCurrentTask?: string;
-  DescriptionOfCurrentTask?: string;
-}
-
-interface DnDColumn {
-  indexDestinationColumn: number;
-  indexSourceColumn: number;
-}
-
-interface DnDTask {
-  destinationColumn: string;
-  sourceColumn: string;
-  indexDestinationTask: number;
-  indexSourceTask: number;
 }
 
 const initialState: States = {
@@ -28,8 +14,6 @@ const initialState: States = {
   indexOfCurrentBoard: localStorage.getItem('idBoard') || '',
   indexOfCurrentColumn: '',
   indexOfCurrentTask: '',
-  titleOfCurrentTask: '',
-  DescriptionOfCurrentTask: '',
 };
 
 export const useSliceBoardsPage = createSlice({
@@ -54,32 +38,6 @@ export const useSliceBoardsPage = createSlice({
 
     addNameForModalWindow: (state, action: PayloadAction<string>) => {
       state.nameModalWindow = action.payload;
-    },
-
-    dragAndDropColumn: (state, action: PayloadAction<DnDColumn>) => {
-      // const { indexDestinationColumn, indexSourceColumn } = action.payload;
-      // const allArrayItem = state.dataBoardsPage;
-      // const [reorderedItem] = allArrayItem.splice(indexSourceColumn, 1);
-      // allArrayItem.splice(indexDestinationColumn, 0, reorderedItem);
-      // state.dataBoardsPage = allArrayItem;
-    },
-    dragAndDropTask: (state, action: PayloadAction<DnDTask>) => {
-      // const { destinationColumn, sourceColumn, indexDestinationTask, indexSourceTask } =
-      //   action.payload;
-      // const allArrayItem = state.dataBoardsPage;
-      // const indexDestinationColumn = allArrayItem.findIndex((item) => {
-      //   if (item.id === destinationColumn) {
-      //     return true;
-      //   }
-      // });
-      // const indexSourceColumn = allArrayItem.findIndex((item) => {
-      //   if (item.id === sourceColumn) {
-      //     return true;
-      //   }
-      // });
-      // const [deletedItem] = allArrayItem[indexSourceColumn].tasks?.splice(indexSourceTask, 1);
-      // allArrayItem[indexDestinationColumn].tasks.splice(indexDestinationTask, 0, deletedItem);
-      // state.dataBoardsPage = allArrayItem;
     },
   },
 });

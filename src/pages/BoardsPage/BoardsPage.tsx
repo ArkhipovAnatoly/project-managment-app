@@ -1,10 +1,11 @@
-import { Button, InputBase, Paper } from '@mui/material';
+import { Button, Paper, Typography } from '@mui/material';
 import BoardColumns from './BoardColumns/BoardColumns';
 import { makeStyles } from '@material-ui/core';
 import Box from '@mui/material/Box';
 import { NavLink } from 'react-router-dom';
 import Header from '../../app/components/share/Header';
 import { useTranslation } from 'react-i18next';
+import { boardAPI } from '../.././services/BoardService';
 
 const useStyles = makeStyles({
   container: {
@@ -14,9 +15,8 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     paddingTop: '80px',
     paddingBottom: '10px',
-    minHeight: 'calc(100vh - 52px)',
+    minHeight: 'calc(100vh - 78px)',
     overflowY: 'hidden',
-    // ['@media (max-width:800px)']: { paddingTop: '1000px' },
   },
 
   inputSwap: {
@@ -55,18 +55,20 @@ const useStyles = makeStyles({
     alignItems: 'center',
     margin: '10px',
   },
-  projectNameInput: {
+  projectName: {
     margin: '10px',
-    padding: '2px 4px',
+    padding: '6px 9px',
     display: 'flex',
     alignItems: 'center',
     maxWidth: '170px',
+    cursor: 'pointer',
   },
 });
 
 function BoardsPage() {
   const classes = useStyles();
-  const { t, i18n } = useTranslation('boardsPage');
+  const { t } = useTranslation('boardsPage');
+  const { data: currentBoard } = boardAPI.useGetBoardQuery(`${localStorage.getItem('idBoard')}`);
 
   return (
     <Box className="app" sx={{ bgcolor: 'background.default' }}>
@@ -79,15 +81,11 @@ function BoardsPage() {
                 <Button variant="contained">{t('onMainPage')}</Button>
               </NavLink>
             </Box>
-            <Paper component="form" className={classes.projectNameInput}>
-              <InputBase
-                sx={{ ml: 1, flex: 1 }}
-                defaultValue="My Project Name"
-                inputProps={{ maxLength: 15 }}
-              />
+            <Paper component="form" className={classes.projectName}>
+              <Typography>{currentBoard?.title}</Typography>
             </Paper>
           </Box>
-          <BoardColumns></BoardColumns>
+          <BoardColumns currentBoard={currentBoard} />
         </Box>
       </Box>
     </Box>

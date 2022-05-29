@@ -90,12 +90,17 @@
     "addNewTask": "Add new task",
     "tittleOfTask": "Tittle of new task",
     "descriptionOfTask": "Description of new task",
-    "addTaskButton": "Add column",
+    "addTaskButton": "Add task",
     "cancelTaskButton": "Cancel",
     "changeTask": "Edit your task",
     "changeTittleOfTask": "Change tittle of this task",
     "changeDescriptionOfTask": "Change description of this task",
     "editTaskButton": "Edit task",
-    "cancelEditTaskButton": "Cancel"
+    "cancelEditTaskButton": "Cancel",
+    "deleteColumnQuest": "Are you sure want to delete this column?",
+    "deleteColumnText": "All tasks that were inside of this column are permanently deleted along with it!",
+    "deleteColumnButton": "Delete",
+    "deleteTaskQuest": "Are you sure want to delete this task?",
+    "deleteTaskText": " The description that was inside this task will be permanently deleted along with it!"
   }
 }

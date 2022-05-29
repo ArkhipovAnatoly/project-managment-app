@@ -112,6 +112,10 @@ export type ColumnsData = {
   title: string;
   order: number;
 };
+export type GetOneColumnData = {
+  idBoard?: string;
+  id?: string;
+};
 
 export type DeleteColumn = {
   boardId?: string;
@@ -152,6 +156,7 @@ export type DeleteTask = {
 export type TaskDataPost = {
   boardId?: string;
   columnId?: string;
+  currentColumn?: string;
   userId?: string;
   taskId?: string;
   title: string;
@@ -167,6 +172,38 @@ export type TaskDataPostResponse = {
   boardId: string;
   columnId: string;
 };
+
+export type Column = {
+  id: string;
+  title: string;
+  order: number;
+  tasks: task[];
+};
+
+export type task = {
+  id: string;
+  title: string;
+  order: number;
+  done?: boolean;
+  description: string;
+  userId: string;
+  files: file[];
+};
+
+export type file = {
+  filename: string;
+  fileSize: number;
+};
+
+export type GetCurrentBoardData = {
+  columns: Column[];
+  id: string;
+  title: string;
+};
+
+export interface CurrentBoardProps {
+  currentBoard?: GetCurrentBoardData;
+}
 
 export type DeleteTaskResponse = DeleteUserResponse;
 export type UpdateTaskResponse = DeleteUserResponse;
