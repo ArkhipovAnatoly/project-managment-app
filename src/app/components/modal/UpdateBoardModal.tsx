@@ -79,10 +79,7 @@ export default function CreateBoardModal() {
       }, 1500);
       return;
     }
-    if (status !== StatusCode.OK) {
-      setMessage(t('statusErrorBoardUpdate'));
-      return;
-    }
+
     setMessage(t('statusUpdateOk'));
     setTimeout(() => {
       setMessage('');
@@ -101,10 +98,11 @@ export default function CreateBoardModal() {
     if (Object.values(touchedFields).some((v) => v === true) && !isSubmitted) {
       setIsDisabled(false);
     }
-  }, [touchedFields.title, touchedFields, isSubmitted]);
+  }, [touchedFields.title, touchedFields.description, touchedFields, isSubmitted]);
 
   const modalClose = () => {
     setMessage('');
+    reset();
     dispatch(showUpdateBoardModal(false));
   };
 
@@ -139,28 +137,32 @@ export default function CreateBoardModal() {
                   label="New Title"
                   autoFocus
                   variant="standard"
-                  {...register('title', { required: true, pattern: /^[A-Za-zА-Яа-я\s]+$/i })}
+                  {...register('title', { required: true })}
                 />
                 {errors.title?.type === 'required' && (
                   <FormHelperText component="span" error>
                     {t('titleEmpty')}
                   </FormHelperText>
                 )}
-                {errors.title?.type === 'pattern' && (
-                  <FormHelperText component="span" error>
-                    {t('titlePattern')}
-                  </FormHelperText>
-                )}
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  color="info"
+                  error={errors.description && true}
                   fullWidth
-                  label="Description"
+                  label="New Description"
                   id="description"
                   variant="standard"
                   multiline
-                  {...register('description')}
+                  {...register('description', {
+                    required: true,
+                  })}
                 />
+                {errors.description?.type === 'required' && (
+                  <FormHelperText component="span" error>
+                    {t('descriptionEmpty')}
+                  </FormHelperText>
+                )}
               </Grid>
             </Grid>
             <Box
