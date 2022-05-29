@@ -9,6 +9,7 @@ import {
   Paper,
   Typography,
   Stack,
+  Checkbox,
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import { makeStyles } from '@material-ui/core';
@@ -163,6 +164,7 @@ function ColumnTasks(props: ColumnTasks) {
                               <CreateIcon fontSize="small" color="action" />
                             </Button>
                           </Box>
+                          <Checkbox color="success" />
                         </Box>
                         <Accordion elevation={0}>
                           <AccordionSummary
