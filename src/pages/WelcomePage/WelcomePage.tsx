@@ -187,9 +187,24 @@ const WelcomePage = () => {
             </div>
             <div className="">
               <p className="title">Возможности приложения:</p>
-              <p className="title"> - Создавать, редактировать и удалять доски </p>
-              <p className="title"> - Создавать, редактировать, удалять и перемещать задачи </p>
-              <p className="title"> - Можно воспользоваться поиском по доскам.</p>
+              <p className="title">
+                <div className="checkContainer">
+                  <img className="check" src={'assets/img/check.png'} alt="check" /> Создавать,
+                  редактировать и удалять доски
+                </div>
+              </p>
+              <p className="title">
+                <div className="checkContainer">
+                  <img className="check" src={'assets/img/check.png'} alt="check" /> Создавать,
+                  редактировать, удалять и перемещать задачи
+                </div>
+              </p>
+              <p className="title">
+                <div className="checkContainer">
+                  <img className="check" src={'assets/img/check.png'} alt="check" /> Можно
+                  воспользоваться поиском по доскам.
+                </div>
+              </p>
             </div>
           </motion.div>
           <motion.div
