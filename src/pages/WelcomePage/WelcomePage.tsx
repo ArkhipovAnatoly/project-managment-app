@@ -15,7 +15,7 @@ const WelcomePage = () => {
   const [checked, setChecked] = useState<boolean>(false);
   const { auth } = useAppSelector((state) => state.userAuthReducer);
   const [videoModalActive, setVideomodalactive] = useState(false);
-  const { t } = useTranslation('welcome');
+  const { t } = useTranslation(['welcome', 'team']);
   const { setTheme } = themeSlice.actions;
   const dispatch = useAppDispatch();
   const token = localStorage.getItem('token');
@@ -90,17 +90,17 @@ const WelcomePage = () => {
               label=""
             />
             {token && auth.isAuth ? (
-              <CustomizedButton innerText={t('toMainPage')} link={'/main'} />
+              <CustomizedButton innerText={t('welcome:toMainPage')} link={'/main'} />
             ) : (
               <div className="button-wrapper">
-                <CustomizedButton innerText={t('signIn')} link={'/signin'} />
-                <CustomizedButton innerText={t('signUp')} link={'/signup'} />
+                <CustomizedButton innerText={t('welcome:signIn')} link={'/signin'} />
+                <CustomizedButton innerText={t('welcome:signUp')} link={'/signup'} />
               </div>
             )}
           </div>
           <div className="aboutTheProject">
             <motion.h1 initial="hidden" whileInView="visible" custom={1} variants={textAnimation}>
-              {t('aboutProject')} <span className="titleProject">TEMPER</span>
+              {t('welcome:aboutProject')} <span className="titleProject">TEMPER</span>
             </motion.h1>
             <motion.p
               initial="hidden"
@@ -109,7 +109,7 @@ const WelcomePage = () => {
               variants={textAnimation}
               className="title"
             >
-              {t('videoReview')}
+              {t('welcome:videoReview')}
             </motion.p>
           </div>
           <div className="videoPlaceholder">
@@ -159,7 +159,7 @@ const WelcomePage = () => {
             whileInView="visible"
             className="titleContainer"
           >
-            <p className="title">{t('whatAllows')}</p>
+            <p className="title">{t('welcome:whatAllows')}</p>
             <div className="imgTitle">
               <img src={'assets/img/board.png'} alt="board" />
             </div>
@@ -172,7 +172,7 @@ const WelcomePage = () => {
             whileInView="visible"
             className="titleContainer2"
           >
-            <p className="title">{t('advantage')}</p>
+            <p className="title">{t('welcome:advantage')}</p>
           </motion.div>
           <motion.div
             custom={3}
@@ -186,10 +186,10 @@ const WelcomePage = () => {
               <img src={'assets/img/giphy.gif'} className="imgBoard" alt="boardGif" />
             </div>
             <div className="app-feat">
-              <p className="title">{t('appFeat')}</p>
-              <p className="title"> - {t('firstFeat')}</p>
-              <p className="title"> - {t('secondFeat')} </p>
-              <p className="title"> - {t('thirdFeat')}.</p>
+              <p className="title">{t('welcome:appFeat')}</p>
+              <p className="title"> - {t('welcome:firstFeat')}</p>
+              <p className="title"> - {t('welcome:secondFeat')} </p>
+              <p className="title"> - {t('welcome:thirdFeat')}.</p>
             </div>
           </motion.div>
           <motion.div
@@ -200,10 +200,10 @@ const WelcomePage = () => {
             whileInView="visible"
             className="titleContainer4"
           >
-            <p className="title title-center">{t('moto')}</p>
+            <p className="title title-center">{t('welcome:moto')}</p>
           </motion.div>
           <div className="aboutTheComand">
-            <h2> {t('teamInfo')} </h2>
+            <h2> {t('welcome:teamInfo')} </h2>
             <motion.div
               custom={3}
               variants={textAnimation}
@@ -217,7 +217,7 @@ const WelcomePage = () => {
                   key={index}
                   imgSrc={item.imgSrc}
                   name={item.name}
-                  description={item.description}
+                  description={t('team:description', { var: item.description })}
                 />
               ))}
             </motion.div>
