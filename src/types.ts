@@ -79,7 +79,7 @@ export type BoardDataResponse = {
 
 export type EditUserProfileResponse = SignUpResponse;
 
-export type DeleteUserResponse = {
+export type DeleteResponse = {
   error?: {
     data: {
       message: string;
@@ -88,7 +88,6 @@ export type DeleteUserResponse = {
     status: number;
   };
 };
-export type DeleteBoardResponse = DeleteUserResponse;
 
 export type User = {
   id: string;
@@ -122,8 +121,8 @@ export type DeleteColumn = {
   boardId?: string;
   deleteColumnId?: string;
 };
-export type DeleteColumnResponse = DeleteUserResponse;
-export type UpdateColumnResponse = DeleteUserResponse;
+export type DeleteColumnResponse = DeleteResponse;
+export type UpdateColumnResponse = DeleteResponse;
 
 export type TaskDataGet = {
   idBoard: string;
@@ -206,5 +205,5 @@ export interface CurrentBoardProps {
   currentBoard?: GetCurrentBoardData;
 }
 
-export type DeleteTaskResponse = DeleteUserResponse;
-export type UpdateTaskResponse = DeleteUserResponse;
+export type DeleteTaskResponse = DeleteResponse;
+export type UpdateTaskResponse = DeleteResponse;
