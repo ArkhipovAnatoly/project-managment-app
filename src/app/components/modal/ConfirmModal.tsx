@@ -13,7 +13,12 @@ import {
 } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { userAPI } from '../../../services/UserService';
-import { DeleteBoardResponse, DeleteUserResponse, StatusCode } from '../../../types';
+import {
+  DeleteBoardResponse,
+  DeleteColumnResponse,
+  DeleteUserResponse,
+  StatusCode,
+} from '../../../types';
 import { userAuthSlice } from '../../store/reducers/UserAuthSlice';
 import { useNavigate } from 'react-router-dom';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
@@ -37,11 +42,12 @@ const style = {
 };
 
 type ConfirmModalProps = {
-  title: string;
-  type: 'profile' | 'board';
+  title?: string;
+  subtitle?: string;
+  type: 'profile' | 'board' | 'column' | 'task';
 };
 
-export default function ConfirmModal({ title, type }: ConfirmModalProps) {
+export default function ConfirmModal({ title = '', type, subtitle = '' }: ConfirmModalProps) {
   const { open } = useAppSelector((state) => state.confirmModalReducer);
   const { showConfirmModal } = confirmModalSlice.actions;
   const [message, setMessage] = useState<string>('');
@@ -53,7 +59,12 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
     deleteBoard,
     { isLoading: isDeletingBoard, isError: isErrorBoard, isSuccess: isSuccessBoard },
   ] = boardAPI.useDeleteBoardMutation();
+  const [
+    deleteColumn,
+    { isLoading: isDeletingColumn, isError: isErrorColumn, isSuccess: isSuccessColumn },
+  ] = boardAPI.useDeleteColumnMutation();
   const { auth } = useAppSelector((state) => state.userAuthReducer);
+  const { indexOfCurrentColumn } = useAppSelector((state) => state.boardsPage);
   const { setUserAuthData } = userAuthSlice.actions;
   const dispatch = useAppDispatch();
   const { dataBoard } = useAppSelector((state) => state.editBoardReducer);
@@ -62,7 +73,7 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
   const theme = useTheme();
 
   const handleConfirm = async () => {
-    let response: DeleteUserResponse | DeleteBoardResponse = {};
+    let response: DeleteUserResponse | DeleteBoardResponse | DeleteColumnResponse = {};
     setMessage('');
     switch (type) {
       case 'profile':
@@ -70,6 +81,12 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
         break;
       case 'board':
         response = (await deleteBoard(dataBoard.id as string)) as DeleteBoardResponse;
+        break;
+      case 'column':
+        response = (await deleteColumn({
+          boardId: dataBoard.id,
+          deleteColumnId: indexOfCurrentColumn,
+        })) as DeleteBoardResponse;
         break;
       default:
         break;
@@ -96,7 +113,12 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
         case 'profile':
           setMessage(t('profile:statusErrorUserDelete'));
           break;
+
         case 'board':
+          setMessage(t('board:statusErrorBoardDelete'));
+          break;
+
+        case 'column':
           setMessage(t('board:statusErrorBoardDelete'));
           break;
         default:
@@ -117,6 +139,7 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
         }, 1500);
         break;
       case 'board':
+      case 'column':
         setMessage(t('board:statusDeleteOk'));
         setTimeout(() => {
           setMessage('');
@@ -137,6 +160,7 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
         open={open}
         onClose={modalClose}
         aria-labelledby="modal-title"
+        aria-describedby="modal-modal-description"
         BackdropComponent={Backdrop}
         closeAfterTransition
         BackdropProps={{
@@ -150,6 +174,9 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
             </Avatar>
             <Typography marginTop={2} component="h3" variant="h6" id="modal-title">
               {title}
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2, textAlign: 'center' }}>
+              {subtitle}
             </Typography>
             <Button
               color={theme.palette.mode === 'dark' ? 'secondary' : 'primary'}
@@ -169,13 +196,17 @@ export default function ConfirmModal({ title, type }: ConfirmModalProps) {
             >
               {t('profile:back')}
             </Button>
-            {(isDeletingUser || isDeletingBoard) && <CircularProgress size={26} color="error" />}
+            {(isDeletingUser || isDeletingBoard || isDeletingColumn) && (
+              <CircularProgress size={26} color="error" />
+            )}
             {
               <FormHelperText
-                error={isErrorUser || isErrorBoard}
+                error={isErrorUser || isErrorBoard || isErrorColumn}
                 component="span"
                 sx={{
-                  color: ({ isSuccessBoard } || { isSuccessUser }) && 'success.main',
+                  color:
+                    ({ isSuccessBoard } || { isSuccessUser } || { isSuccessColumn }) &&
+                    'success.main',
                   fontSize: '18px',
                 }}
               >
