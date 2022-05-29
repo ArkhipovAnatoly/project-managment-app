@@ -1,14 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 import { RootState } from '../app/store/store';
 import { BoardData, BoardDataResponse, DeleteBoardResponse, GetCurrentBoardData } from '../types';
-import {
-  ColumnsData,
-  DeleteColumn,
-  DeleteColumnResponse,
-  UpdateColumnResponse,
-  GetOneColumnData,
-  GetColumnForDND,
-} from '../types';
+import { ColumnsData, DeleteColumn, DeleteColumnResponse, UpdateColumnResponse } from '../types';
 import {
   TaskData,
   TaskDataGet,
@@ -81,12 +74,6 @@ export const boardAPI = createApi({
       }),
       providesTags: () => ['Columns'],
     }),
-    // getOneColumn: build.query<GetColumnForDND, GetOneColumnData>({
-    //   query: (oneColumn) => ({
-    //     url: `${oneColumn.idBoard}/columns/${oneColumn.id}`,
-    //   }),
-    //   providesTags: () => ['Columns'],
-    // }),
     updateColumn: build.mutation<UpdateColumnResponse, ColumnsData>({
       query(columnData) {
         return {
@@ -101,7 +88,6 @@ export const boardAPI = createApi({
       query: (columnData) => ({
         url: `/boards/${columnData.idBoard}/columns`,
         method: 'POST',
-        // , order: columnData.order
         body: { title: columnData.title },
       }),
       invalidatesTags: ['Columns'],
@@ -140,7 +126,6 @@ export const boardAPI = createApi({
       query: (tasksDataPost) => ({
         url: `/boards/${tasksDataPost.boardId}/columns/${tasksDataPost.columnId}/tasks`,
         method: 'POST',
-        // order: tasksDataPost.order,
         body: {
           title: tasksDataPost.title,
           description: tasksDataPost.description,
