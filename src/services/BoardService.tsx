@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 import { RootState } from '../app/store/store';
-import { BoardData, BoardDataResponse, DeleteBoardResponse, GetCurrentBoardData } from '../types';
+import { BoardData, BoardDataResponse, DeleteResponse, GetCurrentBoardData } from '../types';
 import { ColumnsData, DeleteColumn, DeleteColumnResponse, UpdateColumnResponse } from '../types';
 import {
   TaskData,
@@ -61,7 +61,7 @@ export const boardAPI = createApi({
       },
       invalidatesTags: ['Board'],
     }),
-    deleteBoard: build.mutation<DeleteBoardResponse, string>({
+    deleteBoard: build.mutation<DeleteResponse, string>({
       query: (boardId) => ({
         url: `/boards/${boardId}`,
         method: 'DELETE',

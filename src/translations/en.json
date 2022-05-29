@@ -17,10 +17,10 @@
     "statusUpdateOk": "Successfully updated",
     "statusErrorUserDelete": "Could not delete",
     "statusErrorUserUpdate": "Could not update",
-    "nameError": "Name is required",
+    "nameError": "Name should be empty",
     "nameErrorLetters": "Name should include letters only",
-    "loginError": "Login is required",
-    "passwordError": "Password is required",
+    "loginError": "Login should not be empty",
+    "passwordError": "Password should not be empty",
     "passwordLengthError": "Password length should be at least 8 characters"
   },
   "welcome": {
@@ -32,7 +32,11 @@
     "whatAllows": "Allows you effectively organize work according to Japanese methodology kanban-boards.",
     "advantage": "The way of placing cards on the boards is up to you.",
     "teamInfo": "About Our Team",
-    "moto": "TEMPER - plan and develop at your pace!"
+    "moto": "TEMPER - plan and develop at your pace!",
+    "appFeat": "Application features:",
+    "firstFeat": "Create, edit, delete boards",
+    "secondFeat": "Create, edit, delete, Drag and drop tasks",
+    "thirdFeat": "You can use the board search"
   },
   "account": {
     "statusOkSignIn": "Successfully signed in",
@@ -42,10 +46,10 @@
     "statusErrorSignUp": "User login already exists!",
     "statusServerError": "Internal server error",
     "titleSignUp": "Sign up",
-    "nameError": "Name is required",
+    "nameError": "Name should not be empty",
     "nameErrorLetters": "Name should include letters only",
-    "loginError": "Login is required",
-    "passwordError": "Password is required",
+    "loginError": "Login should not be empty",
+    "passwordError": "Password should not be empty",
     "passwordLengthError": "Password length should be at least 8 characters",
     "questionSignIn": "Don't have an account? Sign Up",
     "questionSignUp": " Already have an account? Sign in"
@@ -64,8 +68,9 @@
     "authError": "Sign in is required",
     "statusOk": "Successfully created",
     "statusUpdateOk": "Successfully updated",
-    "titleEmpty": "Title is required",
-    "descriptionEmpty": "No description",
+    "titleEmpty": "Title should not be empty",
+    "descriptionEmpty": "Description should not be empty",
+    "noDescription": "No description",
     "titlePattern": "Title should include letters only",
     "errorLoad": "Could not load boards",
     "statusErrorBoardDelete": "Could not delete",
@@ -98,10 +103,10 @@
     "changeDescriptionOfTask": "Change description of this task",
     "editTaskButton": "Edit task",
     "cancelEditTaskButton": "Cancel",
-    "deleteColumnQuest": "Are you sure want to delete this column?",
+    "deleteColumnQuest": "This column will be deleted?",
     "deleteColumnText": "All tasks that were inside of this column are permanently deleted along with it!",
     "deleteColumnButton": "Delete",
-    "deleteTaskQuest": "Are you sure want to delete this task?",
+    "deleteTaskQuest": "This task will be deleted?",
     "deleteTaskText": " The description that was inside this task will be permanently deleted along with it!"
   }
 }

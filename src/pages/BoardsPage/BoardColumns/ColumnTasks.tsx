@@ -17,6 +17,7 @@ import CreateIcon from '@mui/icons-material/Create';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import type { DroppableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { Column, task } from '../../../types';
+import { confirmModalSlice } from '../../../app/store/reducers/ConfirmModalSlice';
 
 const useStyles = makeStyles({
   columnTasks: {
@@ -62,12 +63,14 @@ function ColumnTasks(props: ColumnTasks) {
   const classes = useStyles();
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
+  const { showConfirmModal } = confirmModalSlice.actions;
 
   const openModalWindowDeleteTask = (targetButtonModal: HTMLElement) => {
     const currentIndexColumn = String(targetButtonModal?.dataset.columnid);
     const currentIndexTask = String(targetButtonModal?.dataset.taskindex);
     dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
     dispatch(reducers.changeIndexOfCurrentTask(currentIndexTask));
+    dispatch(showConfirmModal({ open: true, what: 'task' }));
   };
 
   const openModalWindowEditTask = (targetButtonModal: HTMLElement) => {
@@ -162,7 +165,11 @@ function ColumnTasks(props: ColumnTasks) {
                           </Box>
                         </Box>
                         <Accordion elevation={0}>
-                          <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
+                          <AccordionSummary
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                            sx={{ backgroundColor: 'white', color: 'black' }}
+                          >
                             <Typography sx={{ mt: '4px', display: 'flex', flexWrap: 'wrap' }}>
                               {task.title}
                             </Typography>

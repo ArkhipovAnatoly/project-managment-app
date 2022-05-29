@@ -11,21 +11,16 @@ import {
 import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppDispatch } from '../../hooks';
 import { confirmModalSlice } from '../../store/reducers/ConfirmModalSlice';
 import { useTranslation } from 'react-i18next';
 import { editBoardSlice } from '../../store/reducers/EditBoardSlice';
 import { updateBoardModalSlice } from '../../store/reducers/UpdateBoardModalSlice';
 import { NavLink } from 'react-router-dom';
 import { useSliceBoardsPage } from '../../../app/store/reducers/useSliceBoardsPage';
+import { BoardData } from '../../../types';
 
-export type BoardProps = {
-  id?: string;
-  title: string;
-  description?: string;
-};
-
-export default function Board({ id, title, description }: BoardProps) {
+export default function Board({ id, title, description }: BoardData) {
   const theme = useTheme();
   const { showConfirmModal } = confirmModalSlice.actions;
   const { setBoardData } = editBoardSlice.actions;
@@ -34,17 +29,18 @@ export default function Board({ id, title, description }: BoardProps) {
   const { t } = useTranslation('board');
   const reducers = useSliceBoardsPage.actions;
 
-  const openModal = () => {
-    dispatch(setBoardData({ id, title }));
-    dispatch(showConfirmModal(true));
+  const openConfirmModal = () => {
+    dispatch(setBoardData({ id, title, description }));
+    dispatch(showConfirmModal({ open: true, what: '' }));
   };
 
   const openUpdateBoardModal = () => {
-    dispatch(setBoardData({ id, title }));
+    dispatch(setBoardData({ id, title, description }));
     dispatch(showUpdateBoardModal(true));
   };
 
   const updateCurrentIndexBoard = () => {
+    dispatch(setBoardData({ id, title, description }));
     if (id !== undefined) localStorage.setItem('idBoard', `${id}`);
     if (id !== undefined) dispatch(reducers.changeIndexOfCurrentBoard(id));
   };
@@ -74,7 +70,7 @@ export default function Board({ id, title, description }: BoardProps) {
               sx={{ color: theme.palette.mode === 'dark' ? 'common.white' : 'primary.main' }}
               edge="end"
               aria-label="delete"
-              onClick={openModal}
+              onClick={openConfirmModal}
             >
               <Tooltip title={t('tooltipDeleteBoard')} arrow>
                 <DeleteIcon fontSize="medium" />
@@ -86,11 +82,14 @@ export default function Board({ id, title, description }: BoardProps) {
         <NavLink to="/board">
           <ListItemAvatar onClick={updateCurrentIndexBoard}>
             <Tooltip title={t('tooltipOpenBoard')} arrow>
-              <FolderIcon color="primary" fontSize="medium" />
+              <FolderIcon
+                color={theme.palette.mode === 'dark' ? 'secondary' : 'primary'}
+                fontSize="medium"
+              />
             </Tooltip>
           </ListItemAvatar>
         </NavLink>
-        <ListItemText primary={description ? t('descriptionEmpty') : description} />
+        <ListItemText primary={`${description}`} />
       </ListItem>
     </>
   );

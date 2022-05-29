@@ -20,6 +20,7 @@ const getDesignTokens = (mode: PaletteMode) => ({
       ? {
           warning: {
             main: amber[700],
+            dark: amber[900],
             contrastText: '#fff',
           },
 
@@ -28,9 +29,8 @@ const getDesignTokens = (mode: PaletteMode) => ({
           },
 
           primary: {
-            main: indigo[800],
+            main: indigo[700],
             dark: indigo[900],
-            contrastText: '#fff',
           },
           secondary: {
             main: '#26c6da',

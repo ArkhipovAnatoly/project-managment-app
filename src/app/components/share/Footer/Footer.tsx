@@ -50,7 +50,14 @@ const Footer = () => {
           <span className="rssYear">`22</span>{' '}
         </a>
       </div>
-      <Box sx={{ position: 'relative', height: '58px', transform: 'translateZ(0px)' }}>
+      <Box
+        sx={{
+          position: 'relative',
+          height: '58px',
+          transform: 'translateZ(0px)',
+          paddingRight: '40px',
+        }}
+      >
         <SpeedDial
           ariaLabel="SpeedDial tooltip"
           sx={{

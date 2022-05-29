@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import CustomizedButton from '../../app/components/share/Button/CustomizedButton';
 import { useTranslation } from 'react-i18next';
 import { themeSlice } from '../../app/store/reducers/ThemeSlice';
-import MaterialUISwitch from '../../app/components/Switch/MaterialUISwitch';
+import MaterialUISwitch from '../../app/components/switch/MaterialUISwitch';
 import { motion } from 'framer-motion';
 
 const WelcomePage = () => {
@@ -185,6 +185,41 @@ const WelcomePage = () => {
             <div className="imgTitle">
               <img src={'assets/img/giphy.gif'} className="imgBoard" alt="boardGif" />
             </div>
+            <div className="app-feat">
+              <p className="title">
+                <div className="checkContainer">
+                  <img className="check" src={'assets/img/check.png'} alt="check" /> {t('appFeat')}
+                </div>
+              </p>
+              <p className="title">
+                <div className="checkContainer">
+                  <img className="check" src={'assets/img/check.png'} alt="check" />{' '}
+                  {t('firstFeat')}
+                </div>
+              </p>
+              <p className="title">
+                <div className="checkContainer">
+                  <img className="check" src={'assets/img/check.png'} alt="check" />{' '}
+                  {t('secondFeat')}
+                </div>
+              </p>
+              <p className="title">
+                {' '}
+                <div className="checkContainer">
+                  <img className="check" src={'assets/img/check.png'} alt="check" />{' '}
+                  {t('thirdFeat')}.
+                </div>
+              </p>
+            </div>
+          </motion.div>
+          <motion.div
+            custom={4}
+            variants={textAnimation2}
+            viewport={{ amount: 'some' }}
+            initial="hidden"
+            whileInView="visible"
+            className="titleContainer4"
+          >
             <p className="title title-center">{t('moto')}</p>
           </motion.div>
           <div className="aboutTheComand">
