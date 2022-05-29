@@ -177,11 +177,11 @@ function ColumnTasks(props: ColumnTasks) {
                               {task.title}
                             </Typography>
                           </AccordionSummary>
-                          <AccordionDetails>
+                          <AccordionDetails sx={{ backgroundColor: 'white' }}>
                             <Typography
                               variant="body2"
                               color="text.secondary"
-                              sx={{ mt: '4px', display: 'flex', flexWrap: 'wrap' }}
+                              sx={{ mt: '4px', display: 'flex', flexWrap: 'wrap', color: 'black' }}
                             >
                               {task.description}
                             </Typography>
