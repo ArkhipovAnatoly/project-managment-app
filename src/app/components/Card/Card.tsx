@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import { CardActionArea, useTheme } from '@mui/material';
 import { CardProps } from '../../../types';
 
-export default function ActionAreaCard(props: CardProps) {
+export default function ActionAreaCard({ name, imgSrc, description }: CardProps) {
   const theme = useTheme();
   return (
     <Card
@@ -19,12 +19,12 @@ export default function ActionAreaCard(props: CardProps) {
       }}
     >
       <CardActionArea>
-        <CardMedia component="img" height="300" image={props.imgSrc} alt={props.name} />
+        <CardMedia component="img" height="300" image={imgSrc} alt={name} />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {props.name}
+            {name}
           </Typography>
-          <Typography variant="body2">{props.description}</Typography>
+          <Typography variant="body2">{description}</Typography>
         </CardContent>
       </CardActionArea>
     </Card>
