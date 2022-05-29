@@ -186,10 +186,10 @@ const WelcomePage = () => {
               <img src={'assets/img/giphy.gif'} className="imgBoard" alt="boardGif" />
             </div>
             <div className="">
-              <p className="title">Возможности приложения:</p>
-              <p className="title"> - Создавать, редактировать и удалять доски </p>
-              <p className="title"> - Создавать, редактировать, удалять и перемещать задачи </p>
-              <p className="title"> - Можно воспользоваться поиском по доскам.</p>
+              <p className="title">{t('appFeat')}</p>
+              <p className="title"> - {t('firstFeat')}</p>
+              <p className="title"> - {t('secondFeat')} </p>
+              <p className="title"> - {t('thirdFeat')}.</p>
             </div>
           </motion.div>
           <motion.div
