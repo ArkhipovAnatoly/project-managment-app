@@ -55,9 +55,10 @@ h2 {
 }
 .titleContainer,
 .titleContainer2,
-.titleContainer3 {
+.titleContainer3,
+.titleContainer4 {
   display: flex;
-  padding-top: 40px;
+  padding: 40px 0;
   gap: 40px;
 }
 
@@ -90,7 +91,8 @@ h2 {
 @media screen and (min-width: 180px) and (max-width: 1300px) {
   .titleContainer,
   .titleContainer2,
-  .titleContainer3 {
+  .titleContainer3,
+  .titleContainer4 {
     flex-wrap: wrap;
     text-align: center;
     justify-content: center;
