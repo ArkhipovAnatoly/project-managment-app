@@ -10,11 +10,16 @@ import ColumnTitle from './ColumnTitle';
 import ColumnTasks from './ColumnTasks';
 import React from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import type { DroppableProvided, DropResult, DraggableStateSnapshot } from 'react-beautiful-dnd';
+import type {
+  DroppableProvided,
+  DropResult,
+  DraggableStateSnapshot,
+  DraggableLocation,
+} from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
 import { boardAPI } from '../../../services/BoardService';
 import { ColumnsData } from '../../../types';
-import { GetColumnForDND } from '../../../types';
+import { tasks } from '../../../types';
 
 const useStyles = makeStyles({
   columns: {
@@ -175,10 +180,13 @@ function BoardColumns() {
     });
     if (sourceTaskData !== undefined && destinationTaskData !== undefined) {
       console.log(result);
+      console.log(sourceTaskData);
+      console.log(destinationTaskData);
       await updateTask({
         userId: sourceTaskData?.userId,
         boardId: `${localStorage.getItem('idBoard')}`,
         columnId: columnSource?.id,
+        currentColumn: columnSource?.id,
         taskId: sourceTaskData?.id,
         title: sourceTaskData?.title as string,
         description: sourceTaskData?.description,
@@ -196,17 +204,25 @@ function BoardColumns() {
       return column.id === source.droppableId;
     });
     const destinationTaskData = columnDestination?.tasks.find((task) => {
-      return destination.index === 0 ? true : task.order === destination.index;
+      if (destination.index === 0) {
+        return true;
+      } else if (destination.index === task.order + 1) {
+        return true;
+      } else if (task.order === destination.index) {
+        return true;
+      }
     });
     const sourceTaskData = columnSource?.tasks.find((task) => {
       return task.order === source.index;
     });
+    if (sourceTaskData !== undefined) {
+      let newOrder: number | undefined;
+      if (destination.index === 0) {
+        newOrder = 1;
+      } else if (destinationTaskData !== undefined) {
+        newOrder = dragDropForLastAndFirstElement(destinationTaskData, destination);
+      }
 
-    if (
-      (sourceTaskData !== undefined && destinationTaskData !== undefined) ||
-      destination.index === 0
-    ) {
-      console.log(1);
       await updateTask({
         userId: sourceTaskData?.userId,
         boardId: `${localStorage.getItem('idBoard')}`,
@@ -215,8 +231,19 @@ function BoardColumns() {
         taskId: sourceTaskData?.id,
         title: sourceTaskData?.title as string,
         description: sourceTaskData?.description,
-        order: destination.index === 0 ? 1 : destinationTaskData?.order,
+        order: newOrder,
       });
+    }
+  };
+
+  const dragDropForLastAndFirstElement = (
+    destinationTaskData: tasks,
+    destination: DraggableLocation
+  ) => {
+    if (destination.index === destinationTaskData?.order + 1) {
+      return destinationTaskData?.order + 1;
+    } else {
+      return destinationTaskData?.order;
     }
   };
 

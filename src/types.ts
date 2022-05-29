@@ -184,7 +184,7 @@ export type tasks = {
   id: string;
   title: string;
   order: number;
-  done: boolean;
+  done?: boolean;
   description: string;
   userId: string;
   files: files[];

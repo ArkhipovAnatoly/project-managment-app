@@ -181,16 +181,17 @@ function ModalWindow() {
 
   const changeCurrentTask = async () => {
     if (title?.trim() && description?.trim()) {
+      closeModalWindow();
       await updateTask({
         userId: `${localStorage.getItem('userId')}`,
         boardId: `${localStorage.getItem('idBoard')}`,
         columnId: indexOfCurrentColumn,
+        currentColumn: indexOfCurrentColumn,
         taskId: indexOfCurrentTask,
         title: title,
         description: description,
         order: allTasks?.find((item) => item.id === indexOfCurrentTask)?.order,
       });
-      closeModalWindow();
       clearTextModal();
     }
   };
