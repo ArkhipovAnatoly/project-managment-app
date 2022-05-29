@@ -133,7 +133,7 @@ function BoardColumns(props: CurrentBoardProps) {
   const openModalWindowDeleteColumn = (targetButtonModal: HTMLElement) => {
     const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
     dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
-    dispatch(showConfirmModal(true));
+    dispatch(showConfirmModal({ open: true, what: 'column' }));
   };
 
   const handleModalWindow = (event: React.MouseEvent) => {
