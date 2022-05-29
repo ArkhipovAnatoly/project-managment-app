@@ -68,6 +68,7 @@
     "authError": "Sign in is required",
     "statusOk": "Successfully created",
     "statusUpdateOk": "Successfully updated",
+    "description": "Description: ",
     "titleEmpty": "Title should not be empty",
     "descriptionEmpty": "Description should not be empty",
     "noDescription": "No description",
