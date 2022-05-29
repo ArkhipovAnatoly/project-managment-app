@@ -103,7 +103,7 @@
     "deleteColumnQuest": "This column will be deleted?",
     "deleteColumnText": "All tasks that were inside of this column are permanently deleted along with it!",
     "deleteColumnButton": "Delete",
-    "deleteTaskQuest": "Are you sure want to delete this task?",
+    "deleteTaskQuest": "This task will be deleted?",
     "deleteTaskText": " The description that was inside this task will be permanently deleted along with it!"
   }
 }
