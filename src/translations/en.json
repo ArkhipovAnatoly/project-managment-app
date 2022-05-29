@@ -51,7 +51,8 @@
     "questionSignUp": " Already have an account? Sign in"
   },
   "main": {
-    "home": "Home"
+    "home": "Home",
+    "search": "Search board"
   },
   "board": {
     "title": "Create new board",

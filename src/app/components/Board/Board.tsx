@@ -19,7 +19,7 @@ import { updateBoardModalSlice } from '../../store/reducers/UpdateBoardModalSlic
 import { NavLink } from 'react-router-dom';
 import { useSliceBoardsPage } from '../../../app/store/reducers/useSliceBoardsPage';
 
-type BoardProps = {
+export type BoardProps = {
   id?: string;
   title: string;
   description?: string;
