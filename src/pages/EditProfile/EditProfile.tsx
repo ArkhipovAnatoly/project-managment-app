@@ -98,7 +98,7 @@ export default function EditProfile() {
         setMessage('');
         localStorage.removeItem('token');
         dispatch(setUserAuthData({ token: '', isAuth: false }));
-        dispatch(showConfirmModal(false));
+        dispatch(showConfirmModal({ open: false, what: '' }));
         navigator('/');
       }, 1500);
       return;
@@ -114,11 +114,11 @@ export default function EditProfile() {
     setMessage(t('statusUpdateOk'));
     setTimeout(() => {
       setMessage('');
-      dispatch(showConfirmModal(false));
+      dispatch(showConfirmModal({ open: false, what: '' }));
     }, 1500);
   };
   const openModal = () => {
-    dispatch(showConfirmModal(true));
+    dispatch(showConfirmModal({ open: true, what: '' }));
   };
 
   return (

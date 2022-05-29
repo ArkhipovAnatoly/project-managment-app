@@ -31,7 +31,7 @@ export default function Board({ id, title, description }: BoardData) {
 
   const openConfirmModal = () => {
     dispatch(setBoardData({ id, title, description }));
-    dispatch(showConfirmModal(true));
+    dispatch(showConfirmModal({ open: true, what: '' }));
   };
 
   const openUpdateBoardModal = () => {

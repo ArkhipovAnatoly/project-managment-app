@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 import { RootState } from '../app/store/store';
 import {
-  DeleteUserResponse,
+  DeleteResponse,
   EditUserProfileData,
   EditUserProfileResponse,
   SignInResponse,
@@ -48,7 +48,7 @@ export const userAPI = createApi({
         };
       },
     }),
-    userDelete: build.mutation<DeleteUserResponse, string>({
+    userDelete: build.mutation<DeleteResponse, string>({
       query: (userId) => ({
         url: `/users/${userId}`,
         method: 'DELETE',
