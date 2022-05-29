@@ -2,7 +2,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { useSliceBoardsPage } from '../../../app/store/reducers/useSliceBoardsPage';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { IconButton, Tooltip, Typography } from '@mui/material';
+import { IconButton, Tooltip, Typography, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import { makeStyles } from '@material-ui/core';
 import ModalWindow from '../ModalWindow';
@@ -20,6 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { boardAPI } from '../../../services/BoardService';
 import { Column, CurrentBoardProps } from '../../../types';
 import { task } from '../../../types';
+import { common } from '@mui/material/colors';
 
 const useStyles = makeStyles({
   columns: {
@@ -121,7 +122,7 @@ function BoardColumns(props: CurrentBoardProps) {
   const { t } = useTranslation('boardsPage');
   const [updateColumn] = boardAPI.useUpdateColumnMutation();
   const [updateTask] = boardAPI.useUpdateTaskMutation();
-
+  const theme = useTheme();
   const openModalWindowAddTask = (targetButtonModal: HTMLElement) => {
     const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
     dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
@@ -317,8 +318,12 @@ function BoardColumns(props: CurrentBoardProps) {
                                 onClick={handleModalWindow}
                                 className={`${classes.columnAdd} buttonModal`}
                               >
-                                <AddIcon color="action" />
-                                <Typography color="text.secondary">{t('addNewTask')}</Typography>
+                                <AddIcon color="warning" />
+                                <Typography
+                                  color={theme.palette.mode === 'dark' ? 'common.dark' : 'primary'}
+                                >
+                                  {t('addNewTask')}
+                                </Typography>
                               </Box>
                               <Box
                                 className={`buttonModal`}
@@ -327,7 +332,11 @@ function BoardColumns(props: CurrentBoardProps) {
                               >
                                 <Tooltip title={t('deleteColumn')} onClick={handleModalWindow}>
                                   <IconButton>
-                                    <DeleteIcon color="action" />
+                                    <DeleteIcon
+                                      color={
+                                        theme.palette.mode === 'dark' ? 'secondary' : 'primary'
+                                      }
+                                    />
                                   </IconButton>
                                 </Tooltip>
                               </Box>
