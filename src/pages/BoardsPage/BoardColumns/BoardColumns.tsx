@@ -20,7 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { boardAPI } from '../../../services/BoardService';
 import { Column, CurrentBoardProps } from '../../../types';
 import { task } from '../../../types';
-import { common } from '@mui/material/colors';
+import { confirmModalSlice } from '../../../app/store/reducers/ConfirmModalSlice';
 
 const useStyles = makeStyles({
   columns: {
@@ -122,7 +122,9 @@ function BoardColumns(props: CurrentBoardProps) {
   const { t } = useTranslation('boardsPage');
   const [updateColumn] = boardAPI.useUpdateColumnMutation();
   const [updateTask] = boardAPI.useUpdateTaskMutation();
+  const { showConfirmModal } = confirmModalSlice.actions;
   const theme = useTheme();
+
   const openModalWindowAddTask = (targetButtonModal: HTMLElement) => {
     const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
     dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
@@ -131,6 +133,7 @@ function BoardColumns(props: CurrentBoardProps) {
   const openModalWindowDeleteColumn = (targetButtonModal: HTMLElement) => {
     const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
     dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
+    dispatch(showConfirmModal(true));
   };
 
   const handleModalWindow = (event: React.MouseEvent) => {
