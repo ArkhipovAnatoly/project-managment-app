@@ -29,7 +29,7 @@ export default function Board({ id, title, description }: BoardData) {
   const { t } = useTranslation('board');
   const reducers = useSliceBoardsPage.actions;
 
-  const openModal = () => {
+  const openConfirmModal = () => {
     dispatch(setBoardData({ id, title, description }));
     dispatch(showConfirmModal(true));
   };
@@ -40,6 +40,7 @@ export default function Board({ id, title, description }: BoardData) {
   };
 
   const updateCurrentIndexBoard = () => {
+    dispatch(setBoardData({ id, title, description }));
     if (id !== undefined) localStorage.setItem('idBoard', `${id}`);
     if (id !== undefined) dispatch(reducers.changeIndexOfCurrentBoard(id));
   };
@@ -69,7 +70,7 @@ export default function Board({ id, title, description }: BoardData) {
               sx={{ color: theme.palette.mode === 'dark' ? 'common.white' : 'primary.main' }}
               edge="end"
               aria-label="delete"
-              onClick={openModal}
+              onClick={openConfirmModal}
             >
               <Tooltip title={t('tooltipDeleteBoard')} arrow>
                 <DeleteIcon fontSize="medium" />
