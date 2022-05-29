@@ -1,9 +1,6 @@
 import React from 'react';
 import { useAppDispatch } from '../../../app/hooks';
-import {
-  BoardsPageState,
-  useSliceBoardsPage,
-} from '../../../app/store/reducers/useSliceBoardsPage';
+import { useSliceBoardsPage } from '../../../app/store/reducers/useSliceBoardsPage';
 import {
   AccordionDetails,
   Accordion,
@@ -19,6 +16,8 @@ import ClearIcon from '@mui/icons-material/Clear';
 import CreateIcon from '@mui/icons-material/Create';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import type { DroppableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
+import { Column, task } from '../../../types';
+import { confirmModalSlice } from '../../../app/store/reducers/ConfirmModalSlice';
 
 const useStyles = makeStyles({
   columnTasks: {
@@ -57,28 +56,28 @@ const useStyles = makeStyles({
 });
 
 interface ColumnTasks {
-  column?: BoardsPageState;
-  indexColumn?: number;
+  column?: Column;
 }
 
 function ColumnTasks(props: ColumnTasks) {
   const classes = useStyles();
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
+  const { showConfirmModal } = confirmModalSlice.actions;
 
   const openModalWindowDeleteTask = (targetButtonModal: HTMLElement) => {
-    const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
+    const currentIndexColumn = String(targetButtonModal?.dataset.columnid);
     const currentIndexTask = String(targetButtonModal?.dataset.taskindex);
     dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
     dispatch(reducers.changeIndexOfCurrentTask(currentIndexTask));
+    dispatch(showConfirmModal({ open: true, what: 'task' }));
   };
 
   const openModalWindowEditTask = (targetButtonModal: HTMLElement) => {
-    const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
+    const currentIndexColumn = String(targetButtonModal?.dataset.columnid);
     const currentIndexTask = String(targetButtonModal?.dataset.taskindex);
     dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
     dispatch(reducers.changeIndexOfCurrentTask(currentIndexTask));
-    dispatch(reducers.changeTitleOfCurrentTask());
   };
 
   const handleModalWindow = (event: React.MouseEvent) => {
@@ -99,6 +98,18 @@ function ColumnTasks(props: ColumnTasks) {
     }
   };
 
+  const sortTasksByOrder = (tasks: task[]) => {
+    return tasks.sort((a, b) => {
+      if (a.order > b.order) {
+        return 1;
+      }
+      if (a.order < b.order) {
+        return -1;
+      }
+      return 0;
+    });
+  };
+
   return (
     <>
       <Droppable droppableId={props.column?.id} type="task">
@@ -112,67 +123,71 @@ function ColumnTasks(props: ColumnTasks) {
             {...provided.droppableProps}
             ref={provided.innerRef}
           >
-            {props.column?.tasks?.map((tasks, indexTask) => {
-              return (
-                <Draggable key={tasks.id} draggableId={tasks.id} index={indexTask}>
-                  {(provided: DroppableProvided, snapshot: DraggableStateSnapshot) => (
-                    <Paper
-                      sx={{
-                        maxWidth: snapshot.isDragging ? '100px' : '',
-                        opacity: snapshot.isDragging ? '0.8' : '',
-                      }}
-                      key={`${tasks.taskTittle} ${indexTask}`}
-                      className={classes.columnTask}
-                      elevation={3}
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                    >
-                      <Box className={classes.buttonsSetting}>
-                        <Box
-                          className="buttonModal"
-                          data-modalname="deleteTask"
-                          data-columnindex={props.indexColumn}
-                          data-taskindex={indexTask}
-                          onClick={handleModalWindow}
-                        >
-                          <Button color="secondary">
-                            <ClearIcon fontSize="small" color="action" />
-                          </Button>
-                        </Box>
-                        <Box
-                          className="buttonModal"
-                          data-modalname="editTask"
-                          data-columnindex={props.indexColumn}
-                          data-taskindex={indexTask}
-                          onClick={handleModalWindow}
-                        >
-                          <Button color="secondary">
-                            <CreateIcon fontSize="small" color="action" />
-                          </Button>
-                        </Box>
-                      </Box>
-                      <Accordion elevation={0}>
-                        <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
-                          <Typography sx={{ mt: '4px', display: 'flex', flexWrap: 'wrap' }}>
-                            {tasks.taskTittle}
-                          </Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <Typography
-                            variant="body2"
-                            color="text.secondary"
-                            sx={{ mt: '4px', display: 'flex', flexWrap: 'wrap' }}
+            {props.column !== undefined ? (
+              sortTasksByOrder([...props.column.tasks]).map((task) => {
+                return (
+                  <Draggable key={task.id} draggableId={task.id} index={task.order}>
+                    {(provided: DroppableProvided, snapshot: DraggableStateSnapshot) => (
+                      <Paper
+                        sx={{
+                          maxWidth: snapshot.isDragging ? '100px' : '',
+                          opacity: snapshot.isDragging ? '0.8' : '',
+                        }}
+                        key={task.id}
+                        className={classes.columnTask}
+                        elevation={3}
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <Box className={classes.buttonsSetting}>
+                          <Box
+                            className="buttonModal"
+                            data-modalname="deleteTask"
+                            data-columnid={props.column?.id}
+                            data-taskindex={task.id}
+                            onClick={handleModalWindow}
                           >
-                            {tasks.taskOption}
-                          </Typography>
-                        </AccordionDetails>
-                      </Accordion>
-                    </Paper>
-                  )}
-                </Draggable>
-              );
-            })}
+                            <Button color="secondary">
+                              <ClearIcon fontSize="small" color="action" />
+                            </Button>
+                          </Box>
+                          <Box
+                            className="buttonModal"
+                            data-modalname="editTask"
+                            data-columnid={props.column?.id}
+                            data-taskindex={task.id}
+                            onClick={handleModalWindow}
+                          >
+                            <Button color="secondary">
+                              <CreateIcon fontSize="small" color="action" />
+                            </Button>
+                          </Box>
+                        </Box>
+                        <Accordion elevation={0}>
+                          <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
+                            <Typography sx={{ mt: '4px', display: 'flex', flexWrap: 'wrap' }}>
+                              {task.title}
+                            </Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <Typography
+                              variant="body2"
+                              color="text.secondary"
+                              sx={{ mt: '4px', display: 'flex', flexWrap: 'wrap' }}
+                            >
+                              {task.description}
+                            </Typography>
+                          </AccordionDetails>
+                        </Accordion>
+                      </Paper>
+                    )}
+                  </Draggable>
+                );
+              })
+            ) : (
+              <Box></Box>
+            )}
             {provided.placeholder}
           </Stack>
         )}

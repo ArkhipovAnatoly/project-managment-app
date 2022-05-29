@@ -19,17 +19,18 @@ import { BoardData, BoardDataResponse, StatusCode } from '../../../types';
 import { boardAPI } from '../../../services/BoardService';
 import { useNavigate } from 'react-router-dom';
 import { updateBoardModalSlice } from '../../store/reducers/UpdateBoardModalSlice';
+import { userAuthSlice } from '../../store/reducers/UserAuthSlice';
 
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: { xs: 310, sm: 400 },
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
-  p: 4,
+  p: 3,
 };
 
 export default function CreateBoardModal() {
@@ -37,6 +38,7 @@ export default function CreateBoardModal() {
   const { open } = useAppSelector((state) => state.updateBoardModalReducer);
   const [message, setMessage] = useState<string>('');
   const dispatch = useAppDispatch();
+  const { setUserAuthData } = userAuthSlice.actions;
   const { t } = useTranslation('board');
   const [updateBoard, { isLoading: isUpdating, isError, isSuccess }] =
     boardAPI.useUpdateBoardMutation();
@@ -51,6 +53,7 @@ export default function CreateBoardModal() {
     mode: 'onSubmit',
     defaultValues: {
       title: '',
+      description: '',
     },
   });
 
@@ -70,14 +73,13 @@ export default function CreateBoardModal() {
       setTimeout(() => {
         setMessage('');
         modalClose();
+        localStorage.removeItem('token');
+        dispatch(setUserAuthData({ token: '', isAuth: false }));
         navigator('/');
       }, 1500);
       return;
     }
-    if (status === StatusCode.NotFound) {
-      setMessage(t('statusError'));
-      return;
-    }
+
     setMessage(t('statusUpdateOk'));
     setTimeout(() => {
       setMessage('');
@@ -96,10 +98,11 @@ export default function CreateBoardModal() {
     if (Object.values(touchedFields).some((v) => v === true) && !isSubmitted) {
       setIsDisabled(false);
     }
-  }, [touchedFields.title, touchedFields, isSubmitted]);
+  }, [touchedFields.title, touchedFields.description, touchedFields, isSubmitted]);
 
   const modalClose = () => {
     setMessage('');
+    reset();
     dispatch(showUpdateBoardModal(false));
   };
 
@@ -134,21 +137,32 @@ export default function CreateBoardModal() {
                   label="New Title"
                   autoFocus
                   variant="standard"
-                  {...register('title', { required: true, pattern: /^[A-Za-zА-Яа-я\s]+$/i })}
+                  {...register('title', { required: true })}
                 />
                 {errors.title?.type === 'required' && (
                   <FormHelperText component="span" error>
                     {t('titleEmpty')}
                   </FormHelperText>
                 )}
-                {errors.title?.type === 'pattern' && (
-                  <FormHelperText component="span" error>
-                    {t('titlePattern')}
-                  </FormHelperText>
-                )}
               </Grid>
               <Grid item xs={12}>
-                <TextField fullWidth label="Description" variant="standard" multiline />
+                <TextField
+                  color="info"
+                  error={errors.description && true}
+                  fullWidth
+                  label="New Description"
+                  id="description"
+                  variant="standard"
+                  multiline
+                  {...register('description', {
+                    required: true,
+                  })}
+                />
+                {errors.description?.type === 'required' && (
+                  <FormHelperText component="span" error>
+                    {t('descriptionEmpty')}
+                  </FormHelperText>
+                )}
               </Grid>
             </Grid>
             <Box

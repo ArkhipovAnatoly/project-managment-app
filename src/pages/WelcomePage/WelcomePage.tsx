@@ -13,6 +13,7 @@ import { motion } from 'framer-motion';
 
 const WelcomePage = () => {
   const [checked, setChecked] = useState<boolean>(false);
+  const { auth } = useAppSelector((state) => state.userAuthReducer);
   const [videoModalActive, setVideomodalactive] = useState(false);
   const { t } = useTranslation('welcome');
   const { setTheme } = themeSlice.actions;
@@ -88,7 +89,7 @@ const WelcomePage = () => {
               }
               label=""
             />
-            {token ? (
+            {token && auth.isAuth ? (
               <CustomizedButton innerText={t('toMainPage')} link={'/main'} />
             ) : (
               <div className="button-wrapper">
@@ -184,6 +185,21 @@ const WelcomePage = () => {
             <div className="imgTitle">
               <img src={'assets/img/giphy.gif'} className="imgBoard" alt="boardGif" />
             </div>
+            <div className="">
+              <p className="title">Возможности приложения:</p>
+              <p className="title"> - Создавать, редактировать и удалять доски </p>
+              <p className="title"> - Создавать, редактировать, удалять и перемещать задачи </p>
+              <p className="title"> - Можно воспользоваться поиском по доскам.</p>
+            </div>
+          </motion.div>
+          <motion.div
+            custom={4}
+            variants={textAnimation2}
+            viewport={{ amount: 'some' }}
+            initial="hidden"
+            whileInView="visible"
+            className="titleContainer4"
+          >
             <p className="title title-center">{t('moto')}</p>
           </motion.div>
           <div className="aboutTheComand">

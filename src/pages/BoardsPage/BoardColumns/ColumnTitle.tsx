@@ -1,11 +1,10 @@
-import { useAppDispatch } from '../../../app/hooks';
-import { useSliceBoardsPage } from '../../../app/store/reducers/useSliceBoardsPage';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Button, Paper, Typography, InputBase } from '@mui/material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { makeStyles } from '@material-ui/core';
 import SendIcon from '@mui/icons-material/Send';
+import { boardAPI } from '../../../services/BoardService';
 
 const useStyles = makeStyles({
   columnTitle: {
@@ -26,14 +25,14 @@ const useStyles = makeStyles({
 });
 
 interface ColumnTitle {
+  columnId?: string;
   columnTittle?: string;
-  indexColumn?: number;
+  columnOrder?: number;
 }
 
 function ColumnTitle(props: ColumnTitle) {
   const classes = useStyles();
-  const reducers = useSliceBoardsPage.actions;
-  const dispatch = useAppDispatch();
+  const [updateColumn] = boardAPI.useUpdateColumnMutation();
 
   const showAllSettingsColumnTitle = (event: React.MouseEvent) => {
     const mainBox = (event.target as HTMLInputElement).closest('.boxForTitleColumn') as HTMLElement;
@@ -65,7 +64,7 @@ function ColumnTitle(props: ColumnTitle) {
     mainBox.dataset.onopen = (event.target as HTMLInputElement).value;
   };
 
-  const buttonApplyColumnTitle = (event: React.MouseEvent) => {
+  const buttonApplyColumnTitle = async (event: React.MouseEvent) => {
     const mainBox = (event.target as HTMLElement).closest('.boxForTitleColumn') as HTMLElement;
     const buttonsForTitle = mainBox.querySelector('.buttonsForTitle') as HTMLElement;
     const inputTitleChange = mainBox.querySelector('.inputTitleChange') as HTMLElement;
@@ -74,12 +73,12 @@ function ColumnTitle(props: ColumnTitle) {
       buttonsForTitle.style.display = 'none';
       inputTitleChange.style.display = 'none';
       someBoardTitleText.style.display = 'block';
-      dispatch(
-        reducers.changeTitleOfCurrentColumn({
-          indexColumn: mainBox.dataset.columnindex as string,
-          columnTittle: mainBox.dataset.onopen as string,
-        })
-      );
+      await updateColumn({
+        idBoard: `${localStorage.getItem('idBoard')}`,
+        id: props.columnId,
+        title: mainBox.dataset.onopen as string,
+        order: props.columnOrder as number,
+      });
     }
   };
   const buttonCloseColumnTitle = (event: React.MouseEvent) => {
@@ -90,18 +89,11 @@ function ColumnTitle(props: ColumnTitle) {
     buttonsForTitle.style.display = 'none';
     inputTitleChange.style.display = 'none';
     someBoardTitleText.style.display = 'block';
-    dispatch(
-      reducers.changeTitleOfCurrentColumn({
-        indexColumn: mainBox.dataset.columnindex as string,
-        columnTittle: mainBox.dataset.onclose as string,
-      })
-    );
   };
 
   return (
     <Box
       className={`${classes.columnTitle} boxForTitleColumn`}
-      data-columnindex={props.indexColumn}
       data-onopen={props.columnTittle}
       data-onclose={props.columnTittle}
     >

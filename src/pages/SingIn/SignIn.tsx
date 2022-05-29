@@ -75,7 +75,7 @@ export default function SignIn() {
     setMessage(t('statusOkSignIn'));
     const token = response.data?.token as string;
     localStorage.setItem('token', token);
-    dispatch(setUserAuthData({ token }));
+    dispatch(setUserAuthData({ token, isAuth: true }));
     setTimeout(() => {
       navigator('/main');
     }, 1500);
@@ -106,6 +106,7 @@ export default function SignIn() {
       return;
     }
     if (isSuccessUser) {
+      dispatch(setUserAuthData({ isAuth: true }));
       navigator('/main');
     }
   }, [isSuccessUser, isErrorUser, dispatch, setUserAuthData, navigator]);
@@ -118,7 +119,7 @@ export default function SignIn() {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          height: '94%',
+          minHeight: 'calc(100vh - 78px)',
           pl: 1,
           pr: 1,
           bgcolor: 'background.default',
@@ -146,7 +147,7 @@ export default function SignIn() {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        height: '94%',
+        minHeight: 'calc(100vh - 78px)',
         pl: 1,
         pr: 1,
         bgcolor: 'background.default',
@@ -199,7 +200,7 @@ export default function SignIn() {
                   {t('titleSignIn')}
                 </Typography>
 
-                <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
+                <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
                   <TextField
                     color="info"
                     error={errors.login && true}

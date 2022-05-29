@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   Avatar,
@@ -30,15 +30,17 @@ const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
-  width: 200,
+  width: { xs: 300, sm: 400 },
   transform: 'translate(-50%, -50%)',
+  marginRight: 1,
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   bgcolor: 'background.paper',
   boxShadow:
     '0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%),0px 1px 10px 0px rgb(0 0 0 / 90%)',
-  padding: 3,
+
+  padding: { xs: 1, sm: 3 },
 };
 
 export default function EditProfile() {
@@ -52,6 +54,7 @@ export default function EditProfile() {
   const dispatch = useAppDispatch();
   const { t } = useTranslation('profile');
   const theme = useTheme();
+  const navigator = useNavigate();
   const {
     register,
     handleSubmit,
@@ -87,20 +90,35 @@ export default function EditProfile() {
     setMessage('');
     const updateData = { ...formData, userId: auth.userId };
     const response = (await updateProfile(updateData)) as EditUserProfileResponse;
-    if (response.error?.status !== StatusCode.OK) {
-      setMessage(t('statusErrorUserUpdate'));
-    } else {
-      const userId = response.data?.id as string;
-      localStorage.setItem('userId', userId);
-      dispatch(setUserAuthData({ userId }));
-      setMessage(t('update'));
+    const status = response.error?.status;
+
+    if (status === StatusCode.Unauthorized) {
+      setMessage(t('authError'));
       setTimeout(() => {
-        dispatch(showConfirmModal(false));
+        setMessage('');
+        localStorage.removeItem('token');
+        dispatch(setUserAuthData({ token: '', isAuth: false }));
+        dispatch(showConfirmModal({ open: false, what: '' }));
+        navigator('/');
       }, 1500);
+      return;
     }
+    if (status !== StatusCode.OK) {
+      setMessage(t('statusErrorUserUpdate'));
+      return;
+    }
+
+    const userId = response.data?.id as string;
+    localStorage.setItem('userId', userId);
+    dispatch(setUserAuthData({ userId }));
+    setMessage(t('statusUpdateOk'));
+    setTimeout(() => {
+      setMessage('');
+      dispatch(showConfirmModal({ open: false, what: '' }));
+    }, 1500);
   };
   const openModal = () => {
-    dispatch(showConfirmModal(true));
+    dispatch(showConfirmModal({ open: true, what: '' }));
   };
 
   return (
@@ -108,18 +126,11 @@ export default function EditProfile() {
       <Box
         className="app"
         sx={{
-          height: '94%',
+          minHeight: 'calc(100vh - 78px)',
           bgcolor: 'background.default',
         }}
       >
-        <Box
-          component="section"
-          sx={{
-            ...style,
-            padding: { xs: 1, sm: 3 },
-            width: { xs: 320, sm: 400 },
-          }}
-        >
+        <Box component="section" sx={style}>
           <Link
             sx={{ m: 1, cursor: 'pointer', alignSelf: 'flex-end' }}
             component={NavLink}
@@ -143,7 +154,7 @@ export default function EditProfile() {
           <Typography component="h2" variant="h5">
             {t('title')}
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
+          <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
@@ -248,7 +259,7 @@ export default function EditProfile() {
             </Button>
             <Divider sx={{ my: 0.5 }} />
           </Box>
-          <Button sx={{ mt: 2 }} onClick={openModal} variant="outlined" color="error">
+          <Button sx={{ mt: 2, mb: 2 }} onClick={openModal} variant="outlined" color="error">
             {t('delete')}
           </Button>
           <ConfirmModal title={t('question')} type="profile" />

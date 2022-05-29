@@ -2,7 +2,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { useSliceBoardsPage } from '../../../app/store/reducers/useSliceBoardsPage';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { IconButton, Tooltip, Typography } from '@mui/material';
+import { IconButton, Tooltip, Typography, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import { makeStyles } from '@material-ui/core';
 import ModalWindow from '../ModalWindow';
@@ -10,8 +10,17 @@ import ColumnTitle from './ColumnTitle';
 import ColumnTasks from './ColumnTasks';
 import React from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import type { DroppableProvided, DropResult, DraggableStateSnapshot } from 'react-beautiful-dnd';
+import type {
+  DroppableProvided,
+  DropResult,
+  DraggableStateSnapshot,
+  DraggableLocation,
+} from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
+import { boardAPI } from '../../../services/BoardService';
+import { Column, CurrentBoardProps } from '../../../types';
+import { task } from '../../../types';
+import { confirmModalSlice } from '../../../app/store/reducers/ConfirmModalSlice';
 
 const useStyles = makeStyles({
   columns: {
@@ -104,36 +113,27 @@ const useStyles = makeStyles({
   },
 });
 
-function BoardColumns() {
+function BoardColumns(props: CurrentBoardProps) {
   const classes = useStyles();
-  const { dataBoardsPage } = useAppSelector((state) => state.boardsPage);
+  const { currentBoard } = props;
+  const { indexOfCurrentColumn } = useAppSelector((state) => state.boardsPage);
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
-  const { t, i18n } = useTranslation('boardsPage');
+  const { t } = useTranslation('boardsPage');
+  const [updateColumn] = boardAPI.useUpdateColumnMutation();
+  const [updateTask] = boardAPI.useUpdateTaskMutation();
+  const { showConfirmModal } = confirmModalSlice.actions;
+  const theme = useTheme();
 
   const openModalWindowAddTask = (targetButtonModal: HTMLElement) => {
     const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
     dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
   };
 
-  const openModalWindowDeleteTask = (targetButtonModal: HTMLElement) => {
-    const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
-    const currentIndexTask = String(targetButtonModal?.dataset.taskindex);
-    dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
-    dispatch(reducers.changeIndexOfCurrentTask(currentIndexTask));
-  };
-
-  const openModalWindowEditTask = (targetButtonModal: HTMLElement) => {
-    const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
-    const currentIndexTask = String(targetButtonModal?.dataset.taskindex);
-    dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
-    dispatch(reducers.changeIndexOfCurrentTask(currentIndexTask));
-    dispatch(reducers.changeTitleOfCurrentTask());
-  };
-
   const openModalWindowDeleteColumn = (targetButtonModal: HTMLElement) => {
     const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
     dispatch(reducers.changeIndexOfCurrentColumn(currentIndexColumn));
+    dispatch(showConfirmModal({ open: true, what: 'column' }));
   };
 
   const handleModalWindow = (event: React.MouseEvent) => {
@@ -142,18 +142,11 @@ function BoardColumns() {
     const nameForModalWindow = String(targetButtonModal?.dataset.modalname);
     dispatch(reducers.openModalWindow(true));
     dispatch(reducers.addNameForModalWindow(nameForModalWindow));
+    dispatch(reducers.changeIndexOfCurrentColumn('addColumn'));
 
     switch (nameForModalWindow) {
       case 'addTask':
         openModalWindowAddTask(targetButtonModal);
-        break;
-
-      case 'deleteTask':
-        openModalWindowDeleteTask(targetButtonModal);
-        break;
-
-      case 'editTask':
-        openModalWindowEditTask(targetButtonModal);
         break;
 
       case 'deleteColumn':
@@ -162,7 +155,101 @@ function BoardColumns() {
     }
   };
 
-  const dragEndHandler = (result: DropResult) => {
+  const dragDropColumns = async (result: DropResult) => {
+    const { destination, source } = result;
+    const destinationColumnData = currentBoard?.columns?.find(
+      (item) => item.order === destination.index
+    );
+    const sourceColumnData = currentBoard?.columns?.find((item) => item.order === source.index);
+    await updateColumn({
+      idBoard: `${localStorage.getItem('idBoard')}`,
+      id: sourceColumnData?.id,
+      title: sourceColumnData?.title as string,
+      order: destinationColumnData?.order as number,
+    });
+  };
+
+  const dragDropForTaskInOneColumn = async (result: DropResult) => {
+    const { destination, source } = result;
+    const columnDestination = currentBoard?.columns.find((column) => {
+      return column.id === destination.droppableId;
+    });
+    const columnSource = currentBoard?.columns.find((column) => {
+      return column.id === source.droppableId;
+    });
+    const destinationTaskData = columnDestination?.tasks.find((task) => {
+      return task.order === destination.index;
+    });
+    const sourceTaskData = columnSource?.tasks.find((task) => {
+      return task.order === source.index;
+    });
+    if (sourceTaskData !== undefined && destinationTaskData !== undefined) {
+      await updateTask({
+        userId: sourceTaskData?.userId,
+        boardId: `${localStorage.getItem('idBoard')}`,
+        columnId: columnSource?.id,
+        currentColumn: columnSource?.id,
+        taskId: sourceTaskData?.id,
+        title: sourceTaskData?.title as string,
+        description: sourceTaskData?.description,
+        order: destinationTaskData.order,
+      });
+    }
+  };
+
+  const dragDropForTaskInDifferentColumns = async (result: DropResult) => {
+    const { destination, source } = result;
+    const columnDestination = currentBoard?.columns.find((column) => {
+      return destination.droppableId === 0 ? true : column.id === destination.droppableId;
+    });
+    const columnSource = currentBoard?.columns.find((column) => {
+      return column.id === source.droppableId;
+    });
+    const destinationTaskData = columnDestination?.tasks.find((task) => {
+      if (destination.index === 0) {
+        return true;
+      } else if (destination.index === task.order + 1) {
+        return true;
+      } else if (task.order === destination.index) {
+        return true;
+      }
+    });
+    const sourceTaskData = columnSource?.tasks.find((task) => {
+      return task.order === source.index;
+    });
+    if (sourceTaskData !== undefined) {
+      let newOrder: number | undefined;
+      if (destination.index === 0) {
+        newOrder = 1;
+      } else if (destinationTaskData !== undefined) {
+        newOrder = dragDropForLastAndFirstElement(destinationTaskData, destination);
+      }
+
+      await updateTask({
+        userId: sourceTaskData?.userId,
+        boardId: `${localStorage.getItem('idBoard')}`,
+        columnId: columnDestination?.id,
+        currentColumn: columnSource?.id,
+        taskId: sourceTaskData?.id,
+        title: sourceTaskData?.title as string,
+        description: sourceTaskData?.description,
+        order: newOrder,
+      });
+    }
+  };
+
+  const dragDropForLastAndFirstElement = (
+    destinationTaskData: task,
+    destination: DraggableLocation
+  ) => {
+    if (destination.index === destinationTaskData?.order + 1) {
+      return destinationTaskData?.order + 1;
+    } else {
+      return destinationTaskData?.order;
+    }
+  };
+
+  const dragEndHandler = async (result: DropResult) => {
     const { destination, source, type } = result;
 
     if (!destination) return;
@@ -171,24 +258,28 @@ function BoardColumns() {
       return;
 
     if (type === 'column') {
-      dispatch(
-        reducers.dragAndDropColumn({
-          indexDestinationColumn: destination.index,
-          indexSourceColumn: source.index,
-        })
-      );
+      dragDropColumns(result);
     }
 
     if (type === 'task') {
-      dispatch(
-        reducers.dragAndDropTask({
-          destinationColumn: destination.droppableId,
-          sourceColumn: source.droppableId,
-          indexDestinationTask: destination.index,
-          indexSourceTask: source.index,
-        })
-      );
+      if (destination.droppableId === source.droppableId) {
+        dragDropForTaskInOneColumn(result);
+      } else {
+        dragDropForTaskInDifferentColumns(result);
+      }
     }
+  };
+
+  const sortColumnByOrder = (columns: Column[]) => {
+    return columns.sort((a, b) => {
+      if (a.order > b.order) {
+        return 1;
+      }
+      if (a.order < b.order) {
+        return -1;
+      }
+      return 0;
+    });
   };
 
   return (
@@ -203,52 +294,62 @@ function BoardColumns() {
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
-              {dataBoardsPage.map((column, indexColumn) => {
-                return (
-                  <Draggable key={column.id} draggableId={column.id} index={indexColumn}>
-                    {(provided: DroppableProvided, snapshot: DraggableStateSnapshot) => (
-                      <Box
-                        sx={{ opacity: snapshot.isDragging ? '0.8' : '' }}
-                        key={column.id}
-                        className={`${classes.column}`}
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        <Box className={`${classes.columnOptions} mainDragAndDropBox`}>
-                          <ColumnTitle
-                            indexColumn={indexColumn}
-                            columnTittle={column.tittle}
-                          ></ColumnTitle>
-                          <ColumnTasks indexColumn={indexColumn} column={column} />
-                          <Box className={classes.columnSettings}>
-                            <Box
-                              data-modalname="addTask"
-                              data-columnindex={indexColumn}
-                              onClick={handleModalWindow}
-                              className={`${classes.columnAdd} buttonModal`}
-                            >
-                              <AddIcon color="action" />
-                              <Typography color="text.secondary">{t('addNewTask')}</Typography>
-                            </Box>
-                            <Box
-                              className={`buttonModal`}
-                              data-modalname="deleteColumn"
-                              data-columnindex={indexColumn}
-                            >
-                              <Tooltip title={t('deleteColumn')} onClick={handleModalWindow}>
-                                <IconButton>
-                                  <DeleteIcon color="action" />
-                                </IconButton>
-                              </Tooltip>
+              {currentBoard !== undefined &&
+                sortColumnByOrder([...currentBoard.columns]).map((column) => {
+                  return (
+                    <Draggable key={column.id} draggableId={column.id} index={column.order}>
+                      {(provided: DroppableProvided, snapshot: DraggableStateSnapshot) => (
+                        <Box
+                          sx={{ opacity: snapshot.isDragging ? '0.8' : '' }}
+                          key={column.id}
+                          className={`${classes.column}`}
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <Box className={`${classes.columnOptions} mainDragAndDropBox`}>
+                            <ColumnTitle
+                              columnId={column.id}
+                              columnTittle={column.title}
+                              columnOrder={column.order}
+                            ></ColumnTitle>
+                            <ColumnTasks column={column} />
+                            <Box className={classes.columnSettings}>
+                              <Box
+                                data-modalname="addTask"
+                                data-columnindex={column.id}
+                                onClick={handleModalWindow}
+                                className={`${classes.columnAdd} buttonModal`}
+                              >
+                                <AddIcon color="warning" />
+                                <Typography
+                                  color={theme.palette.mode === 'dark' ? 'common.dark' : 'primary'}
+                                >
+                                  {t('addNewTask')}
+                                </Typography>
+                              </Box>
+                              <Box
+                                className={`buttonModal`}
+                                data-modalname="deleteColumn"
+                                data-columnindex={column.id}
+                              >
+                                <Tooltip title={t('deleteColumn')} onClick={handleModalWindow}>
+                                  <IconButton>
+                                    <DeleteIcon
+                                      color={
+                                        theme.palette.mode === 'dark' ? 'secondary' : 'primary'
+                                      }
+                                    />
+                                  </IconButton>
+                                </Tooltip>
+                              </Box>
                             </Box>
                           </Box>
                         </Box>
-                      </Box>
-                    )}
-                  </Draggable>
-                );
-              })}
+                      )}
+                    </Draggable>
+                  );
+                })}
               {provided.placeholder}
             </Box>
           )}
@@ -266,7 +367,7 @@ function BoardColumns() {
           </Box>
         </Box>
       </Box>
-      <ModalWindow />
+      {indexOfCurrentColumn !== '' ? <ModalWindow currentBoard={currentBoard} /> : <></>}
     </Box>
   );
 }

@@ -1,24 +1,26 @@
 {
   "header": {
-    "newBoard": "Cоздать новый боард",
+    "newBoard": "Cоздать новую доску",
     "profile": "Профиль",
     "out": "Выйти",
     "lng": "Язык"
   },
   "profile": {
     "title": "Настройки профиля",
+    "authError": "Требуется повторный вход",
     "update": "Обновить",
     "delete": "Удалить профиль",
     "question": "Ваш профиль будет удален!",
     "confirm": "Подтвердить",
     "back": "Назад",
-    "statusOk": "Удаление успешно",
+    "statusDeleteOk": "Удаление успешно",
+    "statusUpdateOk": "Обновление успешно",
     "statusErrorUserDelete": "Не удалось удалить",
     "statusErrorUserUpdate": "Не удалось обновить",
-    "nameError": "Поле name обязательное",
+    "nameError": "Name не должно быть пустым",
     "nameErrorLetters": "Поле name должно содержать только буквы",
-    "loginError": "Поле login обязательное",
-    "passwordError": "Поле password обязательное",
+    "loginError": "Login не должен быть пустым",
+    "passwordError": "Password не должен быть пустым",
     "passwordLengthError": "Длина должна быть не менее 8 символов"
   },
   "welcome": {
@@ -28,7 +30,7 @@
     "toMainPage": "На главную",
     "aboutProject": "Система управления проектами",
     "whatAllows": "Позволяет эффективно организовывать работу по японской методологии канбан-досок.",
-    "advantage": "Вы сами выбираете, по какому принципу организовывать карточки на досках.",
+    "advantage": "Вы сами выбираете, по какому принципу организовывать карточки на досках и можете отслеживать прогресс выполнения задач.",
     "teamInfo": "О команде",
     "moto": "TEMPER - планируйте и разрабатывайте в Вашем темпе!"
   },
@@ -40,37 +42,41 @@
     "statusErrorSignUp": "Такой логин уже есть!",
     "statusServerError": "Внутренняя ошибка сервера",
     "titleSignUp": "Регистрация",
-    "nameError": "Поле name обязательное",
+    "nameError": "Name не должно быть пустым",
     "nameErrorLetters": "Поле name должно содержать только буквы",
-    "loginError": "Поле login обязательное",
-    "passwordError": "Поле password обязательное",
+    "loginError": "Login не должен быть пустым",
+    "passwordError": "Password не должен быть пустым",
     "passwordLengthError": "Длина должна быть не менее 8 символов",
     "questionSignIn": "Нет аккаунта? Регистрация",
     "questionSignUp": "Уже есть аккаунт? Войти"
   },
   "main": {
-    "home": "Домой"
+    "home": "Домой",
+    "search": "Поиск доски"
   },
   "board": {
-    "title": "Создание боард",
-    "titleEdit": "Редактирование боард",
+    "title": "Создание доски",
+    "titleEdit": "Редактирование доски",
     "add": "Создать",
     "update": "Обновить",
     "cancel": "Отмена",
-    "statusError": "Боард не найден!",
+    "statusError": "Доска не найдена!",
     "authError": "Требуется повторный вход",
     "statusOk": "Создание успешно",
     "statusUpdateOk": "Обновлено успешно",
-    "titleEmpty": "Поле обязательное",
+    "description": "Описание: ",
+    "titleEmpty": "Title не должен быть пустым",
+    "descriptionEmpty": "Description не должен быть пустым",
+    "noDescription": "Нет описания",
     "titlePattern": "Поле должно содержать только буквы",
-    "errorLoad": "Не удалось загрузить Боарды",
+    "errorLoad": "Не удалось загрузить доски",
     "statusErrorBoardDelete": "Не удалось удалить",
     "statusErrorBoardUpdate": "Не удалось обновить",
     "statusDeleteOk": "Удаление успешно",
     "question": "будет удалена!",
-    "tooltipDeleteBoard": "Удалить Боард",
-    "tooltipOpenBoard": "Открыть Боард",
-    "tooltipEditBoard": "Редактировать Боард",
+    "tooltipDeleteBoard": "Удалить доску",
+    "tooltipOpenBoard": "Открыть доску",
+    "tooltipEditBoard": "Редактировать доску",
     "noBoards": "Нет данных для отображения"
   },
   "boardsPage": {
@@ -93,6 +99,11 @@
     "changeTittleOfTask": "Изменить название этой задачи",
     "changeDescriptionOfTask": "Изменить описание этой задачи",
     "editTaskButton": "Изменить",
-    "cancelEditTaskButton": "Отмена"
+    "cancelEditTaskButton": "Отмена",
+    "deleteColumnQuest": "Эта колонка будет удалена?",
+    "deleteColumnText": "Все задачи, которые находятся внутри колонки также удалятся!",
+    "deleteColumnButton": "Удалить",
+    "deleteTaskQuest": "Эта задача будет удалена?",
+    "deleteTaskText": "Описание задачи также будет удалено!"
   }
 }

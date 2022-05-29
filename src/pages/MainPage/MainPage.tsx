@@ -1,19 +1,30 @@
-import { Container, Box, Link, Typography, Button } from '@mui/material';
+import { useState, ChangeEvent } from 'react';
 import { NavLink } from 'react-router-dom';
+import { Container, Box, Link, Typography, Button } from '@mui/material';
 import Header from '../../app/components/share/Header';
 import HomeIcon from '@mui/icons-material/Home';
 import { useTranslation } from 'react-i18next';
 import Boards from '../../app/components/Board/Boards';
+import Paper from '@mui/material/Paper';
+import InputBase from '@mui/material/InputBase';
+import SearchIcon from '@mui/icons-material/Search';
 
 export default function MainPage() {
   const { t } = useTranslation('main');
+  const [searchTitle, setSearchTitle] = useState('');
+
+  const handleInputChange = (event: ChangeEvent) => {
+    event.preventDefault();
+    const target = event.target as HTMLInputElement;
+    setSearchTitle(target.value as string);
+  };
 
   if (!localStorage.getItem('token')) {
     return (
       <Box className="app" sx={{ bgcolor: 'background.default' }}>
         <Container
           sx={{
-            minHeight: 'calc(100vh - 58px)',
+            minHeight: 'calc(100vh - 78px)',
           }}
         >
           <Box
@@ -40,39 +51,39 @@ export default function MainPage() {
   }
 
   return (
-    <Box className="app" sx={{ bgcolor: 'background.default' }}>
+    <>
       <Header />
-      <Container
-        maxWidth="xl"
-        sx={{
-          paddingTop: '80px',
-          paddingBottom: '20px',
-          minHeight: 'calc(100vh - 58px)',
-        }}
-      >
-        <Box
+      <Box className="app" sx={{ bgcolor: 'background.default' }}>
+        <Container
+          maxWidth="lg"
           sx={{
-            m: '20px 10px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            rowGap: '10px',
+            paddingTop: 15,
+            paddingBottom: 3,
+            minHeight: 'calc(100vh - 78px)',
           }}
         >
           <Link component={NavLink} to="/" underline="none">
-            <Button color="primary" startIcon={<HomeIcon />} variant="contained">
+            <Button startIcon={<HomeIcon />} variant="contained">
               {t('home')}
             </Button>
           </Link>
-        </Box>
-        <Box
-          sx={{
-            textAlign: 'center',
-          }}
-        >
-          <Boards />
-        </Box>
-      </Container>
-    </Box>
+
+          <Paper
+            component="form"
+            sx={{ p: '2px 4px', mt: '10px', display: 'flex', alignItems: 'center', maxWidth: 280 }}
+          >
+            <InputBase
+              sx={{ ml: 1, flex: 1 }}
+              placeholder={t('search')}
+              value={searchTitle}
+              onChange={handleInputChange}
+            />
+            <SearchIcon />
+          </Paper>
+
+          <Boards searchTitle={searchTitle} />
+        </Container>
+      </Box>
+    </>
   );
 }

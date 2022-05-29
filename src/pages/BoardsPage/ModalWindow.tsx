@@ -1,21 +1,13 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContentText,
-  DialogTitle,
-  Modal,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Backdrop, Button, Fade, Modal, TextField, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { makeStyles } from '@material-ui/core';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useSliceBoardsPage } from '../../app/store/reducers/useSliceBoardsPage';
-import DialogContent from '@mui/material/DialogContent';
 import { useTranslation } from 'react-i18next';
+import { boardAPI } from '../.././services/BoardService';
+import { CurrentBoardProps, task } from '../.././types';
 
 const useStyles = makeStyles({
   firstModalWindowForNewColumn: {
@@ -27,7 +19,6 @@ const useStyles = makeStyles({
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    backgroundColor: '#ffff',
     borderRadius: 10,
     outline: 'none',
   },
@@ -50,7 +41,7 @@ const useStyles = makeStyles({
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    backgroundColor: '#ffff',
+    backgroundColor: 'paper',
     borderRadius: 10,
     outline: 'none',
   },
@@ -65,13 +56,10 @@ const useStyles = makeStyles({
   },
 });
 
-function ModalWindow() {
+function ModalWindow(props: CurrentBoardProps) {
   const classes = useStyles();
-  const { t, i18n } = useTranslation('modalWindowBoardsPage');
-
-  const { titleOfCurrentTask, DescriptionOfCurrentTask } = useAppSelector(
-    (state) => state.boardsPage
-  );
+  const { t } = useTranslation('modalWindowBoardsPage');
+  const { currentBoard } = props;
   const { nameModalWindow } = useAppSelector((state) => state.boardsPage);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -80,10 +68,15 @@ function ModalWindow() {
   const { indexOfCurrentTask } = useAppSelector((state) => state.boardsPage);
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
+  const [createColumn] = boardAPI.useCreateColumnMutation();
+  const [createTask] = boardAPI.useCreateTaskMutation();
+  const [updateTask] = boardAPI.useUpdateTaskMutation();
+  const { dataBoard } = useAppSelector((state) => state.editBoardReducer);
 
   const clearTextModal = () => {
     setTitle('');
     setDescription('');
+    dispatch(reducers.changeIndexOfCurrentColumn(''));
   };
 
   const closeModalWindow = () => {
@@ -101,57 +94,72 @@ function ModalWindow() {
     setDescription(target.value as string);
   };
 
-  const addNewColumn = () => {
+  const addNewColumn = async () => {
     if (title.trim()) {
-      dispatch(reducers.addNewColumn(title));
+      if (currentBoard?.columns !== undefined) {
+        let biggestOrder = -1;
+        currentBoard?.columns.map((item) => {
+          if (item.order > biggestOrder) biggestOrder = item.order;
+        });
+        const newOrderForNewColumn = biggestOrder + 1;
+        if (newOrderForNewColumn >= 0) {
+          await createColumn({
+            idBoard: dataBoard.id,
+            title: title,
+            order: newOrderForNewColumn,
+          });
+        }
+      }
       closeModalWindow();
       clearTextModal();
     }
   };
 
-  const deleteColumn = () => {
-    dispatch(reducers.deleteColumn(Number(indexOfCurrentColumn)));
-    closeModalWindow();
-    clearTextModal();
-  };
-
-  const addNewTask = () => {
-    if (title.trim()) {
-      dispatch(
-        reducers.addNewTask({
-          index: indexOfCurrentColumn,
-          taskTittle: title,
-          taskOption: description,
-        })
-      );
+  const addNewTask = async () => {
+    const indexColumn = currentBoard?.columns.findIndex(
+      (column) => column.id === indexOfCurrentColumn
+    );
+    if (title.trim() && description.trim() && indexColumn !== undefined) {
+      if (currentBoard?.columns[indexColumn].tasks !== undefined) {
+        let biggestOrder = -1;
+        currentBoard?.columns[indexColumn].tasks.map((item) => {
+          if (item.order > biggestOrder) biggestOrder = item.order;
+        });
+        const newOrderForNewTask = biggestOrder + 1;
+        if (newOrderForNewTask >= 0) {
+          await createTask({
+            boardId: dataBoard.id,
+            columnId: indexOfCurrentColumn,
+            title: title,
+            order: newOrderForNewTask,
+            description: description,
+            userId: `${localStorage.getItem('userId')}`,
+          });
+        }
+      }
       closeModalWindow();
       clearTextModal();
     }
   };
 
-  const deleteTask = () => {
-    const deleteTaskIndex = {
-      indexColumn: indexOfCurrentColumn,
-      indexTask: indexOfCurrentTask,
-    };
-    dispatch(reducers.deleteTask(deleteTaskIndex));
-    closeModalWindow();
-    clearTextModal();
-  };
-
-  const changeCurrentTask = () => {
-    const newTitle = title === '' ? titleOfCurrentTask : title;
-    const newDescription = description === '' ? DescriptionOfCurrentTask : description;
-    if (newTitle?.trim() || newDescription?.trim()) {
-      dispatch(
-        reducers.changeTask({
-          indexColumn: indexOfCurrentColumn,
-          indexTask: indexOfCurrentTask,
-          taskTittle: newTitle,
-          taskOption: newDescription,
-        })
-      );
+  const changeCurrentTask = async () => {
+    const indexColumn = currentBoard?.columns.findIndex(
+      (column) => column.id === indexOfCurrentColumn
+    );
+    if (title?.trim() && description?.trim() && indexColumn !== undefined) {
       closeModalWindow();
+      await updateTask({
+        userId: `${localStorage.getItem('userId')}`,
+        boardId: dataBoard.id,
+        columnId: indexOfCurrentColumn,
+        currentColumn: indexOfCurrentColumn,
+        taskId: indexOfCurrentTask,
+        title: title,
+        description: description,
+        order: currentBoard?.columns[indexColumn].tasks?.find(
+          (item: task) => item.id === indexOfCurrentTask
+        )?.order,
+      });
       clearTextModal();
     }
   };
@@ -159,149 +167,145 @@ function ModalWindow() {
   return (
     <>
       {nameModalWindow === 'addColumn' && (
-        <Modal open={openModalWindow} onClose={closeModalWindow}>
-          <Box className={classes.firstModalWindowForNewColumn}>
-            <Box className={classes.secondModalWindowForNewColumn}>
-              <Stack direction="column" spacing={5}>
-                <Typography gutterBottom variant="h5">
-                  {t('addNewColumn')}
-                </Typography>
-                <Stack direction="column" spacing={2}>
-                  <TextField
-                    id="filled-basic"
-                    label={t('tittleOfColumn')}
-                    variant="filled"
-                    onChange={handleTitle}
-                    inputProps={{ maxLength: 20 }}
-                  />
-                </Stack>
-                <Stack direction="row" spacing={2}>
-                  <Button variant="contained" onClick={addNewColumn}>
-                    {t('addColumnButton')}
-                  </Button>
-                  <Button variant="outlined" onClick={closeModalWindow}>
-                    {t('cancelColumnButton')}
-                  </Button>
-                </Stack>
-              </Stack>
-            </Box>
-          </Box>
-        </Modal>
-      )}
-      {nameModalWindow === 'deleteColumn' && (
-        <Dialog
+        <Modal
           open={openModalWindow}
           onClose={closeModalWindow}
-          aria-describedby="alert-dialog-slide-description"
+          BackdropComponent={Backdrop}
+          closeAfterTransition
+          BackdropProps={{
+            timeout: 500,
+          }}
         >
-          <DialogTitle>{'Are you sure want to delete this column?'}</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-slide-description">
-              All tasks that were inside of this column are permanently deleted along with it.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={deleteColumn}>Delete Column</Button>
-            <Button variant="contained" onClick={closeModalWindow}>
-              Cancel
-            </Button>
-          </DialogActions>
-        </Dialog>
+          <Fade in={openModalWindow}>
+            <Box
+              className={classes.firstModalWindowForNewColumn}
+              sx={{ bgcolor: 'background.paper' }}
+            >
+              <Box className={classes.secondModalWindowForNewColumn}>
+                <Stack direction="column" spacing={5}>
+                  <Typography gutterBottom variant="h5">
+                    {t('addNewColumn')}
+                  </Typography>
+                  <Stack direction="column" spacing={2}>
+                    <TextField
+                      color="info"
+                      id="filled-basic"
+                      label={t('tittleOfColumn')}
+                      variant="standard"
+                      onChange={handleTitle}
+                      inputProps={{ maxLength: 20 }}
+                    />
+                  </Stack>
+                  <Stack direction="row" spacing={2}>
+                    <Button variant="contained" onClick={addNewColumn}>
+                      {t('addColumnButton')}
+                    </Button>
+                    <Button variant="outlined" onClick={closeModalWindow}>
+                      {t('cancelColumnButton')}
+                    </Button>
+                  </Stack>
+                </Stack>
+              </Box>
+            </Box>
+          </Fade>
+        </Modal>
       )}
       {nameModalWindow === 'addTask' && (
-        <Modal open={openModalWindow} onClose={closeModalWindow}>
-          <Box className={classes.firstModalWindowForTask}>
-            <Box className={classes.secondModalWindowForTask}>
-              <Stack direction="column" spacing={3}>
-                <Typography gutterBottom variant="h5">
-                  {t('addNewTask')}
-                </Typography>
-                <Stack direction="column" spacing={2}>
-                  <TextField
-                    id="filled-basic"
-                    label={t('tittleOfTask')}
-                    variant="filled"
-                    onChange={handleTitle}
-                  />
-                  <TextField
-                    id="filled-basic"
-                    label={t('descriptionOfTask')}
-                    variant="filled"
-                    multiline
-                    rows={4}
-                    onChange={handleDescription}
-                  />
-                </Stack>
-                <Stack direction="row" spacing={2}>
-                  <Button variant="contained" onClick={addNewTask}>
-                    {t('addTaskButton')}
-                  </Button>
-                  <Button variant="outlined" onClick={closeModalWindow}>
-                    {t('cancelTaskButton')}
-                  </Button>
-                </Stack>
-              </Stack>
-            </Box>
-          </Box>
-        </Modal>
-      )}
-      {nameModalWindow === 'deleteTask' && (
-        <Dialog
+        <Modal
           open={openModalWindow}
           onClose={closeModalWindow}
-          aria-describedby="alert-dialog-slide-description"
+          BackdropComponent={Backdrop}
+          closeAfterTransition
+          BackdropProps={{
+            timeout: 500,
+          }}
         >
-          <DialogTitle>{'Are you sure want to delete this task?'}</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-slide-description">
-              The description that was inside this task will be permanently deleted along with it.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={deleteTask}>Delete Task</Button>
-            <Button variant="contained" onClick={closeModalWindow}>
-              Cancel
-            </Button>
-          </DialogActions>
-        </Dialog>
+          <Fade in={openModalWindow}>
+            <Box className={classes.firstModalWindowForTask} sx={{ bgcolor: 'background.paper' }}>
+              <Box className={classes.secondModalWindowForTask}>
+                <Stack direction="column" spacing={3}>
+                  <Typography gutterBottom variant="h5">
+                    {t('addNewTask')}
+                  </Typography>
+                  <Stack direction="column" spacing={2}>
+                    <TextField
+                      color="info"
+                      id="filled-basic"
+                      label={t('tittleOfTask')}
+                      variant="standard"
+                      onChange={handleTitle}
+                    />
+                    <TextField
+                      color="info"
+                      id="filled-basic"
+                      label={t('descriptionOfTask')}
+                      variant="standard"
+                      multiline
+                      rows={4}
+                      onChange={handleDescription}
+                    />
+                  </Stack>
+                  <Stack direction="row" spacing={2}>
+                    <Button variant="contained" onClick={addNewTask}>
+                      {t('addTaskButton')}
+                    </Button>
+                    <Button variant="outlined" onClick={closeModalWindow}>
+                      {t('cancelTaskButton')}
+                    </Button>
+                  </Stack>
+                </Stack>
+              </Box>
+            </Box>
+          </Fade>
+        </Modal>
       )}
       {nameModalWindow === 'editTask' && (
-        <Modal open={openModalWindow} onClose={closeModalWindow}>
-          <Box className={classes.firstModalWindowForTask}>
-            <Box className={classes.secondModalWindowForTask}>
-              <Stack direction="column" spacing={3}>
-                <Typography gutterBottom variant="h5">
-                  {t('changeTask')}
-                </Typography>
-                <Stack direction="column" spacing={2}>
-                  <TextField
-                    id="filled-basic"
-                    label={t('changeTittleOfTask')}
-                    variant="filled"
-                    onChange={handleTitle}
-                    defaultValue={titleOfCurrentTask}
-                  />
-                  <TextField
-                    id="filled-basic"
-                    label={t('changeDescriptionOfTask')}
-                    variant="filled"
-                    multiline
-                    rows={4}
-                    onChange={handleDescription}
-                    defaultValue={DescriptionOfCurrentTask}
-                  />
+        <Modal
+          open={openModalWindow}
+          onClose={closeModalWindow}
+          BackdropComponent={Backdrop}
+          closeAfterTransition
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={openModalWindow}>
+            <Box className={classes.firstModalWindowForTask} sx={{ bgcolor: 'background.paper' }}>
+              <Box className={classes.secondModalWindowForTask}>
+                <Stack direction="column" spacing={3}>
+                  <Typography gutterBottom variant="h5">
+                    {t('changeTask')}
+                  </Typography>
+                  <Stack direction="column" spacing={2}>
+                    <TextField
+                      color="info"
+                      id="filled-basic"
+                      label={t('changeTittleOfTask')}
+                      variant="standard"
+                      onChange={handleTitle}
+                    />
+                    <TextField
+                      color="info"
+                      id="filled-basic"
+                      label={t('changeDescriptionOfTask')}
+                      variant="standard"
+                      multiline
+                      rows={4}
+                      onChange={handleDescription}
+                    />
+                  </Stack>
+                  <Stack direction="row" spacing={2}>
+                    <Button variant="contained" onClick={changeCurrentTask}>
+                      {t('editTaskButton')}
+                    </Button>
+                    <Button variant="outlined" onClick={closeModalWindow}>
+                      {t('cancelEditTaskButton')}
+                    </Button>
+                  </Stack>
                 </Stack>
-                <Stack direction="row" spacing={2}>
-                  <Button variant="contained" onClick={changeCurrentTask}>
-                    {t('editTaskButton')}
-                  </Button>
-                  <Button variant="outlined" onClick={closeModalWindow}>
-                    {t('cancelEditTaskButton')}
-                  </Button>
-                </Stack>
-              </Stack>
+              </Box>
             </Box>
-          </Box>
+          </Fade>
         </Modal>
       )}
     </>

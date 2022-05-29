@@ -1,6 +1,16 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 import { RootState } from '../app/store/store';
-import { BoardData, BoardDataResponse, DeleteBoardResponse } from '../types';
+import { BoardData, BoardDataResponse, DeleteResponse, GetCurrentBoardData } from '../types';
+import { ColumnsData, DeleteColumn, DeleteColumnResponse, UpdateColumnResponse } from '../types';
+import {
+  TaskData,
+  TaskDataGet,
+  TaskDataPost,
+  TaskDataPostResponse,
+  DeleteTask,
+  DeleteTaskResponse,
+  UpdateTaskResponse,
+} from '../types';
 
 export const boardAPI = createApi({
   reducerPath: 'boardAPI',
@@ -16,7 +26,7 @@ export const boardAPI = createApi({
       return headers;
     },
   }),
-  tagTypes: ['Board'],
+  tagTypes: ['Board', 'Columns', 'Tasks'],
   endpoints: (build) => ({
     getAllBoards: build.query<BoardData[], ''>({
       query: () => ({
@@ -24,10 +34,11 @@ export const boardAPI = createApi({
       }),
       providesTags: () => ['Board'],
     }),
-    getBoard: build.query<BoardData, string>({
+    getBoard: build.query<GetCurrentBoardData, string>({
       query: (boardId) => ({
         url: `/boards/${boardId}`,
       }),
+      providesTags: () => ['Board', 'Columns', 'Tasks'],
     }),
     updateBoard: build.mutation<BoardDataResponse, BoardData>({
       query(userData) {
@@ -50,12 +61,85 @@ export const boardAPI = createApi({
       },
       invalidatesTags: ['Board'],
     }),
-    deleteBoard: build.mutation<DeleteBoardResponse, string>({
+    deleteBoard: build.mutation<DeleteResponse, string>({
       query: (boardId) => ({
         url: `/boards/${boardId}`,
         method: 'DELETE',
       }),
       invalidatesTags: ['Board'],
+    }),
+    fetchColumns: build.query<ColumnsData[], string>({
+      query: (idBoard) => ({
+        url: `/boards/${idBoard}/columns`,
+      }),
+      providesTags: () => ['Columns'],
+    }),
+    updateColumn: build.mutation<UpdateColumnResponse, ColumnsData>({
+      query(columnData) {
+        return {
+          url: `/boards/${columnData.idBoard}/columns/${columnData.id}`,
+          method: 'PUT',
+          body: { title: columnData.title, order: columnData.order },
+        };
+      },
+      invalidatesTags: ['Columns'],
+    }),
+    createColumn: build.mutation<ColumnsData[], ColumnsData>({
+      query: (columnData) => ({
+        url: `/boards/${columnData.idBoard}/columns`,
+        method: 'POST',
+        body: { title: columnData.title },
+      }),
+      invalidatesTags: ['Columns'],
+    }),
+    deleteColumn: build.mutation<DeleteColumnResponse, DeleteColumn>({
+      query: (post) => ({
+        url: `/boards/${post.boardId}/columns/${post.deleteColumnId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Columns'],
+    }),
+    fetchTasks: build.query<TaskData[], TaskDataGet>({
+      query: (tasksDataGet) => ({
+        url: `/boards/${tasksDataGet.idBoard}/columns/${tasksDataGet.idColumn}/tasks`,
+      }),
+      providesTags: () => ['Tasks'],
+    }),
+    updateTask: build.mutation<UpdateTaskResponse, TaskDataPost>({
+      query(tasksDataUpdate) {
+        return {
+          url: `/boards/${tasksDataUpdate.boardId}/columns/${tasksDataUpdate.currentColumn}/tasks/${tasksDataUpdate.taskId}`,
+          method: 'PUT',
+          body: {
+            title: tasksDataUpdate.title,
+            order: tasksDataUpdate.order,
+            description: tasksDataUpdate.description,
+            userId: tasksDataUpdate.userId,
+            boardId: tasksDataUpdate.boardId,
+            columnId: tasksDataUpdate.columnId,
+          },
+        };
+      },
+      invalidatesTags: ['Tasks'],
+    }),
+    createTask: build.mutation<TaskDataPostResponse, TaskDataPost>({
+      query: (tasksDataPost) => ({
+        url: `/boards/${tasksDataPost.boardId}/columns/${tasksDataPost.columnId}/tasks`,
+        method: 'POST',
+        body: {
+          title: tasksDataPost.title,
+          description: tasksDataPost.description,
+          userId: tasksDataPost.userId,
+        },
+      }),
+      invalidatesTags: ['Tasks'],
+    }),
+    deleteTask: build.mutation<DeleteTaskResponse, DeleteTask>({
+      query: (tasksDataDelete) => ({
+        url: `/boards/${tasksDataDelete.boardId}/columns/${tasksDataDelete.deleteColumnId}/tasks/${tasksDataDelete.deleteTaskId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Tasks'],
     }),
   }),
 });

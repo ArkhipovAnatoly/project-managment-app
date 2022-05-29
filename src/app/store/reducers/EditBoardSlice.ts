@@ -9,6 +9,7 @@ const initialState: ModalState = {
   dataBoard: {
     id: '',
     title: '',
+    description: '',
   },
 };
 

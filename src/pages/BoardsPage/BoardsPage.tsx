@@ -1,10 +1,13 @@
-import { Button, InputBase, Paper } from '@mui/material';
+import { Button, Paper, Typography } from '@mui/material';
 import BoardColumns from './BoardColumns/BoardColumns';
 import { makeStyles } from '@material-ui/core';
 import Box from '@mui/material/Box';
 import { NavLink } from 'react-router-dom';
 import Header from '../../app/components/share/Header';
 import { useTranslation } from 'react-i18next';
+import { boardAPI } from '../.././services/BoardService';
+import ConfirmModal from '../../app/components/modal/ConfirmModal';
+import { useAppSelector } from '../../app/hooks';
 
 const useStyles = makeStyles({
   container: {
@@ -14,9 +17,8 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     paddingTop: '80px',
     paddingBottom: '10px',
-    minHeight: 'calc(100vh - 52px)',
+    minHeight: 'calc(100vh - 78px)',
     overflowY: 'hidden',
-    // ['@media (max-width:800px)']: { paddingTop: '1000px' },
   },
 
   inputSwap: {
@@ -55,42 +57,57 @@ const useStyles = makeStyles({
     alignItems: 'center',
     margin: '10px',
   },
-  projectNameInput: {
+  projectName: {
     margin: '10px',
-    padding: '2px 4px',
+    padding: '6px 9px',
     display: 'flex',
     alignItems: 'center',
     maxWidth: '170px',
+    cursor: 'pointer',
   },
 });
 
 function BoardsPage() {
   const classes = useStyles();
-  const { t, i18n } = useTranslation('boardsPage');
+  const { t } = useTranslation(['boardsPage', 'modalWindowBoardsPage']);
+  const { data: currentBoard } = boardAPI.useGetBoardQuery(`${localStorage.getItem('idBoard')}`);
+  const { what } = useAppSelector((state) => state.confirmModalReducer);
 
   return (
-    <Box className="app" sx={{ bgcolor: 'background.default' }}>
-      <Header />
-      <Box className={classes.container}>
-        <Box className={classes.content}>
-          <Box sx={{ display: 'flex', alignItems: 'center', m: '20px 0 10px 0' }}>
-            <Box className={classes.header}>
-              <NavLink to="/main" style={{ textDecoration: 'none' }}>
-                <Button variant="contained">{t('onMainPage')}</Button>
-              </NavLink>
+    <>
+      <Box className="app" sx={{ bgcolor: 'background.default' }}>
+        <Header />
+        <Box className={classes.container}>
+          <Box className={classes.content}>
+            <Box sx={{ display: 'flex', alignItems: 'center', m: '20px 0 10px 0' }}>
+              <Box className={classes.header}>
+                <NavLink to="/main" style={{ textDecoration: 'none' }}>
+                  <Button variant="contained">{t('boardsPage:onMainPage')}</Button>
+                </NavLink>
+              </Box>
+              <Paper component="form" className={classes.projectName}>
+                <Typography>{currentBoard?.title}</Typography>
+              </Paper>
             </Box>
-            <Paper component="form" className={classes.projectNameInput}>
-              <InputBase
-                sx={{ ml: 1, flex: 1 }}
-                defaultValue="My Project Name"
-                inputProps={{ maxLength: 15 }}
-              />
-            </Paper>
+            <BoardColumns currentBoard={currentBoard} />
           </Box>
-          <BoardColumns></BoardColumns>
         </Box>
       </Box>
-    </Box>
+      {what === 'column' && (
+        <ConfirmModal
+          title={`${t('modalWindowBoardsPage:deleteColumnQuest')}`}
+          subtitle={`${t('modalWindowBoardsPage:deleteColumnText')}`}
+          type="column"
+        />
+      )}
+      {what === 'task' && (
+        <ConfirmModal
+          title={`${t('modalWindowBoardsPage:deleteTaskQuest')}`}
+          subtitle={`${t('modalWindowBoardsPage:deleteTaskText')}`}
+          type="task"
+        />
+      )}
+    </>
   );
 }
 export default BoardsPage;

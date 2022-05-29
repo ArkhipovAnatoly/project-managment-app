@@ -112,7 +112,7 @@ export default function SignUp() {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          height: '94%',
+          minHeight: 'calc(100vh - 78px)',
           pl: 1,
           pr: 1,
           bgcolor: 'background.default',
@@ -140,7 +140,7 @@ export default function SignUp() {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        height: '94%',
+        minHeight: 'calc(100vh - 78px)',
         pl: 1,
         pr: 1,
         bgcolor: 'background.default',
@@ -192,7 +192,7 @@ export default function SignUp() {
                   {t('titleSignUp')}
                 </Typography>
 
-                <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
+                <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
                       <TextField

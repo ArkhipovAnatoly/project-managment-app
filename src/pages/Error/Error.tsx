@@ -13,9 +13,6 @@ const Error = () => {
           ?
         </p>
       </div>
-      <div className="errorImage">
-        <img src={'assets/img/error.gif'} className="errorImg" alt="error image" />
-      </div>
     </div>
   );
 };

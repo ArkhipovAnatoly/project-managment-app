@@ -7,18 +7,20 @@
   },
   "profile": {
     "title": "Edit profile",
-    "update": "update",
+    "authError": "Sign in is required",
+    "update": "Update",
     "delete": "Delete profile",
     "question": "Your profile will be deleted!",
     "confirm": "Confirm",
     "back": "Back",
-    "statusOk": "Successfully deleted",
+    "statusDeleteOk": "Successfully deleted",
+    "statusUpdateOk": "Successfully updated",
     "statusErrorUserDelete": "Could not delete",
     "statusErrorUserUpdate": "Could not update",
-    "nameError": "Name is required",
+    "nameError": "Name should be empty",
     "nameErrorLetters": "Name should include letters only",
-    "loginError": "Login is required",
-    "passwordError": "Password is required",
+    "loginError": "Login should not be empty",
+    "passwordError": "Password should not be empty",
     "passwordLengthError": "Password length should be at least 8 characters"
   },
   "welcome": {
@@ -40,16 +42,17 @@
     "statusErrorSignUp": "User login already exists!",
     "statusServerError": "Internal server error",
     "titleSignUp": "Sign up",
-    "nameError": "Name is required",
+    "nameError": "Name should not be empty",
     "nameErrorLetters": "Name should include letters only",
-    "loginError": "Login is required",
-    "passwordError": "Password is required",
+    "loginError": "Login should not be empty",
+    "passwordError": "Password should not be empty",
     "passwordLengthError": "Password length should be at least 8 characters",
     "questionSignIn": "Don't have an account? Sign Up",
     "questionSignUp": " Already have an account? Sign in"
   },
   "main": {
-    "home": "Home"
+    "home": "Home",
+    "search": "Search board"
   },
   "board": {
     "title": "Create new board",
@@ -61,16 +64,19 @@
     "authError": "Sign in is required",
     "statusOk": "Successfully created",
     "statusUpdateOk": "Successfully updated",
-    "titleEmpty": "Field is required",
+    "description": "Description: ",
+    "titleEmpty": "Title should not be empty",
+    "descriptionEmpty": "Description should not be empty",
+    "noDescription": "No description",
     "titlePattern": "Title should include letters only",
-    "errorLoad": "Could not load Boards",
+    "errorLoad": "Could not load boards",
     "statusErrorBoardDelete": "Could not delete",
     "statusErrorBoardUpdate": "Could not update",
     "statusDeleteOk": "Successfully deleted",
     "question": "will be deleted!",
-    "tooltipDeleteBoard": "Delete Board",
-    "tooltipEditBoard": "Edit Board",
-    "tooltipOpenBoard": "Оpen Board",
+    "tooltipDeleteBoard": "Delete board",
+    "tooltipEditBoard": "Edit board",
+    "tooltipOpenBoard": "Оpen board",
     "noBoards": "No data to display"
   },
   "boardsPage": {
@@ -87,12 +93,17 @@
     "addNewTask": "Add new task",
     "tittleOfTask": "Tittle of new task",
     "descriptionOfTask": "Description of new task",
-    "addTaskButton": "Add column",
+    "addTaskButton": "Add task",
     "cancelTaskButton": "Cancel",
     "changeTask": "Edit your task",
     "changeTittleOfTask": "Change tittle of this task",
     "changeDescriptionOfTask": "Change description of this task",
     "editTaskButton": "Edit task",
-    "cancelEditTaskButton": "Cancel"
+    "cancelEditTaskButton": "Cancel",
+    "deleteColumnQuest": "This column will be deleted?",
+    "deleteColumnText": "All tasks that were inside of this column are permanently deleted along with it!",
+    "deleteColumnButton": "Delete",
+    "deleteTaskQuest": "This task will be deleted?",
+    "deleteTaskText": " The description that was inside this task will be permanently deleted along with it!"
   }
 }

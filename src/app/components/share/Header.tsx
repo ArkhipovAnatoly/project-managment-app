@@ -82,7 +82,7 @@ export default function Header() {
   const signOutHandle = () => {
     handleCloseNavMenu();
     localStorage.removeItem('token');
-    dispatch(setUserAuthData({ token: '' }));
+    dispatch(setUserAuthData({ token: '', isAuth: false }));
     navigator('/');
   };
 
@@ -103,6 +103,10 @@ export default function Header() {
     dispatch(showCreateBoardModal(true));
   };
 
+  const editLink = () => {
+    handleCloseNavMenu();
+    navigator('/edit');
+  };
   return (
     <>
       <AppBar
@@ -129,7 +133,7 @@ export default function Header() {
             }}
             variant="dense"
           >
-            <Typography component="h1" variant="h6">
+            <Typography component="h1" variant="h5">
               <Link component={NavLink} underline="none" color={'text.primary'} to="/">
                 TEMPER
               </Link>
@@ -199,12 +203,10 @@ export default function Header() {
                   </ListItemIcon>
                   <Typography>{t('newBoard')}</Typography>
                 </MenuItem>
-                <MenuItem>
-                  <Link component={NavLink} underline="none" to="/edit">
-                    <ListItemIcon>
-                      <EditIcon color="warning" fontSize="small" />
-                    </ListItemIcon>
-                  </Link>
+                <MenuItem onClick={editLink}>
+                  <ListItemIcon>
+                    <EditIcon color="warning" fontSize="small" />
+                  </ListItemIcon>
                   <Typography>{t('profile')}</Typography>
                 </MenuItem>
                 <MenuItem onClick={changeLanguage}>
@@ -247,21 +249,11 @@ export default function Header() {
               >
                 {t('newBoard')}
               </Button>
-              <Button
-                color="primary"
-                variant="contained"
-                endIcon={<ModeEditIcon />}
-                onClick={editProfile}
-              >
+              <Button variant="contained" endIcon={<ModeEditIcon />} onClick={editProfile}>
                 {t('profile')}
               </Button>
 
-              <Button
-                color="primary"
-                onClick={signOutHandle}
-                variant="contained"
-                endIcon={<LogoutIcon />}
-              >
+              <Button onClick={signOutHandle} variant="contained" endIcon={<LogoutIcon />}>
                 {t('out')}
               </Button>
             </Stack>
