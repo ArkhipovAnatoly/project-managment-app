@@ -185,7 +185,7 @@ const WelcomePage = () => {
             <div className="imgTitle">
               <img src={'assets/img/giphy.gif'} className="imgBoard" alt="boardGif" />
             </div>
-            <div className="">
+            <div className="app-feat">
               <p className="title">{t('appFeat')}</p>
               <p className="title"> - {t('firstFeat')}</p>
               <p className="title"> - {t('secondFeat')} </p>
