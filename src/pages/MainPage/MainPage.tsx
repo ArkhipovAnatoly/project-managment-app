@@ -1,5 +1,6 @@
-import { Container, Box, Link, Typography, Button } from '@mui/material';
+import { useState, ChangeEvent } from 'react';
 import { NavLink } from 'react-router-dom';
+import { Container, Box, Link, Typography, Button } from '@mui/material';
 import Header from '../../app/components/share/Header';
 import HomeIcon from '@mui/icons-material/Home';
 import { useTranslation } from 'react-i18next';
@@ -7,13 +8,13 @@ import Boards from '../../app/components/Board/Boards';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
-import { useState } from 'react';
 
 export default function MainPage() {
   const { t } = useTranslation('main');
   const [searchTitle, setSearchTitle] = useState('');
 
-  const handleInputChange = (event: React.ChangeEvent) => {
+  const handleInputChange = (event: ChangeEvent) => {
+    event.preventDefault();
     const target = event.target as HTMLInputElement;
     setSearchTitle(target.value as string);
   };
