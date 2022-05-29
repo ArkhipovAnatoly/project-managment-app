@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import CustomizedButton from '../../app/components/share/Button/CustomizedButton';
 import { useTranslation } from 'react-i18next';
 import { themeSlice } from '../../app/store/reducers/ThemeSlice';
-import MaterialUISwitch from '../../app/components/Switch/MaterialUISwitch';
+import MaterialUISwitch from '../../app/components/switch/MaterialUISwitch';
 import { motion } from 'framer-motion';
 
 const WelcomePage = () => {
@@ -186,10 +186,30 @@ const WelcomePage = () => {
               <img src={'assets/img/giphy.gif'} className="imgBoard" alt="boardGif" />
             </div>
             <div className="app-feat">
-              <p className="title">{t('appFeat')}</p>
-              <p className="title"> - {t('firstFeat')}</p>
-              <p className="title"> - {t('secondFeat')} </p>
-              <p className="title"> - {t('thirdFeat')}.</p>
+              <p className="title">
+                <div className="checkContainer">
+                  <img className="check" src={'assets/img/check.png'} alt="check" /> {t('appFeat')}
+                </div>
+              </p>
+              <p className="title">
+                <div className="checkContainer">
+                  <img className="check" src={'assets/img/check.png'} alt="check" />{' '}
+                  {t('firstFeat')}
+                </div>
+              </p>
+              <p className="title">
+                <div className="checkContainer">
+                  <img className="check" src={'assets/img/check.png'} alt="check" />{' '}
+                  {t('secondFeat')}
+                </div>
+              </p>
+              <p className="title">
+                {' '}
+                <div className="checkContainer">
+                  <img className="check" src={'assets/img/check.png'} alt="check" />{' '}
+                  {t('thirdFeat')}.
+                </div>
+              </p>
             </div>
           </motion.div>
           <motion.div

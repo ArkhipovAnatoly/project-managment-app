@@ -76,6 +76,11 @@ h2 {
   width: 100%;
 }
 
+.check {
+  width: 20px;
+  height: 20px;
+}
+
 .cards {
   display: flex;
   flex-wrap: wrap;
