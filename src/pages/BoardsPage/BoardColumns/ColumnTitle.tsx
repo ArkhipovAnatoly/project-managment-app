@@ -32,7 +32,7 @@ interface ColumnTitle {
 
 function ColumnTitle(props: ColumnTitle) {
   const classes = useStyles();
-  const [updateColumn, { data: updateColumnData }] = boardAPI.useUpdateColumnMutation();
+  const [updateColumn] = boardAPI.useUpdateColumnMutation();
 
   const showAllSettingsColumnTitle = (event: React.MouseEvent) => {
     const mainBox = (event.target as HTMLInputElement).closest('.boxForTitleColumn') as HTMLElement;

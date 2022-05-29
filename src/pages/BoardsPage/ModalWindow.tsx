@@ -17,6 +17,7 @@ import { useSliceBoardsPage } from '../../app/store/reducers/useSliceBoardsPage'
 import DialogContent from '@mui/material/DialogContent';
 import { useTranslation } from 'react-i18next';
 import { boardAPI } from '../.././services/BoardService';
+import { CurrentBoardProps, task } from '../.././types';
 
 const useStyles = makeStyles({
   firstModalWindowForNewColumn: {
@@ -66,10 +67,10 @@ const useStyles = makeStyles({
   },
 });
 
-function ModalWindow() {
+function ModalWindow(props: CurrentBoardProps) {
   const classes = useStyles();
-  const { t, i18n } = useTranslation('modalWindowBoardsPage');
-
+  const { t } = useTranslation('modalWindowBoardsPage');
+  const { currentBoard } = props;
   const { nameModalWindow } = useAppSelector((state) => state.boardsPage);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -78,18 +79,8 @@ function ModalWindow() {
   const { indexOfCurrentTask } = useAppSelector((state) => state.boardsPage);
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
-  const { data: allColumns } = boardAPI.useFetchColumnsQuery(`${localStorage.getItem('idBoard')}`);
   const [createColumn] = boardAPI.useCreateColumnMutation();
   const [deleteColumn] = boardAPI.useDeleteColumnMutation();
-  const { data: allTasks } = boardAPI.useFetchTasksQuery(
-    {
-      idBoard: `${localStorage.getItem('idBoard')}`,
-      idColumn: indexOfCurrentColumn as string,
-    },
-    {
-      skip: indexOfCurrentColumn === 'addColumn' ? true : false,
-    }
-  );
   const [createTask] = boardAPI.useCreateTaskMutation();
   const [deleteTask] = boardAPI.useDeleteTaskMutation();
   const [updateTask] = boardAPI.useUpdateTaskMutation();
@@ -117,9 +108,9 @@ function ModalWindow() {
 
   const addNewColumn = async () => {
     if (title.trim()) {
-      if (allColumns !== undefined) {
+      if (currentBoard?.columns !== undefined) {
         let biggestOrder = -1;
-        allColumns.map((item) => {
+        currentBoard?.columns.map((item) => {
           if (item.order > biggestOrder) biggestOrder = item.order;
         });
         const newOrderForNewColumn = biggestOrder + 1;
@@ -146,10 +137,13 @@ function ModalWindow() {
   };
 
   const addNewTask = async () => {
-    if (title.trim() && description.trim()) {
-      if (allTasks !== undefined) {
+    const indexColumn = currentBoard?.columns.findIndex(
+      (column) => column.id === indexOfCurrentColumn
+    );
+    if (title.trim() && description.trim() && indexColumn !== undefined) {
+      if (currentBoard?.columns[indexColumn].tasks !== undefined) {
         let biggestOrder = -1;
-        allTasks.map((item) => {
+        currentBoard?.columns[indexColumn].tasks.map((item) => {
           if (item.order > biggestOrder) biggestOrder = item.order;
         });
         const newOrderForNewTask = biggestOrder + 1;
@@ -180,7 +174,10 @@ function ModalWindow() {
   };
 
   const changeCurrentTask = async () => {
-    if (title?.trim() && description?.trim()) {
+    const indexColumn = currentBoard?.columns.findIndex(
+      (column) => column.id === indexOfCurrentColumn
+    );
+    if (title?.trim() && description?.trim() && indexColumn !== undefined) {
       closeModalWindow();
       await updateTask({
         userId: `${localStorage.getItem('userId')}`,
@@ -190,7 +187,9 @@ function ModalWindow() {
         taskId: indexOfCurrentTask,
         title: title,
         description: description,
-        order: allTasks?.find((item) => item.id === indexOfCurrentTask)?.order,
+        order: currentBoard?.columns[indexColumn].tasks?.find(
+          (item: task) => item.id === indexOfCurrentTask
+        )?.order,
       });
       clearTextModal();
     }

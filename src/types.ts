@@ -173,33 +173,37 @@ export type TaskDataPostResponse = {
   columnId: string;
 };
 
-export type GetColumnForDND = {
+export type Column = {
   id: string;
   title: string;
   order: number;
-  tasks: tasks[];
+  tasks: task[];
 };
 
-export type tasks = {
+export type task = {
   id: string;
   title: string;
   order: number;
   done?: boolean;
   description: string;
   userId: string;
-  files: files[];
+  files: file[];
 };
 
-export type files = {
+export type file = {
   filename: string;
   fileSize: number;
 };
 
 export type GetCurrentBoardData = {
-  columns: GetColumnForDND[];
+  columns: Column[];
   id: string;
   title: string;
 };
+
+export interface CurrentBoardProps {
+  currentBoard?: GetCurrentBoardData;
+}
 
 export type DeleteTaskResponse = DeleteUserResponse;
 export type UpdateTaskResponse = DeleteUserResponse;

@@ -18,8 +18,8 @@ import type {
 } from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
 import { boardAPI } from '../../../services/BoardService';
-import { ColumnsData } from '../../../types';
-import { tasks } from '../../../types';
+import { Column, CurrentBoardProps } from '../../../types';
+import { task } from '../../../types';
 
 const useStyles = makeStyles({
   columns: {
@@ -112,14 +112,13 @@ const useStyles = makeStyles({
   },
 });
 
-function BoardColumns() {
+function BoardColumns(props: CurrentBoardProps) {
   const classes = useStyles();
+  const { currentBoard } = props;
   const { indexOfCurrentColumn } = useAppSelector((state) => state.boardsPage);
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
-  const { t, i18n } = useTranslation('boardsPage');
-  const { data: allColumns } = boardAPI.useFetchColumnsQuery(`${localStorage.getItem('idBoard')}`);
-  const { data: currentBoard } = boardAPI.useGetBoardQuery(`${localStorage.getItem('idBoard')}`);
+  const { t } = useTranslation('boardsPage');
   const [updateColumn] = boardAPI.useUpdateColumnMutation();
   const [updateTask] = boardAPI.useUpdateTaskMutation();
 
@@ -154,8 +153,10 @@ function BoardColumns() {
 
   const dragDropColumns = async (result: DropResult) => {
     const { destination, source } = result;
-    const destinationColumnData = allColumns?.find((item) => item.order === destination.index);
-    const sourceColumnData = allColumns?.find((item) => item.order === source.index);
+    const destinationColumnData = currentBoard?.columns?.find(
+      (item) => item.order === destination.index
+    );
+    const sourceColumnData = currentBoard?.columns?.find((item) => item.order === source.index);
     await updateColumn({
       idBoard: `${localStorage.getItem('idBoard')}`,
       id: sourceColumnData?.id,
@@ -179,9 +180,6 @@ function BoardColumns() {
       return task.order === source.index;
     });
     if (sourceTaskData !== undefined && destinationTaskData !== undefined) {
-      console.log(result);
-      console.log(sourceTaskData);
-      console.log(destinationTaskData);
       await updateTask({
         userId: sourceTaskData?.userId,
         boardId: `${localStorage.getItem('idBoard')}`,
@@ -237,7 +235,7 @@ function BoardColumns() {
   };
 
   const dragDropForLastAndFirstElement = (
-    destinationTaskData: tasks,
+    destinationTaskData: task,
     destination: DraggableLocation
   ) => {
     if (destination.index === destinationTaskData?.order + 1) {
@@ -268,7 +266,7 @@ function BoardColumns() {
     }
   };
 
-  const sortColumnByOrder = (columns: ColumnsData[]) => {
+  const sortColumnByOrder = (columns: Column[]) => {
     return columns.sort((a, b) => {
       if (a.order > b.order) {
         return 1;
@@ -292,8 +290,8 @@ function BoardColumns() {
               {...provided.droppableProps}
               ref={provided.innerRef}
             >
-              {allColumns !== undefined &&
-                sortColumnByOrder([...allColumns]).map((column, indexColumn) => {
+              {currentBoard !== undefined &&
+                sortColumnByOrder([...currentBoard.columns]).map((column) => {
                   return (
                     <Draggable key={column.id} draggableId={column.id} index={column.order}>
                       {(provided: DroppableProvided, snapshot: DraggableStateSnapshot) => (
@@ -311,7 +309,7 @@ function BoardColumns() {
                               columnTittle={column.title}
                               columnOrder={column.order}
                             ></ColumnTitle>
-                            <ColumnTasks columnId={column.id} />
+                            <ColumnTasks column={column} />
                             <Box className={classes.columnSettings}>
                               <Box
                                 data-modalname="addTask"
@@ -357,7 +355,7 @@ function BoardColumns() {
           </Box>
         </Box>
       </Box>
-      {indexOfCurrentColumn !== '' ? <ModalWindow /> : <></>}
+      {indexOfCurrentColumn !== '' ? <ModalWindow currentBoard={currentBoard} /> : <></>}
     </Box>
   );
 }
