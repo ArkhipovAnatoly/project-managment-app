@@ -4,9 +4,20 @@ import Header from '../../app/components/share/Header';
 import HomeIcon from '@mui/icons-material/Home';
 import { useTranslation } from 'react-i18next';
 import Boards from '../../app/components/Board/Boards';
+import Paper from '@mui/material/Paper';
+import InputBase from '@mui/material/InputBase';
+import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
+import { useState } from 'react';
 
 export default function MainPage() {
   const { t } = useTranslation('main');
+  const [searchTitle, setSearchTitle] = useState('');
+
+  const handleInputChange = (event: React.ChangeEvent) => {
+    const target = event.target as HTMLInputElement;
+    setSearchTitle(target.value as string);
+  };
 
   if (!localStorage.getItem('token')) {
     return (
@@ -57,7 +68,20 @@ export default function MainPage() {
             </Button>
           </Link>
 
-          <Boards />
+          <Paper
+            component="form"
+            sx={{ p: '2px 4px', mt: '10px', display: 'flex', alignItems: 'center', maxWidth: 280 }}
+          >
+            <InputBase
+              sx={{ ml: 1, flex: 1 }}
+              placeholder={t('search')}
+              value={searchTitle}
+              onChange={handleInputChange}
+            />
+            <SearchIcon />
+          </Paper>
+
+          <Boards searchTitle={searchTitle} />
         </Container>
       </Box>
     </>

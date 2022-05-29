@@ -6,9 +6,13 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { userAuthSlice } from '../../store/reducers/UserAuthSlice';
 import ConfirmModal from '../modal/ConfirmModal';
 import UpdateBoardModal from '../modal/UpdateBoardModal';
-import Board from './Board';
+import Board, { BoardProps } from './Board';
 
-export default function Boards() {
+interface BoardsDataProps {
+  searchTitle: string;
+}
+
+export default function Boards(props: BoardsDataProps) {
   const { data: boards, isLoading, isError, isSuccess } = boardAPI.useGetAllBoardsQuery('');
   const { dataBoard } = useAppSelector((state) => state.editBoardReducer);
   const { setUserAuthData } = userAuthSlice.actions;
@@ -18,6 +22,16 @@ export default function Boards() {
   useEffect(() => {
     isSuccess && dispatch(setUserAuthData({ isAuth: true }));
   }, [isSuccess, dispatch, setUserAuthData]);
+
+  const searchBoards = (board: BoardProps, i: number) => {
+    if (props.searchTitle === '') {
+      return <Board {...board} key={i} />;
+    } else {
+      const boardTitle = board.title.replace(/\s/g, '').toLowerCase();
+      const searchTitle = props.searchTitle.replace(/\s/g, '').toLowerCase();
+      return boardTitle.indexOf(searchTitle) !== -1 ? <Board {...board} key={i} /> : '';
+    }
+  };
 
   if (isLoading) {
     return (
@@ -38,7 +52,7 @@ export default function Boards() {
       <>
         <List dense>
           {boards?.map((board, i) => {
-            return <Board {...board} key={i} />;
+            return searchBoards(board, i);
           })}
         </List>
         <ConfirmModal title={`'${dataBoard.title}' ${t('question')}`} type="board" />
