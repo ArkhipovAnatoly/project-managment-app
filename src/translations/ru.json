@@ -68,7 +68,6 @@
     "authError": "Требуется повторный вход",
     "statusOk": "Создание успешно",
     "statusUpdateOk": "Обновлено успешно",
-    "description": "Описание: ",
     "titleEmpty": "Title не должен быть пустым",
     "descriptionEmpty": "Description не должен быть пустым",
     "noDescription": "Нет описания",

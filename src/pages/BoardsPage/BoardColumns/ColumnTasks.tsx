@@ -165,7 +165,11 @@ function ColumnTasks(props: ColumnTasks) {
                           </Box>
                         </Box>
                         <Accordion elevation={0}>
-                          <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
+                          <AccordionSummary
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                            sx={{ backgroundColor: 'white', color: 'black' }}
+                          >
                             <Typography sx={{ mt: '4px', display: 'flex', flexWrap: 'wrap' }}>
                               {task.title}
                             </Typography>

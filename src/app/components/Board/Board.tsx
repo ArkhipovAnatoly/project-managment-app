@@ -89,7 +89,7 @@ export default function Board({ id, title, description }: BoardData) {
             </Tooltip>
           </ListItemAvatar>
         </NavLink>
-        <ListItemText primary={`${t('description')} ${description}`} />
+        <ListItemText primary={`${description}`} />
       </ListItem>
     </>
   );
