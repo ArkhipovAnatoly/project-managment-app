@@ -62,6 +62,10 @@ h2 {
   gap: 40px;
 }
 
+.app-feat {
+  line-height: 1.4;
+}
+
 .videoPlaceholder {
   text-align: center;
 }
@@ -76,6 +80,7 @@ h2 {
   width: 20px;
   height: 20px;
 }
+
 .cards {
   display: flex;
   flex-wrap: wrap;

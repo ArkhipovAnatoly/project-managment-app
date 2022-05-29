@@ -185,24 +185,29 @@ const WelcomePage = () => {
             <div className="imgTitle">
               <img src={'assets/img/giphy.gif'} className="imgBoard" alt="boardGif" />
             </div>
-            <div className="">
-              <p className="title">Возможности приложения:</p>
+            <div className="app-feat">
               <p className="title">
                 <div className="checkContainer">
-                  <img className="check" src={'assets/img/check.png'} alt="check" /> Создавать,
-                  редактировать и удалять доски
+                  <img className="check" src={'assets/img/check.png'} alt="check" /> {t('appFeat')}
                 </div>
               </p>
               <p className="title">
                 <div className="checkContainer">
-                  <img className="check" src={'assets/img/check.png'} alt="check" /> Создавать,
-                  редактировать, удалять и перемещать задачи
+                  <img className="check" src={'assets/img/check.png'} alt="check" />{' '}
+                  {t('firstFeat')}
                 </div>
               </p>
               <p className="title">
                 <div className="checkContainer">
-                  <img className="check" src={'assets/img/check.png'} alt="check" /> Можно
-                  воспользоваться поиском по доскам.
+                  <img className="check" src={'assets/img/check.png'} alt="check" />{' '}
+                  {t('secondFeat')}
+                </div>
+              </p>
+              <p className="title">
+                {' '}
+                <div className="checkContainer">
+                  <img className="check" src={'assets/img/check.png'} alt="check" />{' '}
+                  {t('thirdFeat')}.
                 </div>
               </p>
             </div>

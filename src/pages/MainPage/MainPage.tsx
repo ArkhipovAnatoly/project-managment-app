@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, KeyboardEvent } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Container, Box, Link, Typography, Button } from '@mui/material';
 import Header from '../../app/components/share/Header';
@@ -14,9 +14,14 @@ export default function MainPage() {
   const [searchTitle, setSearchTitle] = useState('');
 
   const handleInputChange = (event: ChangeEvent) => {
-    event.preventDefault();
     const target = event.target as HTMLInputElement;
     setSearchTitle(target.value as string);
+  };
+
+  const keyboardHandle = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
   };
 
   if (!localStorage.getItem('token')) {
@@ -76,6 +81,7 @@ export default function MainPage() {
               sx={{ ml: 1, flex: 1 }}
               placeholder={t('search')}
               value={searchTitle}
+              onKeyPress={keyboardHandle}
               onChange={handleInputChange}
             />
             <SearchIcon />
