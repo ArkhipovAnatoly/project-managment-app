@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 import Boards from '../../app/components/Board/Boards';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
-import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import { useState } from 'react';
 

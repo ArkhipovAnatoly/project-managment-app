@@ -2,11 +2,12 @@ import { Box, CircularProgress, Typography, List } from '@mui/material';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { boardAPI } from '../../../services/BoardService';
+import { BoardData } from '../../../types';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { userAuthSlice } from '../../store/reducers/UserAuthSlice';
 import ConfirmModal from '../modal/ConfirmModal';
 import UpdateBoardModal from '../modal/UpdateBoardModal';
-import Board, { BoardProps } from './Board';
+import Board from './Board';
 
 interface BoardsDataProps {
   searchTitle: string;
@@ -23,7 +24,7 @@ export default function Boards(props: BoardsDataProps) {
     isSuccess && dispatch(setUserAuthData({ isAuth: true }));
   }, [isSuccess, dispatch, setUserAuthData]);
 
-  const searchBoards = (board: BoardProps, i: number) => {
+  const searchBoards = (board: BoardData, i: number) => {
     if (props.searchTitle === '') {
       return <Board {...board} key={i} />;
     } else {
