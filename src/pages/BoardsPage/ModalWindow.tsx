@@ -29,7 +29,6 @@ const useStyles = makeStyles({
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    backgroundColor: '#ffff',
     borderRadius: 10,
     outline: 'none',
   },
@@ -52,7 +51,7 @@ const useStyles = makeStyles({
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    backgroundColor: '#ffff',
+    backgroundColor: 'paper',
     borderRadius: 10,
     outline: 'none',
   },
@@ -80,10 +79,10 @@ function ModalWindow(props: CurrentBoardProps) {
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
   const [createColumn] = boardAPI.useCreateColumnMutation();
-  const [deleteColumn] = boardAPI.useDeleteColumnMutation();
   const [createTask] = boardAPI.useCreateTaskMutation();
   const [deleteTask] = boardAPI.useDeleteTaskMutation();
   const [updateTask] = boardAPI.useUpdateTaskMutation();
+  const { dataBoard } = useAppSelector((state) => state.editBoardReducer);
 
   const clearTextModal = () => {
     setTitle('');
@@ -116,7 +115,7 @@ function ModalWindow(props: CurrentBoardProps) {
         const newOrderForNewColumn = biggestOrder + 1;
         if (newOrderForNewColumn >= 0) {
           await createColumn({
-            idBoard: `${localStorage.getItem('idBoard')}`,
+            idBoard: dataBoard.id,
             title: title,
             order: newOrderForNewColumn,
           });
@@ -125,15 +124,6 @@ function ModalWindow(props: CurrentBoardProps) {
       closeModalWindow();
       clearTextModal();
     }
-  };
-
-  const deleteCurrentColumn = async () => {
-    await deleteColumn({
-      boardId: `${localStorage.getItem('idBoard')}`,
-      deleteColumnId: indexOfCurrentColumn,
-    });
-    closeModalWindow();
-    clearTextModal();
   };
 
   const addNewTask = async () => {
@@ -149,7 +139,7 @@ function ModalWindow(props: CurrentBoardProps) {
         const newOrderForNewTask = biggestOrder + 1;
         if (newOrderForNewTask >= 0) {
           await createTask({
-            boardId: `${localStorage.getItem('idBoard')}`,
+            boardId: dataBoard.id,
             columnId: indexOfCurrentColumn,
             title: title,
             order: newOrderForNewTask,
@@ -165,7 +155,7 @@ function ModalWindow(props: CurrentBoardProps) {
 
   const deleteCurrentTask = async () => {
     await deleteTask({
-      boardId: `${localStorage.getItem('idBoard')}`,
+      boardId: dataBoard.id,
       deleteColumnId: indexOfCurrentColumn,
       deleteTaskId: indexOfCurrentTask,
     });
@@ -181,7 +171,7 @@ function ModalWindow(props: CurrentBoardProps) {
       closeModalWindow();
       await updateTask({
         userId: `${localStorage.getItem('userId')}`,
-        boardId: `${localStorage.getItem('idBoard')}`,
+        boardId: dataBoard.id,
         columnId: indexOfCurrentColumn,
         currentColumn: indexOfCurrentColumn,
         taskId: indexOfCurrentTask,
@@ -199,7 +189,10 @@ function ModalWindow(props: CurrentBoardProps) {
     <>
       {nameModalWindow === 'addColumn' && (
         <Modal open={openModalWindow} onClose={closeModalWindow}>
-          <Box className={classes.firstModalWindowForNewColumn}>
+          <Box
+            className={classes.firstModalWindowForNewColumn}
+            sx={{ bgcolor: 'background.paper' }}
+          >
             <Box className={classes.secondModalWindowForNewColumn}>
               <Stack direction="column" spacing={5}>
                 <Typography gutterBottom variant="h5">
@@ -207,9 +200,10 @@ function ModalWindow(props: CurrentBoardProps) {
                 </Typography>
                 <Stack direction="column" spacing={2}>
                   <TextField
+                    color="info"
                     id="filled-basic"
                     label={t('tittleOfColumn')}
-                    variant="filled"
+                    variant="standard"
                     onChange={handleTitle}
                     inputProps={{ maxLength: 20 }}
                   />
@@ -227,29 +221,9 @@ function ModalWindow(props: CurrentBoardProps) {
           </Box>
         </Modal>
       )}
-      {nameModalWindow === 'deleteColumn' && (
-        <Dialog
-          open={openModalWindow}
-          onClose={closeModalWindow}
-          aria-describedby="alert-dialog-slide-description"
-        >
-          <DialogTitle>{t('deleteColumnQuest')}</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-slide-description">
-              {t('deleteColumnText')}
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={deleteCurrentColumn}>{t('deleteColumnButton')}</Button>
-            <Button variant="contained" onClick={closeModalWindow}>
-              {t('cancelColumnButton')}
-            </Button>
-          </DialogActions>
-        </Dialog>
-      )}
       {nameModalWindow === 'addTask' && (
         <Modal open={openModalWindow} onClose={closeModalWindow}>
-          <Box className={classes.firstModalWindowForTask}>
+          <Box className={classes.firstModalWindowForTask} sx={{ bgcolor: 'background.paper' }}>
             <Box className={classes.secondModalWindowForTask}>
               <Stack direction="column" spacing={3}>
                 <Typography gutterBottom variant="h5">
@@ -257,15 +231,17 @@ function ModalWindow(props: CurrentBoardProps) {
                 </Typography>
                 <Stack direction="column" spacing={2}>
                   <TextField
+                    color="info"
                     id="filled-basic"
                     label={t('tittleOfTask')}
-                    variant="filled"
+                    variant="standard"
                     onChange={handleTitle}
                   />
                   <TextField
+                    color="info"
                     id="filled-basic"
                     label={t('descriptionOfTask')}
-                    variant="filled"
+                    variant="standard"
                     multiline
                     rows={4}
                     onChange={handleDescription}
