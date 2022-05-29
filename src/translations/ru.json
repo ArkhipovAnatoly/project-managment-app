@@ -99,7 +99,7 @@
     "changeDescriptionOfTask": "Изменить описание этой задачи",
     "editTaskButton": "Изменить",
     "cancelEditTaskButton": "Отмена",
-    "deleteColumnQuest": "Вы действительно хотите удалить эту колонку?",
+    "deleteColumnQuest": "Эта колонка будет удалена?",
     "deleteColumnText": "Все задачи, которые находятся внутри колонки также удалятся!",
     "deleteColumnButton": "Удалить",
     "deleteTaskQuest": "Вы действительно хотите удалить данную задачу?",
