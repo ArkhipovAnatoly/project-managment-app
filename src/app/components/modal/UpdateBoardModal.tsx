@@ -20,6 +20,7 @@ import { boardAPI } from '../../../services/BoardService';
 import { useNavigate } from 'react-router-dom';
 import { updateBoardModalSlice } from '../../store/reducers/UpdateBoardModalSlice';
 import { userAuthSlice } from '../../store/reducers/UserAuthSlice';
+import { editBoardSlice } from '../../store/reducers/EditBoardSlice';
 
 const style = {
   position: 'absolute',
@@ -44,10 +45,12 @@ export default function CreateBoardModal() {
     boardAPI.useUpdateBoardMutation();
   const { showUpdateBoardModal } = updateBoardModalSlice.actions;
   const { dataBoard } = useAppSelector((state) => state.editBoardReducer);
+  const { setBoardData } = editBoardSlice.actions;
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors, isValid, isSubmitted, isSubmitSuccessful, touchedFields },
   } = useForm({
     mode: 'onSubmit',
@@ -63,9 +66,19 @@ export default function CreateBoardModal() {
     reset();
   }, [reset, isSubmitSuccessful]);
 
+  useEffect(() => {
+    dataBoard.title && setValue('title', dataBoard.title);
+    dataBoard.description && setValue('description', dataBoard.description);
+  }, [dataBoard.title, dataBoard.description, setValue]);
+
   const onSubmit: SubmitHandler<BoardData> = async (formData) => {
     setMessage('');
-    const updateData = { ...formData, id: dataBoard.id };
+    const { title, description } = formData;
+    const updateData = {
+      description: description.trim(),
+      title: title.trim(),
+      id: dataBoard.id,
+    };
     const response = (await updateBoard(updateData)) as BoardDataResponse;
     const status = response.error?.status;
     if (status === StatusCode.Unauthorized) {
@@ -82,6 +95,7 @@ export default function CreateBoardModal() {
 
     setMessage(t('statusUpdateOk'));
     setTimeout(() => {
+      dispatch(setBoardData({ title: '', description: '' }));
       setMessage('');
       modalClose();
     }, 1500);
@@ -101,6 +115,7 @@ export default function CreateBoardModal() {
   }, [touchedFields.title, touchedFields.description, touchedFields, isSubmitted]);
 
   const modalClose = () => {
+    dispatch(setBoardData({ title: '', description: '' }));
     setMessage('');
     reset();
     dispatch(showUpdateBoardModal(false));
