@@ -147,6 +147,11 @@ function ModalWindow(props: CurrentBoardProps) {
       (column) => column.id === indexOfCurrentColumn
     );
     if (title?.trim() && description?.trim() && indexColumn !== undefined) {
+      console.log(
+        currentBoard?.columns[indexColumn].tasks?.find(
+          (item: task) => item.id === indexOfCurrentTask
+        )
+      );
       closeModalWindow();
       await updateTask({
         userId: `${localStorage.getItem('userId')}`,
@@ -282,6 +287,7 @@ function ModalWindow(props: CurrentBoardProps) {
                       id="filled-basic"
                       label={t('changeTittleOfTask')}
                       variant="standard"
+                      defaultValue={'asd'}
                       onChange={handleTitle}
                     />
                     <TextField
@@ -291,6 +297,7 @@ function ModalWindow(props: CurrentBoardProps) {
                       variant="standard"
                       multiline
                       rows={4}
+                      defaultValue={'asd'}
                       onChange={handleDescription}
                     />
                   </Stack>
