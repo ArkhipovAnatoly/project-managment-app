@@ -8,10 +8,10 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import CustomizedButton from '../../app/components/share/Button/CustomizedButton';
 import { useTranslation } from 'react-i18next';
 import { themeSlice } from '../../app/store/reducers/ThemeSlice';
-import MaterialUISwitch from '@mui/material/Switch';
 import { motion } from 'framer-motion';
 import { blue } from '@mui/material/colors';
 import ColorSwitch from '../../app/components/Switch/ColorSwitch';
+import MaterialUISwitch from '../../app/components/Switch/MaterialUISwitch';
 
 const WelcomePage = () => {
   const [checkedLang, setCheckedLang] = useState<boolean>(false);
