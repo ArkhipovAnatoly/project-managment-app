@@ -10,12 +10,15 @@ import { useTranslation } from 'react-i18next';
 import { themeSlice } from '../../app/store/reducers/ThemeSlice';
 import MaterialUISwitch from '../../app/components/Switch/MaterialUISwitch';
 import { motion } from 'framer-motion';
+import { blue } from '@mui/material/colors';
+import ColorSwitch from '../../app/components/Switch/ColorSwitch';
 
 const WelcomePage = () => {
+  const [checkedLang, setCheckedLang] = useState<boolean>(false);
   const [checked, setChecked] = useState<boolean>(false);
   const { auth } = useAppSelector((state) => state.userAuthReducer);
   const [videoModalActive, setVideomodalactive] = useState(false);
-  const { t } = useTranslation(['welcome', 'team']);
+  const { t, i18n } = useTranslation('welcome');
   const { setTheme } = themeSlice.actions;
   const dispatch = useAppDispatch();
   const token = localStorage.getItem('token');
@@ -25,6 +28,17 @@ const WelcomePage = () => {
       setChecked(true);
     }
   }, []);
+
+  const changeLanguageHandle = (event: ChangeEvent<HTMLInputElement>) => {
+    const { checked } = event.target as HTMLInputElement;
+    setCheckedLang(event.target.checked);
+    checked ? i18n.changeLanguage('Ru') : i18n.changeLanguage('En');
+  };
+  useEffect(() => {
+    if (i18n.resolvedLanguage === 'Ru') {
+      setCheckedLang(true);
+    }
+  }, [i18n.resolvedLanguage]);
 
   const textAnimation = {
     hidden: {
@@ -89,18 +103,31 @@ const WelcomePage = () => {
               }
               label=""
             />
+            <FormControlLabel
+              control={
+                <ColorSwitch
+                  checked={checkedLang}
+                  onChange={changeLanguageHandle}
+                  inputProps={{ 'aria-label': 'controlled' }}
+                  color="warning"
+                />
+              }
+              label={i18n.resolvedLanguage}
+              labelPlacement="end"
+              sx={{ color: blue[600] }}
+            />
             {token && auth.isAuth ? (
-              <CustomizedButton innerText={t('welcome:toMainPage')} link={'/main'} />
+              <CustomizedButton innerText={t('toMainPage')} link={'/main'} />
             ) : (
               <div className="button-wrapper">
-                <CustomizedButton innerText={t('welcome:signIn')} link={'/signin'} />
-                <CustomizedButton innerText={t('welcome:signUp')} link={'/signup'} />
+                <CustomizedButton innerText={t('signIn')} link={'/signin'} />
+                <CustomizedButton innerText={t('signUp')} link={'/signup'} />
               </div>
             )}
           </div>
           <div className="aboutTheProject">
             <motion.h1 initial="hidden" whileInView="visible" custom={1} variants={textAnimation}>
-              {t('welcome:aboutProject')} <span className="titleProject">TEMPER</span>
+              {t('aboutProject')} <span className="titleProject">TEMPER</span>
             </motion.h1>
             <motion.p
               initial="hidden"
@@ -109,7 +136,7 @@ const WelcomePage = () => {
               variants={textAnimation}
               className="title"
             >
-              {t('welcome:videoReview')}
+              {t('videoReview')}
             </motion.p>
           </div>
           <div className="videoPlaceholder">
@@ -159,7 +186,7 @@ const WelcomePage = () => {
             whileInView="visible"
             className="titleContainer"
           >
-            <p className="title">{t('welcome:whatAllows')}</p>
+            <p className="title">{t('whatAllows')}</p>
             <div className="imgTitle">
               <img src={'assets/img/board.png'} alt="board" />
             </div>
@@ -172,7 +199,7 @@ const WelcomePage = () => {
             whileInView="visible"
             className="titleContainer2"
           >
-            <p className="title">{t('welcome:advantage')}</p>
+            <p className="title">{t('advantage')}</p>
           </motion.div>
           <motion.div
             custom={3}
@@ -186,10 +213,10 @@ const WelcomePage = () => {
               <img src={'assets/img/giphy.gif'} className="imgBoard" alt="boardGif" />
             </div>
             <div className="app-feat">
-              <p className="title">{t('welcome:appFeat')}</p>
-              <p className="title"> - {t('welcome:firstFeat')}</p>
-              <p className="title"> - {t('welcome:secondFeat')} </p>
-              <p className="title"> - {t('welcome:thirdFeat')}.</p>
+              <p className="title">{t('appFeat')}</p>
+              <p className="title"> - {t('firstFeat')}</p>
+              <p className="title"> - {t('secondFeat')} </p>
+              <p className="title"> - {t('thirdFeat')}.</p>
             </div>
           </motion.div>
           <motion.div
@@ -200,10 +227,10 @@ const WelcomePage = () => {
             whileInView="visible"
             className="titleContainer4"
           >
-            <p className="title title-center">{t('welcome:moto')}</p>
+            <p className="title title-center">{t('moto')}</p>
           </motion.div>
           <div className="aboutTheComand">
-            <h2> {t('welcome:teamInfo')} </h2>
+            <h2> {t('teamInfo')} </h2>
             <motion.div
               custom={3}
               variants={textAnimation}
@@ -212,14 +239,18 @@ const WelcomePage = () => {
               whileInView="visible"
               className="cards"
             >
-              {data.map((item, index) => (
-                <Card
-                  key={index}
-                  imgSrc={item.imgSrc}
-                  name={item.name}
-                  description={t('team:description', { var: item.description })}
-                />
-              ))}
+              {data.map((item, index) => {
+                return (
+                  <Card
+                    key={index}
+                    imgSrc={item.imgSrc}
+                    name={item.name}
+                    description={
+                      i18n.resolvedLanguage === 'Ru' ? item.descriptionRu : item.descriptionEn
+                    }
+                  />
+                );
+              })}
             </motion.div>
           </div>
         </div>
