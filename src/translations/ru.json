@@ -108,9 +108,5 @@
     "deleteColumnButton": "Удалить",
     "deleteTaskQuest": "Эта задача будет удалена?",
     "deleteTaskText": "Описание задачи также будет удалено!"
-  },
-
-  "team": {
-    "description": "{{Header, Авторизация Регистрация, Локализация}}"
   }
 }
