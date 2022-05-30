@@ -109,7 +109,6 @@ const WelcomePage = () => {
                   checked={checkedLang}
                   onChange={changeLanguageHandle}
                   inputProps={{ 'aria-label': 'controlled' }}
-                  color="warning"
                 />
               }
               label={i18n.resolvedLanguage}
