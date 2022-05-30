@@ -10,8 +10,8 @@ import { useTranslation } from 'react-i18next';
 import { themeSlice } from '../../app/store/reducers/ThemeSlice';
 import { motion } from 'framer-motion';
 import { blue } from '@mui/material/colors';
-import ColorSwitch from '../../app/components/Switch/ColorSwitch';
-import MaterialUISwitch from '../../app/components/Switch/MaterialUISwitch';
+import ColorSwitch from '../../app/components/switch/ColorSwitch';
+import MaterialUISwitch from '../../app/components/switch/MaterialUISwitch';
 
 const WelcomePage = () => {
   const [checkedLang, setCheckedLang] = useState<boolean>(false);
@@ -157,11 +157,15 @@ const WelcomePage = () => {
           <Modal id="videoModal" open={videoModalActive} onClose={closeModal}>
             <Box
               sx={{
-                top: '30%',
-                left: '30%',
-                outline: 'none',
                 position: 'absolute',
-                borderRadius: 3,
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                boxShadow: 24,
+                p: 4,
               }}
             >
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
