@@ -79,7 +79,7 @@ function BoardsPage() {
         <Header />
         <Box className={classes.container}>
           <Box className={classes.content}>
-            <Box sx={{ display: 'flex', alignItems: 'center', m: '20px 0 10px 0' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', m: '5px 0 5px 0' }}>
               <Box className={classes.header}>
                 <NavLink to="/main" style={{ textDecoration: 'none' }}>
                   <Button variant="contained">{t('boardsPage:onMainPage')}</Button>

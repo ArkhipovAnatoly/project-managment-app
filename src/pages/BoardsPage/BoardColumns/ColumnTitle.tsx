@@ -1,11 +1,13 @@
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
+import Tooltip from '@mui/material/Tooltip';
 import { Button, Paper, Typography, InputBase } from '@mui/material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { makeStyles } from '@material-ui/core';
 import { boardAPI } from '../../../services/BoardService';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles({
   columnTitle: {
@@ -35,6 +37,7 @@ function ColumnTitle(props: ColumnTitle) {
   const classes = useStyles();
   const [title, setTitle] = useState(props.columnTittle);
   const [updateColumn] = boardAPI.useUpdateColumnMutation();
+  const { t } = useTranslation('boardsPage');
 
   const showAllSettingsColumnTitle = (event: React.MouseEvent) => {
     const mainBox = (event.target as HTMLInputElement).closest('.boxForTitleColumn') as HTMLElement;
@@ -100,12 +103,15 @@ function ColumnTitle(props: ColumnTitle) {
       data-onopen={props.columnTittle}
       data-onclose={props.columnTittle}
     >
-      <Typography
-        className={`someBoardTitleText ${classes.textTitleColumn}`}
-        onClick={showAllSettingsColumnTitle}
-      >
-        {props.columnTittle}
-      </Typography>
+      <Tooltip title={t('columnTitleTool')}>
+        <Typography
+          className={`someBoardTitleText ${classes.textTitleColumn}`}
+          onClick={showAllSettingsColumnTitle}
+        >
+          {props.columnTittle}
+        </Typography>
+      </Tooltip>
+
       <Paper className={'inputTitleChange'} sx={{ mb: '2px', mt: '4px', display: 'none' }}>
         <InputBase
           onFocus={onFocusButtonColumnTitle}
@@ -124,24 +130,28 @@ function ColumnTitle(props: ColumnTitle) {
         justifyContent="flex-start"
         alignItems="center"
       >
-        <Button
-          onClick={buttonApplyColumnTitle}
-          className={'buttonApply'}
-          variant="outlined"
-          size="small"
-          color="info"
-        >
-          <CheckIcon fontSize="small" />
-        </Button>
-        <Button
-          onClick={buttonCloseColumnTitle}
-          className={'buttonCancel'}
-          variant="outlined"
-          size="small"
-          color="info"
-        >
-          <ClearIcon fontSize="small" />
-        </Button>
+        <Tooltip title={t('columnTitleTool')}>
+          <Button
+            onClick={buttonApplyColumnTitle}
+            className={'buttonApply'}
+            variant="outlined"
+            size="small"
+            color="info"
+          >
+            <CheckIcon fontSize="small" />
+          </Button>
+        </Tooltip>
+        <Tooltip title={t('columnTitleCancelTool')}>
+          <Button
+            onClick={buttonCloseColumnTitle}
+            className={'buttonCancel'}
+            variant="outlined"
+            size="small"
+            color="info"
+          >
+            <ClearIcon fontSize="small" />
+          </Button>
+        </Tooltip>
       </Stack>
     </Box>
   );

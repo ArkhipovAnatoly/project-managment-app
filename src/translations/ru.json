@@ -88,7 +88,13 @@
     "onMainPage": "На главную",
     "addNewColumn": "Добавить новую колонку",
     "addNewTask": "Добавить задачу",
-    "deleteColumn": "Удалить колонку"
+    "deleteColumn": "Удалить колонку",
+    "columnTitleTool": "Изменить название колонки",
+    "columnTitleCancelTool": "Отменить изменения",
+    "deleteTaskTool": "Удалить задачу",
+    "changeTaskTool": "Изменить задачу",
+    "nameCreatorsTool": "Имя пользователя, который создал задачу",
+    "checkBoxTool": "Выполненная задача"
   },
   "modalWindowBoardsPage": {
     "addNewColumn": "Добавить колонку",

@@ -14,10 +14,12 @@ import Box from '@mui/material/Box';
 import { makeStyles } from '@material-ui/core';
 import ClearIcon from '@mui/icons-material/Clear';
 import CreateIcon from '@mui/icons-material/Create';
+import Tooltip from '@mui/material/Tooltip';
 import type { DroppableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
 import { Column, task, User } from '../../../types';
 import { confirmModalSlice } from '../../../app/store/reducers/ConfirmModalSlice';
 import { boardAPI } from '../../../services/BoardService';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles({
   columnTasks: {
@@ -53,6 +55,13 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     cursor: 'pointer',
   },
+  userName: {
+    padding: '0 16px',
+    display: 'flex',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    cursor: 'pointer',
+  },
 });
 
 interface Task {
@@ -64,6 +73,7 @@ interface Task {
 }
 
 function Task(props: Task) {
+  const { t } = useTranslation('boardsPage');
   const classes = useStyles();
   const reducers = useSliceBoardsPage.actions;
   const dispatch = useAppDispatch();
@@ -156,9 +166,11 @@ function Task(props: Task) {
             data-taskindex={props.task.id}
             onClick={handleModalWindow}
           >
-            <Button color="secondary">
-              <ClearIcon fontSize="small" color="action" />
-            </Button>
+            <Tooltip title={t('deleteTaskTool')}>
+              <Button color="secondary">
+                <ClearIcon fontSize="small" color="action" />
+              </Button>
+            </Tooltip>
           </Box>
           <Box
             className="buttonModal"
@@ -167,15 +179,22 @@ function Task(props: Task) {
             data-taskindex={props.task.id}
             onClick={handleModalWindow}
           >
-            <Button color="secondary">
-              <CreateIcon fontSize="small" color="action" />
-            </Button>
+            <Tooltip title={t('changeTaskTool')}>
+              <Button color="secondary">
+                <CreateIcon fontSize="small" color="action" />
+              </Button>
+            </Tooltip>
           </Box>
-          <Checkbox color="success" checked={checked} onChange={handleCheckbox} />
+          <Tooltip title={t('checkBoxTool')}>
+            <Checkbox color="success" checked={checked} onChange={handleCheckbox} />
+          </Tooltip>
         </Box>
-        <Box sx={{ pl: '16px', pr: '16px', display: 'flex', flexWrap: 'wrap' }}>
-          <Typography>{getUserOfThisTask(props.task)}</Typography>
+        <Box className={classes.userName}>
+          <Tooltip title={t('nameCreatorsTool')}>
+            <Typography>{getUserOfThisTask(props.task)}</Typography>
+          </Tooltip>
         </Box>
+
         <Accordion elevation={0}>
           <AccordionSummary
             aria-controls="panel1a-content"
