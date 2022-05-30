@@ -96,7 +96,6 @@ function ModalWindow(props: CurrentBoardProps) {
           (item: task) => item.id === indexOfCurrentTask
         );
         if (dataCurrentTask !== undefined) {
-          console.log(dataCurrentTask);
           setTitle(dataCurrentTask?.title);
           setDescription(dataCurrentTask?.description);
           setCheckboxChecked(
