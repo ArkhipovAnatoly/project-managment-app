@@ -17,7 +17,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import CreateIcon from '@mui/icons-material/Create';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import type { DroppableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
-import { Column, task } from '../../../types';
+import { Column, task, User } from '../../../types';
 import { confirmModalSlice } from '../../../app/store/reducers/ConfirmModalSlice';
 
 const useStyles = makeStyles({
@@ -58,6 +58,7 @@ const useStyles = makeStyles({
 
 interface ColumnTasks {
   column?: Column;
+  allUsers?: User[];
 }
 
 function ColumnTasks(props: ColumnTasks) {
@@ -97,6 +98,15 @@ function ColumnTasks(props: ColumnTasks) {
         openModalWindowEditTask(targetButtonModal);
         break;
     }
+  };
+
+  const getUserOfThisTask = (task: task) => {
+    const taskIdUserCreator = task.userId;
+    if (props.allUsers !== undefined) {
+      const currentUserCreatorData = props.allUsers.find((user) => user.id === taskIdUserCreator);
+      return currentUserCreatorData?.name;
+    }
+    return '';
   };
 
   const sortTasksByOrder = (tasks: task[]) => {
@@ -165,6 +175,9 @@ function ColumnTasks(props: ColumnTasks) {
                             </Button>
                           </Box>
                           <Checkbox color="success" />
+                        </Box>
+                        <Box sx={{ pl: '16px', pr: '16px', display: 'flex', flexWrap: 'wrap' }}>
+                          <Typography>{getUserOfThisTask(task)}</Typography>
                         </Box>
                         <Accordion elevation={0}>
                           <AccordionSummary

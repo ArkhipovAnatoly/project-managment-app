@@ -16,7 +16,8 @@ export const userAPI = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://react-app-kanban.herokuapp.com',
     prepareHeaders: (headers: Headers, { getState }) => {
-      const token = (getState() as RootState).userAuthReducer.auth.token;
+      const token =
+        (getState() as RootState).userAuthReducer.auth.token || localStorage.getItem('token');
       if (token) {
         headers.set('authorization', `Bearer ${token}`);
       }
@@ -57,6 +58,11 @@ export const userAPI = createApi({
     getUser: build.query<User, string>({
       query: (userId) => ({
         url: `/users/${userId}`,
+      }),
+    }),
+    getAllUsers: build.query<User[], string>({
+      query: () => ({
+        url: `/users`,
       }),
     }),
   }),
