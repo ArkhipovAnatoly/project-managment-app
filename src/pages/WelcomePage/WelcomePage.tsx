@@ -170,14 +170,16 @@ const WelcomePage = () => {
             >
               <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                 <iframe
-                  src="https://www.youtube.com/embed/15ABtmow0W0"
+                  src="https://www.youtube.com/embed/15ABtmow0W0?autoplay=1"
                   frameBorder="0"
                   allow="autoplay; encrypted-media"
                   allowFullScreen
                   title="video"
                   width="500px"
                   height="350px"
-                />
+                >
+                  {' '}
+                </iframe>
               </Typography>
             </Box>
           </Modal>
