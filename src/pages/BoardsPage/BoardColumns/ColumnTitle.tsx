@@ -1,10 +1,11 @@
-import DeleteIcon from '@mui/icons-material/Delete';
+import CheckIcon from '@mui/icons-material/Check';
+import ClearIcon from '@mui/icons-material/Clear';
 import { Button, Paper, Typography, InputBase } from '@mui/material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { makeStyles } from '@material-ui/core';
-import SendIcon from '@mui/icons-material/Send';
 import { boardAPI } from '../../../services/BoardService';
+import { useState } from 'react';
 
 const useStyles = makeStyles({
   columnTitle: {
@@ -32,6 +33,7 @@ interface ColumnTitle {
 
 function ColumnTitle(props: ColumnTitle) {
   const classes = useStyles();
+  const [title, setTitle] = useState(props.columnTittle);
   const [updateColumn] = boardAPI.useUpdateColumnMutation();
 
   const showAllSettingsColumnTitle = (event: React.MouseEvent) => {
@@ -62,6 +64,7 @@ function ColumnTitle(props: ColumnTitle) {
   const onChangeButtonColumnTitle = (event: React.ChangeEvent) => {
     const mainBox = (event.target as HTMLInputElement).closest('.boxForTitleColumn') as HTMLElement;
     mainBox.dataset.onopen = (event.target as HTMLInputElement).value;
+    setTitle((event.target as HTMLInputElement).value);
   };
 
   const buttonApplyColumnTitle = async (event: React.MouseEvent) => {
@@ -110,6 +113,7 @@ function ColumnTitle(props: ColumnTitle) {
           onChange={onChangeButtonColumnTitle}
           inputProps={{ maxLength: 20 }}
           sx={{ pl: '5px' }}
+          value={title}
         />
       </Paper>
       <Stack
@@ -126,16 +130,18 @@ function ColumnTitle(props: ColumnTitle) {
           variant="outlined"
           size="small"
           color="info"
-          startIcon={<SendIcon />}
-        ></Button>
+        >
+          <CheckIcon fontSize="small" />
+        </Button>
         <Button
           onClick={buttonCloseColumnTitle}
           className={'buttonCancel'}
           variant="outlined"
           size="small"
           color="info"
-          startIcon={<DeleteIcon />}
-        ></Button>
+        >
+          <ClearIcon fontSize="small" />
+        </Button>
       </Stack>
     </Box>
   );
