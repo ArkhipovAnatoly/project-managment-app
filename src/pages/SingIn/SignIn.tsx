@@ -60,7 +60,8 @@ export default function SignIn() {
 
   const onSubmit: SubmitHandler<UserSignInData> = async (formData) => {
     setMessage('');
-    const response = (await signInUser(formData)) as SignInResponse;
+    const { login, password } = formData;
+    const response = (await signInUser({ login: login.trim(), password })) as SignInResponse;
     const status = response.error?.status;
 
     if (status === StatusCode.Forbidden) {
