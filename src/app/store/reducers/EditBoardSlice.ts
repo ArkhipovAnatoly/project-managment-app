@@ -7,7 +7,7 @@ interface ModalState {
 
 const initialState: ModalState = {
   dataBoard: {
-    id: '',
+    id: localStorage.getItem('idBoard') || '',
     title: '',
     description: '',
   },
