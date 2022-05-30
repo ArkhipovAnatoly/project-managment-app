@@ -9,6 +9,7 @@ const initialState: UserAuth = {
   auth: {
     userId: '',
     token: '',
+    userName: '',
   },
 };
 
