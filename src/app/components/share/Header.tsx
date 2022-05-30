@@ -35,7 +35,7 @@ import { alpha, useTheme } from '@mui/material/styles';
 import { blue } from '@material-ui/core/colors';
 import { createBoardModalSlice } from '../../store/reducers/CreateBoardModalSlice';
 import CreateBoardModal from '../modal/CreateBoardModal';
-import ColorSwitch from '../Switch/ColorSwitch';
+import ColorSwitch from '../switch/ColorSwitch';
 
 const scrollThreshold = 40;
 

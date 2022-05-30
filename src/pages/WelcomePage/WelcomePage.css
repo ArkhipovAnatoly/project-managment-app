@@ -20,8 +20,8 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1em;
-  padding: 1em 0;
+  gap: 16px;
+  padding: 16px 0;
 }
 
 .button-wrapper {
@@ -85,8 +85,8 @@ h2 {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1em;
-  padding: 0 0 3em 0;
+  gap: 16px;
+  padding: 0 0 48px 0;
 }
 
 .aboutTheComand {
@@ -108,28 +108,9 @@ h2 {
   }
 }
 
-@media screen and (min-width: 180px) and (max-width: 1200px) {
-  .videoBox {
-    top: 25%;
-    left: 25%;
-  }
-}
-
 @media screen and (min-width: 180px) and (max-width: 1000px) {
   .wrapper {
     padding: 0 20px;
-  }
-
-  .videoBox {
-    top: 20%;
-    left: 20%;
-  }
-}
-
-@media screen and (min-width: 180px) and (max-width: 800px) {
-  .videoBox {
-    top: 13%;
-    left: 13%;
   }
 }
 
