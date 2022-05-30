@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import './Error.css';
 
 const Error = () => {
@@ -7,9 +8,9 @@ const Error = () => {
         <p>ARE YOU LOST?</p>
         <p>
           Do you want to go{' '}
-          <a className="goHome" href="/">
+          <NavLink className="goHome" to="/">
             home
-          </a>
+          </NavLink>
           ?
         </p>
       </div>
