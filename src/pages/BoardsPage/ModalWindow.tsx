@@ -2,7 +2,7 @@ import { Backdrop, Button, Fade, Modal, TextField, Typography } from '@mui/mater
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { makeStyles } from '@material-ui/core';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useSliceBoardsPage } from '../../app/store/reducers/useSliceBoardsPage';
 import { useTranslation } from 'react-i18next';
@@ -61,8 +61,10 @@ function ModalWindow(props: CurrentBoardProps) {
   const { t } = useTranslation('modalWindowBoardsPage');
   const { currentBoard } = props;
   const { nameModalWindow } = useAppSelector((state) => state.boardsPage);
+  const { valueForTitleToSaveCheckbox } = useAppSelector((state) => state.boardsPage);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [checkboxChecked, setCheckboxChecked] = useState(false);
   const { openModalWindow } = useAppSelector((state) => state.boardsPage);
   const { indexOfCurrentColumn } = useAppSelector((state) => state.boardsPage);
   const { indexOfCurrentTask } = useAppSelector((state) => state.boardsPage);
@@ -83,6 +85,27 @@ function ModalWindow(props: CurrentBoardProps) {
     dispatch(reducers.openModalWindow(false));
     clearTextModal();
   };
+
+  useEffect(() => {
+    if (nameModalWindow === 'editTask') {
+      const indexColumn = currentBoard?.columns.findIndex(
+        (column) => column.id === indexOfCurrentColumn
+      );
+      if (indexColumn !== undefined) {
+        const dataCurrentTask = currentBoard?.columns[indexColumn].tasks?.find(
+          (item: task) => item.id === indexOfCurrentTask
+        );
+        if (dataCurrentTask !== undefined) {
+          console.log(dataCurrentTask);
+          setTitle(dataCurrentTask?.title);
+          setDescription(dataCurrentTask?.description);
+          setCheckboxChecked(
+            dataCurrentTask.title.indexOf(valueForTitleToSaveCheckbox) !== -1 ? true : false
+          );
+        }
+      }
+    }
+  }, []);
 
   const handleTitle = (event: React.ChangeEvent) => {
     const target = event.target as HTMLInputElement;
@@ -147,23 +170,22 @@ function ModalWindow(props: CurrentBoardProps) {
       (column) => column.id === indexOfCurrentColumn
     );
     if (title?.trim() && description?.trim() && indexColumn !== undefined) {
-      console.log(
-        currentBoard?.columns[indexColumn].tasks?.find(
-          (item: task) => item.id === indexOfCurrentTask
-        )
+      const currentTaskData = currentBoard?.columns[indexColumn].tasks?.find(
+        (item: task) => item.id === indexOfCurrentTask
       );
       closeModalWindow();
       await updateTask({
-        userId: `${localStorage.getItem('userId')}`,
+        userId: currentTaskData?.userId,
         boardId: dataBoard.id,
         columnId: indexOfCurrentColumn,
         currentColumn: indexOfCurrentColumn,
         taskId: indexOfCurrentTask,
-        title: title,
+        title:
+          checkboxChecked === true
+            ? `${title}${valueForTitleToSaveCheckbox}`
+            : title.split(valueForTitleToSaveCheckbox).join(''),
         description: description,
-        order: currentBoard?.columns[indexColumn].tasks?.find(
-          (item: task) => item.id === indexOfCurrentTask
-        )?.order,
+        order: currentTaskData?.order,
       });
       clearTextModal();
     }
@@ -287,7 +309,7 @@ function ModalWindow(props: CurrentBoardProps) {
                       id="filled-basic"
                       label={t('changeTittleOfTask')}
                       variant="standard"
-                      defaultValue={'asd'}
+                      value={title.split(valueForTitleToSaveCheckbox).join('')}
                       onChange={handleTitle}
                     />
                     <TextField
@@ -297,7 +319,7 @@ function ModalWindow(props: CurrentBoardProps) {
                       variant="standard"
                       multiline
                       rows={4}
-                      defaultValue={'asd'}
+                      value={description}
                       onChange={handleDescription}
                     />
                   </Stack>

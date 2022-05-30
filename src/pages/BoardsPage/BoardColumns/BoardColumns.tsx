@@ -21,6 +21,7 @@ import { boardAPI } from '../../../services/BoardService';
 import { Column, CurrentBoardProps } from '../../../types';
 import { task } from '../../../types';
 import { confirmModalSlice } from '../../../app/store/reducers/ConfirmModalSlice';
+import { userAPI } from '../../../services/UserService';
 
 const useStyles = makeStyles({
   columns: {
@@ -124,6 +125,7 @@ function BoardColumns(props: CurrentBoardProps) {
   const [updateTask] = boardAPI.useUpdateTaskMutation();
   const { showConfirmModal } = confirmModalSlice.actions;
   const theme = useTheme();
+  const { data: allUsers } = userAPI.useGetAllUsersQuery('');
 
   const openModalWindowAddTask = (targetButtonModal: HTMLElement) => {
     const currentIndexColumn = String(targetButtonModal?.dataset.columnindex);
@@ -313,7 +315,7 @@ function BoardColumns(props: CurrentBoardProps) {
                               columnTittle={column.title}
                               columnOrder={column.order}
                             ></ColumnTitle>
-                            <ColumnTasks column={column} />
+                            <ColumnTasks column={column} allUsers={allUsers} />
                             <Box className={classes.columnSettings}>
                               <Box
                                 data-modalname="addTask"
