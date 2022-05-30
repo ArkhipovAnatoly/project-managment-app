@@ -6,6 +6,7 @@ interface States {
   indexOfCurrentBoard: string;
   indexOfCurrentColumn: string;
   indexOfCurrentTask: string;
+  valueForTitleToSaveCheckbox: string;
 }
 
 const initialState: States = {
@@ -14,6 +15,7 @@ const initialState: States = {
   indexOfCurrentBoard: localStorage.getItem('idBoard') || '',
   indexOfCurrentColumn: '',
   indexOfCurrentTask: '',
+  valueForTitleToSaveCheckbox: '^^^&&&?{0907}?&&&^^^',
 };
 
 export const useSliceBoardsPage = createSlice({

@@ -61,8 +61,10 @@ function ModalWindow(props: CurrentBoardProps) {
   const { t } = useTranslation('modalWindowBoardsPage');
   const { currentBoard } = props;
   const { nameModalWindow } = useAppSelector((state) => state.boardsPage);
+  const { valueForTitleToSaveCheckbox } = useAppSelector((state) => state.boardsPage);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [checkboxChecked, setCheckboxChecked] = useState(false);
   const { openModalWindow } = useAppSelector((state) => state.boardsPage);
   const { indexOfCurrentColumn } = useAppSelector((state) => state.boardsPage);
   const { indexOfCurrentTask } = useAppSelector((state) => state.boardsPage);
@@ -94,8 +96,12 @@ function ModalWindow(props: CurrentBoardProps) {
           (item: task) => item.id === indexOfCurrentTask
         );
         if (dataCurrentTask !== undefined) {
+          console.log(dataCurrentTask);
           setTitle(dataCurrentTask?.title);
           setDescription(dataCurrentTask?.description);
+          setCheckboxChecked(
+            dataCurrentTask.title.indexOf(valueForTitleToSaveCheckbox) !== -1 ? true : false
+          );
         }
       }
     }
@@ -164,18 +170,22 @@ function ModalWindow(props: CurrentBoardProps) {
       (column) => column.id === indexOfCurrentColumn
     );
     if (title?.trim() && description?.trim() && indexColumn !== undefined) {
+      const currentTaskData = currentBoard?.columns[indexColumn].tasks?.find(
+        (item: task) => item.id === indexOfCurrentTask
+      );
       closeModalWindow();
       await updateTask({
-        userId: `${localStorage.getItem('userId')}`,
+        userId: currentTaskData?.userId,
         boardId: dataBoard.id,
         columnId: indexOfCurrentColumn,
         currentColumn: indexOfCurrentColumn,
         taskId: indexOfCurrentTask,
-        title: title,
+        title:
+          checkboxChecked === true
+            ? `${title}${valueForTitleToSaveCheckbox}`
+            : title.split(valueForTitleToSaveCheckbox).join(''),
         description: description,
-        order: currentBoard?.columns[indexColumn].tasks?.find(
-          (item: task) => item.id === indexOfCurrentTask
-        )?.order,
+        order: currentTaskData?.order,
       });
       clearTextModal();
     }
@@ -299,7 +309,7 @@ function ModalWindow(props: CurrentBoardProps) {
                       id="filled-basic"
                       label={t('changeTittleOfTask')}
                       variant="standard"
-                      value={title}
+                      value={title.split(valueForTitleToSaveCheckbox).join('')}
                       onChange={handleTitle}
                     />
                     <TextField
