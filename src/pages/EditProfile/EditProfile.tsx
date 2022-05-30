@@ -164,7 +164,7 @@ export default function EditProfile() {
                   required
                   fullWidth
                   id="Name"
-                  label="Name"
+                  label="New Name"
                   autoFocus
                   {...register('name', { required: true, pattern: /^[A-Za-zА-Яа-я]+$/i })}
                 />
@@ -187,7 +187,7 @@ export default function EditProfile() {
                   required
                   fullWidth
                   id="login"
-                  label="Login"
+                  label="New Login"
                   autoComplete="login"
                   {...register('login', {
                     required: true,
@@ -206,7 +206,7 @@ export default function EditProfile() {
                   error={errors.password && true}
                   required
                   fullWidth
-                  label="Password"
+                  label="New Password"
                   type="password"
                   id="password"
                   autoComplete="new-password"
