@@ -186,30 +186,28 @@ const WelcomePage = () => {
               <img src={'assets/img/giphy.gif'} className="imgBoard" alt="boardGif" />
             </div>
             <div className="app-feat">
-              <p className="title">
-                <div className="checkContainer">
-                  <img className="check" src={'assets/img/check.png'} alt="check" /> {t('appFeat')}
-                </div>
-              </p>
-              <p className="title">
+              <div className="title">
+                <div className="checkContainer">{t('appFeat')}</div>
+              </div>
+              <div className="title">
                 <div className="checkContainer">
                   <img className="check" src={'assets/img/check.png'} alt="check" />{' '}
                   {t('firstFeat')}
                 </div>
-              </p>
-              <p className="title">
+              </div>
+              <div className="title">
                 <div className="checkContainer">
                   <img className="check" src={'assets/img/check.png'} alt="check" />{' '}
                   {t('secondFeat')}
                 </div>
-              </p>
-              <p className="title">
+              </div>
+              <div className="title">
                 {' '}
                 <div className="checkContainer">
                   <img className="check" src={'assets/img/check.png'} alt="check" />{' '}
                   {t('thirdFeat')}.
                 </div>
-              </p>
+              </div>
             </div>
           </motion.div>
           <motion.div
