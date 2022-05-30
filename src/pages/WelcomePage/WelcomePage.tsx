@@ -8,14 +8,17 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import CustomizedButton from '../../app/components/share/Button/CustomizedButton';
 import { useTranslation } from 'react-i18next';
 import { themeSlice } from '../../app/store/reducers/ThemeSlice';
-import MaterialUISwitch from '@mui/material/Switch';
 import { motion } from 'framer-motion';
+import { blue } from '@mui/material/colors';
+import ColorSwitch from '../../app/components/Switch/ColorSwitch';
+import MaterialUISwitch from '../../app/components/Switch/MaterialUISwitch';
 
 const WelcomePage = () => {
+  const [checkedLang, setCheckedLang] = useState<boolean>(false);
   const [checked, setChecked] = useState<boolean>(false);
   const { auth } = useAppSelector((state) => state.userAuthReducer);
   const [videoModalActive, setVideomodalactive] = useState(false);
-  const { t } = useTranslation('welcome');
+  const { t, i18n } = useTranslation('welcome');
   const { setTheme } = themeSlice.actions;
   const dispatch = useAppDispatch();
   const token = localStorage.getItem('token');
@@ -25,6 +28,17 @@ const WelcomePage = () => {
       setChecked(true);
     }
   }, []);
+
+  const changeLanguageHandle = (event: ChangeEvent<HTMLInputElement>) => {
+    const { checked } = event.target as HTMLInputElement;
+    setCheckedLang(event.target.checked);
+    checked ? i18n.changeLanguage('Ru') : i18n.changeLanguage('En');
+  };
+  useEffect(() => {
+    if (i18n.resolvedLanguage === 'Ru') {
+      setCheckedLang(true);
+    }
+  }, [i18n.resolvedLanguage]);
 
   const textAnimation = {
     hidden: {
@@ -88,6 +102,18 @@ const WelcomePage = () => {
                 />
               }
               label=""
+            />
+            <FormControlLabel
+              control={
+                <ColorSwitch
+                  checked={checkedLang}
+                  onChange={changeLanguageHandle}
+                  inputProps={{ 'aria-label': 'controlled' }}
+                />
+              }
+              label={i18n.resolvedLanguage}
+              labelPlacement="end"
+              sx={{ color: blue[600] }}
             />
             {token && auth.isAuth ? (
               <CustomizedButton innerText={t('toMainPage')} link={'/main'} />
@@ -230,14 +256,18 @@ const WelcomePage = () => {
               whileInView="visible"
               className="cards"
             >
-              {data.map((item, index) => (
-                <Card
-                  key={index}
-                  imgSrc={item.imgSrc}
-                  name={item.name}
-                  description={item.description}
-                />
-              ))}
+              {data.map((item, index) => {
+                return (
+                  <Card
+                    key={index}
+                    imgSrc={item.imgSrc}
+                    name={item.name}
+                    description={
+                      i18n.resolvedLanguage === 'Ru' ? item.descriptionRu : item.descriptionEn
+                    }
+                  />
+                );
+              })}
             </motion.div>
           </div>
         </div>
