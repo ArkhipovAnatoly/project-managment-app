@@ -64,7 +64,11 @@ export default function CreateBoardModal() {
 
   const onSubmit: SubmitHandler<BoardData> = async (formData) => {
     setMessage('');
-    const response = (await createBoard(formData)) as BoardDataResponse;
+    const { title, description } = formData;
+    const response = (await createBoard({
+      description: description.trim(),
+      title: title.trim(),
+    })) as BoardDataResponse;
     const status = response.error?.status;
     if (status === StatusCode.Unauthorized) {
       setMessage(t('authError'));
