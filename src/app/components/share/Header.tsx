@@ -20,7 +20,6 @@ import {
   AppBar,
   Link,
   Button,
-  Switch,
   FormControlLabel,
   Box,
   Menu,
@@ -36,6 +35,7 @@ import { alpha, useTheme } from '@mui/material/styles';
 import { blue } from '@material-ui/core/colors';
 import { createBoardModalSlice } from '../../store/reducers/CreateBoardModalSlice';
 import CreateBoardModal from '../modal/CreateBoardModal';
+import ColorSwitch from '../Switch/ColorSwitch';
 
 const scrollThreshold = 40;
 
@@ -67,7 +67,7 @@ export default function Header() {
     };
   }, [scrollHandle]);
 
-  const changeHandle = (event: ChangeEvent<HTMLInputElement>) => {
+  const changeLanguageHandle = (event: ChangeEvent<HTMLInputElement>) => {
     handleCloseNavMenu();
     const { checked } = event.target as HTMLInputElement;
     setChecked(event.target.checked);
@@ -230,11 +230,11 @@ export default function Header() {
             <Stack direction="row" spacing={3} sx={{ display: { md: 'flex', xs: 'none' } }}>
               <FormControlLabel
                 control={
-                  <Switch
+                  <ColorSwitch
                     checked={checked}
-                    onChange={changeHandle}
+                    onChange={changeLanguageHandle}
                     inputProps={{ 'aria-label': 'controlled' }}
-                    color="info"
+                    color="warning"
                   />
                 }
                 label={i18n.resolvedLanguage}
