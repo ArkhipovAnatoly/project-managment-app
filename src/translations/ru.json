@@ -80,7 +80,8 @@
     "tooltipDeleteBoard": "Удалить доску",
     "tooltipOpenBoard": "Открыть доску",
     "tooltipEditBoard": "Редактировать доску",
-    "noBoards": "Нет данных для отображения"
+    "noBoards": "Нет данных для отображения",
+    "description": "Описание"
   },
   "boardsPage": {
     "onMainPage": "На главную",
