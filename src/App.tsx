@@ -1,4 +1,4 @@
-import { HashRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import AppLayout from './app/components/layouts/AppLayout';
 import WelcomePage from './pages/WelcomePage/WelcomePage';
@@ -42,16 +42,19 @@ function App() {
 
   return (
     <ThemeProvider theme={appTheme}>
-      <Routes>
-        <Route path="/" element={<AppLayout />} />
-        <Route index element={<WelcomePage />} />
-        <Route path="/main" element={<MainPage />} />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/edit" element={<EditProfile />} />
-        <Route path="/board" element={<BoardsPage />} />
-        <Route path="*" element={<Error />} />
-      </Routes>
+      <Router>
+        <Routes>
+          <Route path="/" element={<AppLayout />}>
+            <Route index element={<WelcomePage />} />
+            <Route path="/main" element={<MainPage />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/edit" element={<EditProfile />} />
+            <Route path="/board" element={<BoardsPage />} />
+          </Route>
+          <Route path="*" element={<Error />} />
+        </Routes>
+      </Router>
     </ThemeProvider>
   );
 }
