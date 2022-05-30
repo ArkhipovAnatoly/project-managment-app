@@ -117,17 +117,17 @@ const WelcomePage = () => {
               sx={{ color: blue[600] }}
             />
             {token && auth.isAuth ? (
-              <CustomizedButton innerText={t('welcome:toMainPage')} link={'/main'} />
+              <CustomizedButton innerText={t('toMainPage')} link={'/main'} />
             ) : (
               <div className="button-wrapper">
-                <CustomizedButton innerText={t('welcome:signIn')} link={'/signin'} />
-                <CustomizedButton innerText={t('welcome:signUp')} link={'/signup'} />
+                <CustomizedButton innerText={t('signIn')} link={'/signin'} />
+                <CustomizedButton innerText={t('signUp')} link={'/signup'} />
               </div>
             )}
           </div>
           <div className="aboutTheProject">
             <motion.h1 initial="hidden" whileInView="visible" custom={1} variants={textAnimation}>
-              {t('welcome:aboutProject')} <span className="titleProject">TEMPER</span>
+              {t('aboutProject')} <span className="titleProject">TEMPER</span>
             </motion.h1>
             <motion.p
               initial="hidden"
@@ -136,7 +136,7 @@ const WelcomePage = () => {
               variants={textAnimation}
               className="title"
             >
-              {t('welcome:videoReview')}
+              {t('videoReview')}
             </motion.p>
           </div>
           <div className="videoPlaceholder">
@@ -186,7 +186,7 @@ const WelcomePage = () => {
             whileInView="visible"
             className="titleContainer"
           >
-            <p className="title">{t('welcome:whatAllows')}</p>
+            <p className="title">{t('whatAllows')}</p>
             <div className="imgTitle">
               <img src={'assets/img/board.png'} alt="board" />
             </div>
@@ -199,7 +199,7 @@ const WelcomePage = () => {
             whileInView="visible"
             className="titleContainer2"
           >
-            <p className="title">{t('welcome:advantage')}</p>
+            <p className="title">{t('advantage')}</p>
           </motion.div>
           <motion.div
             custom={3}
@@ -247,10 +247,10 @@ const WelcomePage = () => {
             whileInView="visible"
             className="titleContainer4"
           >
-            <p className="title title-center">{t('welcome:moto')}</p>
+            <p className="title title-center">{t('moto')}</p>
           </motion.div>
           <div className="aboutTheComand">
-            <h2> {t('welcome:teamInfo')} </h2>
+            <h2> {t('teamInfo')} </h2>
             <motion.div
               custom={3}
               variants={textAnimation}
