@@ -81,7 +81,7 @@
     "tooltipOpenBoard": "Открыть доску",
     "tooltipEditBoard": "Редактировать доску",
     "noBoards": "Нет данных для отображения",
-    "description": "Описание"
+    "description": "Описание: "
   },
   "boardsPage": {
     "onMainPage": "На главную",
