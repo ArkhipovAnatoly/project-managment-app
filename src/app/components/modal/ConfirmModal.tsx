@@ -43,6 +43,7 @@ type ConfirmModalProps = {
 };
 
 export default function ConfirmModal({ title = '', type, subtitle = '' }: ConfirmModalProps) {
+  const [isDisable, setIsDisable] = useState<boolean>(false);
   const { open } = useAppSelector((state) => state.confirmModalReducer);
   const { showConfirmModal } = confirmModalSlice.actions;
   const [message, setMessage] = useState<string>('');
@@ -74,6 +75,7 @@ export default function ConfirmModal({ title = '', type, subtitle = '' }: Confir
 
   const handleConfirm = async () => {
     let response: DeleteResponse = {};
+    setIsDisable(true);
     setMessage('');
     switch (type) {
       case 'profile':
@@ -185,6 +187,7 @@ export default function ConfirmModal({ title = '', type, subtitle = '' }: Confir
               {subtitle}
             </Typography>
             <Button
+              disabled={isDisable}
               color={theme.palette.mode === 'dark' ? 'secondary' : 'primary'}
               sx={{
                 mt: 2,
