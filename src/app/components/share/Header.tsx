@@ -234,7 +234,6 @@ export default function Header() {
                     checked={checked}
                     onChange={changeLanguageHandle}
                     inputProps={{ 'aria-label': 'controlled' }}
-                    color="warning"
                   />
                 }
                 label={i18n.resolvedLanguage}
