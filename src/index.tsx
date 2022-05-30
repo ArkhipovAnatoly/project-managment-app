@@ -6,6 +6,7 @@ import './index.css';
 import { store } from './app/store/store';
 import { ThemeProvider } from '@mui/material';
 import { breakpointsTheme } from './app/theme/Theme';
+import { HashRouter } from 'react-router-dom';
 
 const container = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(container);
@@ -13,7 +14,9 @@ const root = createRoot(container);
 root.render(
   <Provider store={store}>
     <ThemeProvider theme={breakpointsTheme}>
-      <App />
+      <HashRouter>
+        <App />
+      </HashRouter>
     </ThemeProvider>
   </Provider>
 );
