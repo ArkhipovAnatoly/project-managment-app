@@ -8,6 +8,7 @@ export type UserAuthData = {
   userId?: string;
   token?: string;
   isAuth?: boolean;
+  userName?: string;
 };
 
 export type UserSignInData = {
