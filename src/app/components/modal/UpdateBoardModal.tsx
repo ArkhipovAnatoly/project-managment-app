@@ -76,11 +76,12 @@ export default function CreateBoardModal() {
     const { title, description } = formData;
     const updateData = {
       description: description.trim(),
-      title: title.trim(),
+      title: title.trim() || ' ',
       id: dataBoard.id,
     };
     const response = (await updateBoard(updateData)) as BoardDataResponse;
     const status = response.error?.status;
+
     if (status === StatusCode.Unauthorized) {
       setMessage(t('authError'));
       setTimeout(() => {
@@ -90,6 +91,11 @@ export default function CreateBoardModal() {
         dispatch(setUserAuthData({ token: '', isAuth: false }));
         navigator('/');
       }, 1500);
+      return;
+    }
+
+    if (status === StatusCode.BadRequest) {
+      setMessage(t('statusErrorBoardUpdate'));
       return;
     }
 

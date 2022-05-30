@@ -58,7 +58,12 @@ export default function SignUp() {
 
   const onSubmit: SubmitHandler<UserSignUpData> = async (formData) => {
     setMessage('');
-    const response = (await signUpUser(formData)) as SignUpResponse;
+    const { login, name, password } = formData;
+    const response = (await signUpUser({
+      name: name.trim(),
+      login: login.trim(),
+      password,
+    })) as SignUpResponse;
     const status = response.error?.status;
 
     if (status === StatusCode.Conflict) {

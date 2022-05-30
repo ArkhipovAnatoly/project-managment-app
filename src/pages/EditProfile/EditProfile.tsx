@@ -88,7 +88,8 @@ export default function EditProfile() {
 
   const onSubmit: SubmitHandler<EditUserProfileData> = async (formData) => {
     setMessage('');
-    const updateData = { ...formData, userId: auth.userId };
+    const { name, login, password } = formData;
+    const updateData = { name: name.trim(), login: login.trim(), password, userId: auth.userId };
     const response = (await updateProfile(updateData)) as EditUserProfileResponse;
     const status = response.error?.status;
 

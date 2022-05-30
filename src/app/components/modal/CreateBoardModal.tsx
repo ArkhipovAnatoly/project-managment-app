@@ -66,7 +66,7 @@ export default function CreateBoardModal() {
     setMessage('');
     const { title, description } = formData;
     const response = (await createBoard({
-      description: description.trim(),
+      description: description.trim() || ' ',
       title: title.trim(),
     })) as BoardDataResponse;
     const status = response.error?.status;
@@ -83,6 +83,10 @@ export default function CreateBoardModal() {
     }
     if (status === StatusCode.NotFound) {
       setMessage(t('statusError'));
+      return;
+    }
+    if (status === StatusCode.BadRequest) {
+      setMessage(t('statusErrorBoardCreate'));
       return;
     }
     setMessage(t('statusOk'));

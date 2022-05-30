@@ -75,6 +75,7 @@
     "errorLoad": "Не удалось загрузить доски",
     "statusErrorBoardDelete": "Не удалось удалить",
     "statusErrorBoardUpdate": "Не удалось обновить",
+    "statusErrorBoardCreate": "Не удалось создать",
     "statusDeleteOk": "Удаление успешно",
     "question": "будет удалена!",
     "tooltipDeleteBoard": "Удалить доску",
