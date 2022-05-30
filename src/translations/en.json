@@ -75,6 +75,7 @@
     "errorLoad": "Could not load boards",
     "statusErrorBoardDelete": "Could not delete",
     "statusErrorBoardUpdate": "Could not update",
+    "statusErrorBoardCreate": "Could not create",
     "statusDeleteOk": "Successfully deleted",
     "question": "will be deleted!",
     "tooltipDeleteBoard": "Delete board",
