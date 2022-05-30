@@ -80,7 +80,8 @@
     "tooltipDeleteBoard": "Delete board",
     "tooltipEditBoard": "Edit board",
     "tooltipOpenBoard": "Оpen board",
-    "noBoards": "No data to display"
+    "noBoards": "No data to display",
+    "description": "Description"
   },
   "boardsPage": {
     "onMainPage": "Main Page",
