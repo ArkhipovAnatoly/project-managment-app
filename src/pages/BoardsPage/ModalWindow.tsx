@@ -2,7 +2,7 @@ import { Backdrop, Button, Fade, Modal, TextField, Typography } from '@mui/mater
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { makeStyles } from '@material-ui/core';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useSliceBoardsPage } from '../../app/store/reducers/useSliceBoardsPage';
 import { useTranslation } from 'react-i18next';
@@ -84,6 +84,23 @@ function ModalWindow(props: CurrentBoardProps) {
     clearTextModal();
   };
 
+  useEffect(() => {
+    if (nameModalWindow === 'editTask') {
+      const indexColumn = currentBoard?.columns.findIndex(
+        (column) => column.id === indexOfCurrentColumn
+      );
+      if (indexColumn !== undefined) {
+        const dataCurrentTask = currentBoard?.columns[indexColumn].tasks?.find(
+          (item: task) => item.id === indexOfCurrentTask
+        );
+        if (dataCurrentTask !== undefined) {
+          setTitle(dataCurrentTask?.title);
+          setDescription(dataCurrentTask?.description);
+        }
+      }
+    }
+  }, []);
+
   const handleTitle = (event: React.ChangeEvent) => {
     const target = event.target as HTMLInputElement;
     setTitle(target.value as string);
@@ -147,11 +164,6 @@ function ModalWindow(props: CurrentBoardProps) {
       (column) => column.id === indexOfCurrentColumn
     );
     if (title?.trim() && description?.trim() && indexColumn !== undefined) {
-      console.log(
-        currentBoard?.columns[indexColumn].tasks?.find(
-          (item: task) => item.id === indexOfCurrentTask
-        )
-      );
       closeModalWindow();
       await updateTask({
         userId: `${localStorage.getItem('userId')}`,
@@ -287,7 +299,7 @@ function ModalWindow(props: CurrentBoardProps) {
                       id="filled-basic"
                       label={t('changeTittleOfTask')}
                       variant="standard"
-                      defaultValue={'asd'}
+                      value={title}
                       onChange={handleTitle}
                     />
                     <TextField
@@ -297,7 +309,7 @@ function ModalWindow(props: CurrentBoardProps) {
                       variant="standard"
                       multiline
                       rows={4}
-                      defaultValue={'asd'}
+                      value={description}
                       onChange={handleDescription}
                     />
                   </Stack>
