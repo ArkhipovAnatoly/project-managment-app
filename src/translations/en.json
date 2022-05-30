@@ -108,8 +108,5 @@
     "deleteColumnButton": "Delete",
     "deleteTaskQuest": "This task will be deleted?",
     "deleteTaskText": " The description that was inside this task will be permanently deleted along with it!"
-  },
-  "team": {
-    "description": "{{Header, Sign in Sigm up, Localization}}"
   }
 }
