@@ -10,8 +10,8 @@ import { useTranslation } from 'react-i18next';
 import { themeSlice } from '../../app/store/reducers/ThemeSlice';
 import { motion } from 'framer-motion';
 import { blue } from '@mui/material/colors';
-import ColorSwitch from '../../app/components/switch/ColorSwitch';
-import MaterialUISwitch from '../../app/components/switch/MaterialUISwitch';
+import ColorSwitch from '../../app/components/Switch/ColorSwitch';
+import MaterialUISwitch from '../../app/components/Switch/MaterialUISwitch';
 
 const WelcomePage = () => {
   const [checkedLang, setCheckedLang] = useState<boolean>(false);
