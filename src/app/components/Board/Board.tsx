@@ -38,7 +38,6 @@ export default function Board({ id, title, description }: BoardData) {
     dispatch(setBoardData({ id, title, description }));
     dispatch(showUpdateBoardModal(true));
   };
-
   const updateCurrentIndexBoard = () => {
     dispatch(setBoardData({ id, title, description }));
     if (id !== undefined) localStorage.setItem('idBoard', `${id}`);
@@ -89,7 +88,7 @@ export default function Board({ id, title, description }: BoardData) {
             </Tooltip>
           </ListItemAvatar>
         </NavLink>
-        <ListItemText primary={`${description}`} />
+        <ListItemText primary={`${t('description')} ${description}.`} />
       </ListItem>
     </>
   );
