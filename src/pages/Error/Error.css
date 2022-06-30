@@ -1,0 +1,17 @@
+.question {
+  padding: 30px;
+}
+
+.goHome {
+  text-decoration: none;
+  color: #813434;
+}
+
+.errorContainer {
+  width: 100%;
+  height: 100%;
+  background-image: url('../../../public/assets/img/error.gif');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
